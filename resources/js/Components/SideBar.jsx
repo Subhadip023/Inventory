@@ -10,14 +10,15 @@ import {
     HiTable,
     HiUser,
 } from "react-icons/hi";
+import { Link } from '@inertiajs/react';
 import { twMerge } from "tailwind-merge";
-const SideBar = ({classNames}) => {
+const SideBar = ({classNames,signOut}) => {
     return (
         <section className= {`h-screen ${classNames} sticky top-0 `}>
             <Sidebar aria-label="Sidebar with multi-level dropdown example">
                 <SidebarItems>
                     <SidebarItemGroup>
-                        <SidebarItem href="#" icon={HiChartPie}>
+                        <SidebarItem as={Link} href={route('dashboard')} icon={HiChartPie} active={route().current('dashboard')}>
                             Dashboard
                         </SidebarItem>
                         <SidebarCollapse
@@ -26,10 +27,11 @@ const SideBar = ({classNames}) => {
                             renderChevronIcon={(theme, open) => {
                                 const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
 
-                                return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? "on" : "off"])} />;
+                                return <IconComponent aria-hidden className={ twMerge(theme.label.icon.open[open ? "on" : "off"])} />;
                             }}
+                            open={route().current('products.index') || route().current('products.create') || route().current('products.edit')}
                         >
-                            <SidebarItem href="#">Products</SidebarItem>
+                            <SidebarItem as={Link} href={route('products.index')} active={route().current('products.index')}>Products</SidebarItem>
                             <SidebarItem href="#">Sales</SidebarItem>
                             <SidebarItem href="#">Refunds</SidebarItem>
                             <SidebarItem href="#">Shipping</SidebarItem>
@@ -43,12 +45,12 @@ const SideBar = ({classNames}) => {
                         <SidebarItem href="#" icon={HiShoppingBag}>
                             Products
                         </SidebarItem>
-                        <SidebarItem href="#" icon={HiArrowSmRight}>
-                            Sign In
+                        <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
+                            Sign Out
                         </SidebarItem>
-                        <SidebarItem href="#" icon={HiTable}>
+                        {/* <SidebarItem href="#" icon={HiTable}>
                             Sign Up
-                        </SidebarItem>
+                        </SidebarItem> */}
                     </SidebarItemGroup>
                 </SidebarItems>
             </Sidebar>
