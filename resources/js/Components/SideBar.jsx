@@ -32,6 +32,7 @@ const SideBar = ({classNames,signOut}) => {
                             open={route().current('products.index') || route().current('products.create') || route().current('products.edit')}
                         >
                             <SidebarItem as={Link} href={route('products.index')} active={route().current('products.index')}>Products</SidebarItem>
+                            <SidebarItem as={Link} href={route('orders.index')} active={route().current('orders.index')}>Orders</SidebarItem>
                             <SidebarItem href="#">Sales</SidebarItem>
                             <SidebarItem href="#">Refunds</SidebarItem>
                             <SidebarItem href="#">Shipping</SidebarItem>

@@ -11,9 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('orders')) {
+            return;
+        }
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedInteger('customer_id')->nullable();
+            $table->decimal('grand_total', 10, 2)->default(0);
+            $table->decimal('discount', 10, 2)->default(0);
+            $table->decimal('tax', 10, 2)->default(0);
+            $table->decimal('net_amount', 10, 2)->default(0);
+            $table->string('status')->default('pending');
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

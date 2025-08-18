@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class OrderController extends Controller
 {
@@ -13,7 +15,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $allOrder=Order::with(['customer','createdBy'])->get();
+        // dd($allOrder);
+        return Inertia::render('Orders/Index',['allOrder'=>$allOrder]);
     }
 
     /**
@@ -21,7 +25,8 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+       
+        return Inertia::render('Orders/Create');
     }
 
     /**
