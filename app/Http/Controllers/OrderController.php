@@ -7,7 +7,8 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Inertia\Inertia;
 use Inertia\Response;
-
+use App\Models\Product;
+use App\Models\User;
 class OrderController extends Controller
 {
     /**
@@ -15,7 +16,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $allOrder=Order::with(['customer','createdBy'])->get();
+        $allOrder=Order::with(['customer','createdBy'])->orderBy('id','desc')->get();
         // dd($allOrder);
         return Inertia::render('Orders/Index',['allOrder'=>$allOrder]);
     }
@@ -25,8 +26,9 @@ class OrderController extends Controller
      */
     public function create()
     {
-       
-        return Inertia::render('Orders/Create');
+       $products=Product::all();
+       $customers=User::where('user_type',3)->get();
+       return Inertia::render('Orders/Create',['products'=>$products,'customers'=>$customers]);
     }
 
     /**
@@ -34,7 +36,44 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
+        
+        $validated = $request->validated();
+        $validated['created_by'] = auth()->user()->id;
+        $products = $validated['items'];
+
+        $validated['grand_total'] = 0;
+        $orderItems = [];
+        foreach ($products as $product) {
+            if(!$product['product']) continue;
+            $tempOrderItem = [
+                'product_id' => $product['product']['value'],
+                'quantity' => $product['quantity'],
+                'price' => $product['product']['price'],
+            ];
+            $orderItems[] = $tempOrderItem;
+            $validated['grand_total'] += $product['product']['price'] * $product['quantity'];
+        }
+
+        $validated['net_amount'] = $validated['grand_total'] +($validated['grand_total'] * $validated['tax'] / 100) - ($validated['grand_total'] * $validated['discount'] / 100);
+
+        $validated['status'] = 'Pending';
+
+        $order=Order::create(
+           [ 'customer_id'=>$validated['customer_id'],
+            'created_by'=>auth()->user()->id,
+            'grand_total'=>$validated['grand_total'],
+            'discount'=>$validated['discount'],
+            'tax'=>$validated['tax'],
+            'net_amount'=>$validated['net_amount'],
+            'status'=>$validated['status'],
+            ]
+        );
+
+        $order->orderItems()->createMany($orderItems);
+
+        return redirect()->route('orders.index');
+    
+    
     }
 
     /**
@@ -42,7 +81,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order->load('createdBy');          
+        $order->load('customer');          
+        $order->load('orderItems.product');
+        // dd($order);
+        return Inertia::render('Orders/Show', ['order' => $order]);
     }
 
     /**

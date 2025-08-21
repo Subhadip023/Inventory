@@ -3,6 +3,8 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { Button } from "flowbite-react";
 import { Link, useForm } from '@inertiajs/react';
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const Index = ({products}) => {
 
@@ -18,7 +20,7 @@ const Index = ({products}) => {
             <Button as={Link} href={route('products.create')} color="green">Add Product</Button>
         </div>
             <div className="overflow-x-auto">
-                     <Table>
+        <Table>
         <TableHead>
           <TableRow>
             <TableHeadCell>Product name</TableHeadCell>
@@ -46,15 +48,17 @@ const Index = ({products}) => {
               <TableCell className="whitespace-nowrap py-4">
                 <div className="text-sm text-gray-900">{product.price}</div>
               </TableCell>
-              <TableCell className="whitespace-nowrap py-4">
-                <div className="text-sm text-gray-900"><Link  href={route('products.edit',product.id)} >Edit</Link></div>
-                <div className="text-sm text-gray-900"><button onClick={() => deleteProduct(product.id)}>Delete</button></div>
+              <TableCell className="whitespace-nowrap py-4 flex items-center justify-center gap-x-2 ">
+                <div className="text-sm text-gray-900"><Link  href={route('products.edit',product.id)} className='text-blue-600 text-xl hover:scale-110'><FaRegEdit /></Link></div>
+                <div className="text-sm text-gray-900 mt-1"><button className='text-red-600  hover:scale-110 text-xl' onClick={() => deleteProduct(product.id)}>
+                    <RiDeleteBin6Line />
+                  </button></div>
               </TableCell>
             </TableRow>
           ))}
       
         </TableBody>
-      </Table>
+        </Table>
             </div>
 
        </DashboardLayout>

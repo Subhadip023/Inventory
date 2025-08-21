@@ -29,10 +29,10 @@ const SideBar = ({classNames,signOut}) => {
 
                                 return <IconComponent aria-hidden className={ twMerge(theme.label.icon.open[open ? "on" : "off"])} />;
                             }}
-                            open={route().current('products.index') || route().current('products.create') || route().current('products.edit')}
+                            open={route().current('products.index') || route().current('products.create') || route().current('products.edit') || route().current('orders.index') || route().current('orders.create') || route().current('orders.edit') || route().current('orders.show')}
                         >
                             <SidebarItem as={Link} href={route('products.index')} active={route().current('products.index')}>Products</SidebarItem>
-                            <SidebarItem as={Link} href={route('orders.index')} active={route().current('orders.index')}>Orders</SidebarItem>
+                            <SidebarItem as={Link} href={route('orders.index') } active={route().current('orders.index') || route().current('orders.create') || route().current('orders.edit') || route().current('orders.show')}>Orders</SidebarItem>
                             <SidebarItem href="#">Sales</SidebarItem>
                             <SidebarItem href="#">Refunds</SidebarItem>
                             <SidebarItem href="#">Shipping</SidebarItem>
