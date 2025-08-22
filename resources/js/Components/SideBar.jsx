@@ -40,7 +40,7 @@ const SideBar = ({classNames,signOut}) => {
                         <SidebarItem href="#" icon={HiInbox}>
                             Inbox
                         </SidebarItem>
-                        <SidebarItem href="#" icon={HiUser}>
+                        <SidebarItem as={Link} href={route('users.index')} active={route().current('users.index')} icon={HiUser}>
                             Users
                         </SidebarItem>
                         <SidebarItem href="#" icon={HiShoppingBag}>
