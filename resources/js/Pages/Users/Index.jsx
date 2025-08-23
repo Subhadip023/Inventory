@@ -100,7 +100,10 @@ const Index = ({ users, allCountry, defult_selected_country_id, allState, allCit
       }
     });
   }
-
+const closeAddUserModal = () => {
+  createUserForm.reset();
+  setAddUserModal(false);
+}
 
 
   return (
@@ -125,11 +128,11 @@ const Index = ({ users, allCountry, defult_selected_country_id, allState, allCit
       </ReactModal>
 
 
-      <Modal show={addUserModal} onClose={() => setAddUserModal(false)} maxWidth='md:w-2/3'>
+      <Modal show={addUserModal} onClose={closeAddUserModal} maxWidth='md:w-2/3'>
         <section className='m-5 '>
           <div className=' flex items-center justify-between'>
             <h2 className='text-2xl font-bold '>Add User</h2>
-            <RxCross2 className='text-2xl hover:scale-110 duration-200' onClick={() => setAddUserModal(false)} />
+            <RxCross2 className='text-2xl hover:scale-110 duration-200' onClick={closeAddUserModal} />
           </div>
           <div className='w-full border-b border-gray-400 my-2'></div>
 
@@ -311,7 +314,7 @@ const Index = ({ users, allCountry, defult_selected_country_id, allState, allCit
           <div className='w-full border-b border-gray-400 my-2'></div>
           <div className='flex items-center justify-end gap-x-4'>
             <Button color="green" onClick={submit}>Save</Button>
-            <Button color="red" onClick={() => setAddUserModal(false)}>Cancel</Button>
+            <Button color="red" onClick={closeAddUserModal}>Cancel</Button>
           </div>
         </section>
       </Modal>

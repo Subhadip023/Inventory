@@ -128,6 +128,13 @@ public function update(UpdateUserRequest $request, User $user)
      */
     public function destroy(User $user)
     {
+        if($user->user_type==1){
+            return redirect()->route('users.index')->with('error', ' Admin cannot be deleted.');
+        }
+
+        if ($user->profile_image) {
+            Storage::disk('public')->delete($user->profile_image);
+        }
        try {
            $user->delete();
            return redirect()->route('users.index')->with('success', 'User deleted successfully.');
