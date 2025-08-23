@@ -6,23 +6,38 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Repositories\CountryRepository;
+use App\Repositories\CityRepository;
+use App\Repositories\StateRepository;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
+
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'name',
         'email',
         'password',
         'user_type',
         'phone_number',
+        'country',
+        'state',
+        'city',
+        'pincode',
+        'profile_image',
+        'landmark',
+        'street_number',
+        'street_name',
+        'added_by',
     ];
 
     /**
@@ -47,4 +62,28 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function addedBy()
+    {
+        return $this->belongsTo(User::class, 'added_by');
+    }
+
+   protected $appends = ['full_address'];
+
+    public function getFullAddressAttribute(): string
+    {
+        if ($this->street_number == null || $this->street_name == null || $this->landmark == null || $this->city == null || $this->state == null || $this->country == null || $this->pincode == null) {
+            return '';
+        }
+        return "\n"
+    . "House No. {$this->street_number}, {$this->street_name}\n"
+    . "{$this->landmark}\n"
+    . CityRepository::get_city_name($this->city) . " {$this->pincode}\n"
+    . StateRepository::get_state_name($this->state) . "\n"
+    . CountryRepository::get_country_name($this->country);
+
+    }
+
+
+ 
 }

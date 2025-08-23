@@ -16,17 +16,29 @@ import {
   NavbarToggle,
 } from "flowbite-react";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
+import { ToastContainer , toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 export default function DashboardLayout({ children, head }) {
   const { flash } = usePage().props;
   const user = usePage().props.auth.user;
   const [showSidebar, setShowSidebar] = useState(true);
+  // console.log(user);
   const form = useForm({
 
   });
+
+  useEffect(() => {
+    if (flash.success) toast.success(flash.success);
+    if (flash.error) toast.error(flash.error);
+    if(flash.warning) toast.warning(flash.warning);
+    if(flash.info) toast.info(flash.info);
+
+  }, [flash]);
+
   const signOut = () => {
     // event.preventDefault();
     form.post(route('logout'));
@@ -35,6 +47,7 @@ export default function DashboardLayout({ children, head }) {
   return (
     <section className="flex h-screen">
       <Head title={head || 'Dashboard'} />
+      <ToastContainer />
       <SideBar
         signOut={signOut}
         classNames={`shadow-md transition-all duration-300 ease-in-out 
@@ -57,7 +70,7 @@ export default function DashboardLayout({ children, head }) {
               label={
                 <Avatar
                   alt="User settings"
-                  img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  img={user.profile_image?'/storage/'+user.profile_image:'https://cdn.pixabay.com/photo/2017/11/10/05/46/user-2935524_960_720.png'}
                   rounded
                 />
               }
