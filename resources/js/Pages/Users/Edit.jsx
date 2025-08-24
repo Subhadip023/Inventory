@@ -28,6 +28,9 @@ import userData from '@/utils/defultUserData';
 import { ToastContainer, toast } from "react-toastify";
 import { GrUploadOption } from "react-icons/gr";
 
+import SaveButton from '@/Components/SaveButton';
+import CancelButton from '@/Components/CancelButton';
+
 
 
 const Edit = ({ user, allCountry, defult_selected_country_id, allState, allCity, defult_selected_state_id }) => {
@@ -91,7 +94,7 @@ const Edit = ({ user, allCountry, defult_selected_country_id, allState, allCity,
             <h1 className='text-2xl font-bold '>Edit Users</h1>
             <div className='mx-5 my-10 flex items-center justify-center '>
 
-                <section className='m-5 '>
+                <section className='m-5 bg-white p-5 w-full shadow-lg dark:bg-gray-800 rounded-lg'>
 
 
                     <div className='my-5 min-h-32 h-4/5 '>
@@ -127,7 +130,7 @@ const Edit = ({ user, allCountry, defult_selected_country_id, allState, allCity,
                                                 </div>
 
                                                 <div>
-                                                    {editUserFrom.errors.profile_image && <div className="text-red-500">{editUserFrom.errors.profile_image}</div>}
+                                                    {addUserImageForm.errors.profile_image && <div className="text-red-500">{addUserImageForm.errors.profile_image}</div>}
                                                 </div>
                                             </Tooltip>
 
@@ -282,9 +285,11 @@ const Edit = ({ user, allCountry, defult_selected_country_id, allState, allCity,
                             </form>
                         </div>
                     </div>
-                    <div className='flex items-center justify-end gap-x-4'>
-                        <Button color="green" onClick={submit}>Save</Button>
-                        <Button color="red" as={Link} href={route('users.index')}>Cancel</Button>
+                    <div className='flex items-center justify-end gap-x-4 mx-5'>
+                        {/* <Button color="green" onClick={submit}>Save</Button> */}
+                        <SaveButton onClick={submit}>Save</SaveButton>
+                        {/* <Button color="red" as={Link} href={route('users.index')}>Cancel</Button> */}
+                        <CancelButton as={Link} href={route('users.index')}>Cancel</CancelButton>
                     </div>
                 </section>
             </div>

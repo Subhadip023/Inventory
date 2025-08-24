@@ -1,34 +1,33 @@
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow ,Tooltip} from "flowbite-react";
 import { Button } from "flowbite-react";
 import { Link, useForm } from '@inertiajs/react';
-import { FaRegEdit } from "react-icons/fa";
-import { RiDeleteBin6Line } from "react-icons/ri";
 
-const Index = ({products}) => {
+import CardContainer from '@/Components/CardContainer';
+import Icons from '@/Components/Icons';
+const Index = ({ products }) => {
 
   const deleteFrom = useForm();
   const deleteProduct = (id) => {
-    
-      deleteFrom.delete(route('products.destroy',id));
-    
+
+    deleteFrom.delete(route('products.destroy', id));
+
   }
-    return (
-       <DashboardLayout head={"Dashboard | Product"}>
-        <div className='m-5 flex items-end justify-end '>
-            <Button as={Link} href={route('products.create')} color="green">Add Product</Button>
-        </div>
-            <div className="overflow-x-auto">
-        <Table>
+  return (
+    <DashboardLayout head={"Dashboard | Product"}>
+      <div className='m-5 flex items-end justify-end '>
+        <Button as={Link} href={route('products.create')} color="green">Add Product</Button>
+      </div>
+      <CardContainer>        <Table hoverable>
         <TableHead>
-          <TableRow>
+          <TableRow >
             <TableHeadCell>Product name</TableHeadCell>
             <TableHeadCell>SKU</TableHeadCell>
             <TableHeadCell>Quantity</TableHeadCell>
             <TableHeadCell>Price</TableHeadCell>
             <TableHeadCell>
-              <span className="sr-only">Edit</span>
+              Actions
             </TableHeadCell>
           </TableRow>
         </TableHead>
@@ -38,7 +37,7 @@ const Index = ({products}) => {
               <TableCell className="whitespace-nowrap py-4">
                 <div className="text-sm text-gray-900">{product.name}</div>
               </TableCell>
-          
+
               <TableCell className="whitespace-nowrap py-4">
                 <div className="text-sm text-gray-900">{product.sku}</div>
               </TableCell>
@@ -49,20 +48,21 @@ const Index = ({products}) => {
                 <div className="text-sm text-gray-900">{product.price}</div>
               </TableCell>
               <TableCell className="whitespace-nowrap py-4 flex items-center justify-center gap-x-2 ">
-                <div className="text-sm text-gray-900"><Link  href={route('products.edit',product.id)} className='text-blue-600 text-xl hover:scale-110'><FaRegEdit /></Link></div>
-                <div className="text-sm text-gray-900 mt-1"><button className='text-red-600  hover:scale-110 text-xl' onClick={() => deleteProduct(product.id)}>
-                    <RiDeleteBin6Line />
-                  </button></div>
+                <div className="text-sm text-gray-900 duration-200">
+                  <Link  href={route('products.edit', product.id)} ><Icons name="edit" /></Link>
+                  </div>
+                <div className="text-sm text-gray-900 mt-1">
+                  <button onClick={() => deleteProduct(product.id)} ><Icons name="delete" /></button>
+                </div>
               </TableCell>
             </TableRow>
           ))}
-      
-        </TableBody>
-        </Table>
-            </div>
 
-       </DashboardLayout>
-    );
+        </TableBody>
+      </Table>
+      </CardContainer>
+    </DashboardLayout>
+  );
 }
 
 export default Index;

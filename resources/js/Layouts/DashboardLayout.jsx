@@ -99,7 +99,7 @@ export default function DashboardLayout({ children, head }) {
         </Navbar>
 
         {/* Main content goes here */}
-        <div className="flex-1 p-4 overflow-auto">
+        <div className="flex-1 p-4 overflow-auto bg-blue-50">
           {children}    </div>
       </section>
     </section>

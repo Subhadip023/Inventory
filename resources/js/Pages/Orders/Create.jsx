@@ -4,6 +4,7 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import Select from "react-select";
 import { TextInput, Button } from "flowbite-react";
 import { useForm } from "@inertiajs/react";
+import CardContainer from "@/Components/CardContainer";
 const Create = ({ products, customers }) => {
   // order items
   // const [items, setItems] = useState([{ product: null, quantity: 1 }]);
@@ -94,6 +95,7 @@ const Create = ({ products, customers }) => {
         <h2 className="text-2xl font-semibold my-4 mx-10">Create Order</h2>
 
       </div>
+        <CardContainer>
       <div className="flex items-center justify-between ">
         <div className="mx-10 my-6 w-72">Customer <Select 
             value={coustomerOptions.find(opt => opt.value === orderForm.data.customer_id) || null}
@@ -103,8 +105,8 @@ const Create = ({ products, customers }) => {
           Total Amount: {((grandTotal + (grandTotal * tax) / 100) - (grandTotal * orderForm.data.discount)/100).toFixed(2)} Rs
         </div>
       </div>
-
-      <div className="mx-10 my-6 space-y-6">
+    
+ <div className="mx-10 my-6 space-y-6">
         {orderForm.data.items.map((item, index) => {
           const rate = item.product?.price || 0;
           const total = rate * item.quantity;
@@ -223,6 +225,8 @@ const Create = ({ products, customers }) => {
 
 
       </div>
+      </CardContainer>
+     
     </DashboardLayout>
   );
 };

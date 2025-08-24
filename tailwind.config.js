@@ -18,6 +18,10 @@ export default {
       fontFamily: {
         sans: ['Figtree', ...defaultTheme.fontFamily.sans],
       },
+      colors:{
+        mainColor: '#119ABF',
+
+      }
     },
   },
   plugins: [forms, flowbite],

@@ -2,6 +2,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout';
 import React, { useEffect } from 'react';
 import { Button, Label, TextInput, Textarea, Card } from 'flowbite-react';
 import { useForm } from '@inertiajs/react';
+import SaveButton from '@/Components/SaveButton';
 
 const Edit = ({product}) => {
     const {data,setData,put,processing,errors}=useForm({
@@ -71,7 +72,8 @@ const Edit = ({product}) => {
 
             {/* Submit Button */}
             <div className="flex justify-end">
-              <Button color={'green'} type="submit" disabled={processing}>{processing?'Updating...':'Update Product'}</Button>
+              {/* <Button color={'green'} type="submit" disabled={processing}>{processing?'Updating...':'Update Product'}</Button> */}
+              <SaveButton color={'green'} type="submit" disabled={processing}>{processing?'Updating...':'Update Product'}</SaveButton>
             </div>
           </form>
         </Card>
