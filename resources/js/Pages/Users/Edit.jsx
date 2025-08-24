@@ -106,7 +106,6 @@ const Edit = ({ user, allCountry, defult_selected_country_id, allState, allCity,
                                             <div id="fileUpload" className="max-w-md">
 
                                                 <input type='file' hidden id="file" accept="image/*" onChange={handleImageChange} />
-                                                {/* <HelperText className="mt-1">A profile picture is useful to confirm your are logged into your account</HelperText> */}
                                             </div>
                                             <Tooltip content={`${preview ? 'Change Profile Picture' : 'Upload Profile Picture'}`}>
                                                 <div className="relative mt-2 h-32 w-32">

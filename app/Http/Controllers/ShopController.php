@@ -5,12 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\Shop;
 use App\Http\Requests\StoreShopRequest;
 use App\Http\Requests\UpdateShopRequest;
-
+use Inertia\Inertia;
+use Inertia\Response;
+use App\Repositories\CountryRepository;
+use App\Repositories\CityRepository;
+use App\Repositories\StateRepository;
+    use Illuminate\Support\Str;
 class ShopController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct(CountryRepository $countryRepository,StateRepository $stateRepository,CityRepository $cityRepository){
+        $this->countries=$countryRepository;
+        $this->states=$stateRepository;
+        $this->cities=$cityRepository;
+    }
+    
+    
+    public function getLocationData()
+    {
+        $defaultCountryId = $this->countries->default_selected_id();
+        $defaultStateId   = $this->states->default_selected_id();
+    
+        return [
+            'allCountry' => $this->countries->get($defaultCountryId),
+            'allState'   => $this->states->get($defaultCountryId),
+            'allCity'    => $this->cities->get($defaultStateId),
+            'defult_selected_country_id' => $defaultCountryId,
+            'defult_selected_state_id'   => $defaultStateId,
+        ];
+    }
     public function index()
     {
         //
@@ -21,7 +47,8 @@ class ShopController extends Controller
      */
     public function create()
     {
-        //
+        //resources\js\Pages\Shop\Create.jsx
+        return Inertia::render('Shop/Create',[...$this->getLocationData()]);
     }
 
     /**
@@ -29,7 +56,23 @@ class ShopController extends Controller
      */
     public function store(StoreShopRequest $request)
     {
-        //
+        try {
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->user()->id;
+        $validated['slug'] = Str::slug($validated['name']).'-'.auth()->user()->id;
+        $validated=array_filter($validated);
+        if($request->hasFile('registration_certificate')) {
+            $validated['registration_certificate'] = $request->file('registration_certificate')->store('shop_certificate','public');
+        }
+        if($request->hasFile('logo')) {
+            $validated['logo'] = $request->file('logo')->store('shop','public');
+        }
+        Shop::create($validated);
+        return redirect()->route('home')->with('success', 'Shop created successfully.');
+        } catch (\Throwable $th) {
+            logger()->error($th->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong.');
+        }
     }
 
     /**
@@ -43,9 +86,10 @@ class ShopController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Shop $shop)
+    public function edit(Shop $store)
     {
-        //
+    
+        return Inertia::render('Shop/Edit',['store' => $store,...$this->getLocationData()]);
     }
 
     /**

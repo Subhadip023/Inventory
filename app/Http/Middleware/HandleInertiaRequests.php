@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
                 'warning' => fn () => $request->session()->get('warning'),
                 
             ],
+            'current_shop'=>session()->get('current_shop') ?? null,
         ];
     }
 }

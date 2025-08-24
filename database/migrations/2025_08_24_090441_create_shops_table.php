@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             //shop details
-            $table->string('shop_email');
-            $table->string('shop_phone_number');
+            $table->string('shop_email')->nullable();
+            $table->string('shop_phone_number')->nullable();
             $table->string('gst_number')->nullable()->unique();
             $table->string('pan_number')->nullable()->unique();
             $table->string('registration_number')->nullable();

@@ -11,7 +11,10 @@ use Illuminate\Foundation\Application;
 class HomeController extends Controller
 {
     public function index(){
-        $app_name='';
-        return Inertia::render('Welcome',);
+       
+        if (auth()->check()) {
+            $stores = auth()->user()->shops()->get();
+        }
+        return Inertia::render('Welcome', ['stores' => $stores ?? []]);
     }
 }
