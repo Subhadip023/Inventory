@@ -10,7 +10,11 @@ use Inertia\Response;
 use App\Repositories\CountryRepository;
 use App\Repositories\CityRepository;
 use App\Repositories\StateRepository;
-    use Illuminate\Support\Str;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
+
 class ShopController extends Controller
 {
     /**
@@ -31,10 +35,10 @@ class ShopController extends Controller
     
         return [
             'allCountry' => $this->countries->get($defaultCountryId),
-            'allState'   => $this->states->get($defaultCountryId),
-            'allCity'    => $this->cities->get($defaultStateId),
+            'allState' => $this->states->get($defaultCountryId),
+            'allCity' => $this->cities->get($defaultStateId),
             'defult_selected_country_id' => $defaultCountryId,
-            'defult_selected_state_id'   => $defaultStateId,
+            'defult_selected_state_id' => $defaultStateId,
         ];
     }
     public function index()
@@ -62,8 +66,7 @@ class ShopController extends Controller
         $validated['slug'] = Str::slug($validated['name']).'-'.auth()->user()->id;
         $is_name_exists = Shop::where('slug', $validated['slug'])->exists();
         if ($is_name_exists) {
-           return redirect()->back()->withInput()->withErrors(['name' => 'Shop name already exists.']);
-;
+           return redirect()->back()->withInput()->withErrors(['name' => 'Shop name already exists.']);    
         }
         $validated=array_filter($validated);
         if($request->hasFile('registration_certificate')) {
@@ -100,9 +103,33 @@ class ShopController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateShopRequest $request, Shop $shop)
+    public function update(UpdateShopRequest $request, Shop $store)
     {
-        //
+        try {
+            $valData=$request->validated();
+        $city=$valData['city']??null;
+        if (!$city) {
+            $valData['country'] = null;
+            $valData['state'] = null;
+        }
+        $valData=array_filter($valData);
+        
+        $new_slug = Str::slug($valData['name']).'-'.auth()->user()->id;
+        $old_slug = $store->slug;
+        if ($new_slug != $old_slug) {
+            $is_name_exists = Shop::where('slug', $new_slug)->exists();
+            if ($is_name_exists) {
+               return redirect()->back()->withInput()->withErrors(['name' => 'Shop name already exists.']);    
+            }
+        }
+        
+        $store->update($valData);
+        return redirect()->route('home')->with('success', 'Shop updated successfully.');
+        } catch (\Throwable $th) {
+            logger()->error($th->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong.');
+        }
+     
     }
 
     /**
@@ -112,4 +139,26 @@ class ShopController extends Controller
     {
         //
     }
+
+
+    public function editShopeImage(Request $request)
+    {
+        $shop = Shop::find($request->shop_id);
+
+        if (!$shop) {
+            return redirect()->back()->with('error', 'Shop not found.');
+        }
+
+        if ($request->hasFile('logo')) {
+            if ($shop->logo) {
+                Storage::disk('public')->delete($shop->logo);
+            }
+
+            // store new logo
+            $shop->logo = $request->file('logo')->store('shop', 'public');
+            $shop->save();
+        }
+
+        return response()->json(['success' => true, 'logo' => $shop->logo]);
+        }
 }

@@ -43,4 +43,6 @@ Route::prefix('store')->group(function () {
     Route::get('/{shop}/dashboard', StoreDashboardController::class )->name('store.dashboard');
 })->middleware('auth');
 
+Route::post('/editShopeImage', [ShopController::class, 'editShopeImage'])->name('editShopeImage');
+
 require __DIR__.'/auth.php';

@@ -18,20 +18,25 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
         shop_email: store.shop_email || '',
         shop_phone_number: store.shop_phone_number || '',
         gst_number: store.gst_number || '',
-        pan_number: '',
-        registration_number: '',
-        registration_certificate: '',
-        reg_upi_id: '',
-        logo: '',
-        status: '',
-        pincode: '',
-        city: defult_selected_country_id,
-        state: defult_selected_state_id,
-        country: '',
-        landmark: '',
-        street_number: '',
-        street_name: '',
+        pan_number:store.pan_number || '',
+        registration_number:  store.registration_number || '',
+        reg_upi_id:store.reg_upi_id || '',
+        status: store.status || '',
+        pincode: store.pincode || '',
+        city: store.city || '',
+        state:store.state ||  defult_selected_state_id,
+        country: store.country || defult_selected_country_id,
+        landmark:store.landmark || '',
+        street_number: store.street_number || '',
+        street_name:store.street_name || '',
     });
+
+    const editShoreImageForm=useForm({
+        logo:store.logo || '',
+        shop_id: store.id,
+    })
+
+    console.log(editShoreImageForm.data);
 
 
 
@@ -54,6 +59,18 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
         createForm.put(route('stores.update', store.id));
     }
 
+
+    const editLogochange = (e) => {
+        const file = e.target.files[0];
+        setFile(URL.createObjectURL(file));
+        editShoreImageForm.setData('logo', file);
+    }
+
+    const saveChangeLogo = (e) => {
+        e.preventDefault();
+        editShoreImageForm.post(route("editShopeImage"));
+    }
+
     return (
         <section className='flex items-center justify-center h-screen w-screen bg-mainColor'>
             <Head title={'Create Shop'} />
@@ -64,9 +81,22 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
                     <div className='w-full p-5 flex items-center justify-center'>
                         <div className='w-1/2 p-5 '>
                             <div className='w-fit flex items-center justify-center  border-2 border-gray-300 hover:border-gray-400 hover:cursor-pointer ' onClick={() => document.getElementById('logo').click()}>
-                                <img className='h-32' src={createForm.data.logo ? URL.createObjectURL(createForm.data.logo) : defultImgCDNs.defaultLogoCDN} alt="" />
-                                <input type="file" name="logo" id="logo" hidden onChange={(e) => createForm.setData('logo', e.target.files[0])} accept='image/*' />
+                                <img 
+                                className='h-32' 
+                                src={
+                                    file 
+                                    ? URL.createObjectURL(file) 
+                                    : (store?.logo 
+                                        ? '/storage/' + store.logo 
+                                        : defultImgCDNs.defaultLogoCDN)
+                                } 
+                                alt="Shop Logo" 
+                                />
+                                {editShoreImageForm.errors.logo && <span className='text-xs text-red-600'>{editShoreImageForm.errors.logo}</span>}
+                                <input type="file" name="logo" id="logo" hidden onChange={editLogochange} accept='image/*' />
                             </div>
+                                                            <button type='button' onClick={saveChangeLogo}>Change</button>
+
                             <div className='my-2 flex items-center gap-x-2 '>
 
                                 <FormSelect id='country' name='country' label='Country' options={allCountry} value={createForm.data.country} onChange={(e) => createForm.setData('country', e.target.value)} error={createForm.errors.country} defaultValue={defult_selected_country_id} />
