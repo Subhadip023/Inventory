@@ -35,8 +35,8 @@ const Welcome = ({ stores }) => {
             <section className="h-[50vh] md:h-screen flex justify-center items-center w-full md:w-1/3 bg-mainColor">
                 <img src={storeImage} className="w-[80%] md:w-[700px]" />
             </section>
-            <Button color={'dark'} className='absolute top-5 right-5 hover:cursor-pointer z-20' onClick={logout}>logout</Button>
-
+           {user && <Button color={'dark'} className='absolute top-5 right-5 hover:cursor-pointer z-20' onClick={logout}>logout</Button>
+}
             {/* Right Section (Content) */}
             <section className="h-auto md:h-screen w-full md:w-2/3 flex flex-col items-center justify-center relative p-5">
                 <h1 className="text-3xl md:text-4xl font-mono text-mainColor font-bold text-center my-6 md:my-10">
@@ -61,6 +61,7 @@ const Welcome = ({ stores }) => {
                                     key={store.id}
 
                                     as={Link}
+                                    onClick={() => { sessionStorage.setItem('current_shop', store.id) }}
                                     href={route('store.dashboard', store.id)}
                                 >
                                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

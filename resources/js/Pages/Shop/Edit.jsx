@@ -50,7 +50,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
 
     const submit = (e) => {
         e.preventDefault();
-        createForm.post(route('stores.store'));
+        createForm.put(route('stores.update', store.id));
     }
 
     return (

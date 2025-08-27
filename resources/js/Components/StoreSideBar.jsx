@@ -19,7 +19,8 @@ import { usePage } from "@inertiajs/react";
 const StoreSideBar = ({classNames,signOut}) => {
     const {current_shop} = usePage().props
     const {user}=usePage().props
-    // console.log(current_shop);
+    const session_shop = sessionStorage.getItem('current_shop'); 
+
     return (
         <section className= {`h-screen ${classNames} sticky top-0 `}>
             <Sidebar aria-label="Sidebar with multi-level dropdown example">
@@ -53,7 +54,7 @@ const StoreSideBar = ({classNames,signOut}) => {
                         <SidebarItem href="#" icon={HiShoppingBag}>
                             Products
                         </SidebarItem>
-                        <SidebarItem as={Link} href={route('stores.edit',current_shop || user.stores[0].id)} active={route().current('stores.edit')} icon={IoSettingsSharp}>
+                        <SidebarItem as={Link} href={route('stores.edit',current_shop || session_shop)} active={route().current('stores.edit')} icon={IoSettingsSharp}>
                             Settings
                         </SidebarItem>
                         <SidebarItem onClick={signOut} icon={HiArrowSmRight}>

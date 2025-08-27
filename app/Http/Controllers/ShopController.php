@@ -60,6 +60,11 @@ class ShopController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = auth()->user()->id;
         $validated['slug'] = Str::slug($validated['name']).'-'.auth()->user()->id;
+        $is_name_exists = Shop::where('slug', $validated['slug'])->exists();
+        if ($is_name_exists) {
+           return redirect()->back()->withInput()->withErrors(['name' => 'Shop name already exists.']);
+;
+        }
         $validated=array_filter($validated);
         if($request->hasFile('registration_certificate')) {
             $validated['registration_certificate'] = $request->file('registration_certificate')->store('shop_certificate','public');

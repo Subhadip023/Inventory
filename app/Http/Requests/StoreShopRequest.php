@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class StoreShopRequest extends FormRequest
 {
     public function authorize(): bool
@@ -14,7 +14,11 @@ class StoreShopRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255' ] ,
+            'name' => [
+            'required',
+            'string',
+            'max:255',         
+            ],
             'shop_email' => ['nullable', 'email', 'max:255'],
             'shop_phone_number' => ['nullable', 'string', 'max:20'],
             'gst_number' => ['nullable', 'string', 'max:50'],
@@ -33,4 +37,7 @@ class StoreShopRequest extends FormRequest
             'street_name' => ['nullable', 'string', 'max:255'],
         ];
     }
+
+    
+
 }

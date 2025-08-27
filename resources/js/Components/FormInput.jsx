@@ -22,6 +22,7 @@ const FormInput = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        color={error ? "failure" : "gray"}
       />
       {error && <div className="text-red-500">{error}</div>}
     </div>

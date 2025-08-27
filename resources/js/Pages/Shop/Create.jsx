@@ -1,15 +1,15 @@
 import CardContainer from '@/Components/CardContainer';
 import FormInput from '@/Components/FormInput';
-import React from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import React, { useEffect } from 'react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import storeImage from '@/Images/store.png'
 import defultImgCDNs from '@/utils/defultImgCDNs';
 import FormSelect from '@/Components/FormSelect';
-import { all } from 'axios';
 import axios from 'axios';
 import SaveButton from '@/Components/SaveButton';
 import CancelButton from '@/Components/CancelButton';
-import {Link} from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Create = ({ allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
     const createForm = useForm({
@@ -32,6 +32,14 @@ const Create = ({ allCountry, allState, allCity, defult_selected_country_id, def
         street_name: '',
     });
 
+    const { flash } = usePage().props;
+    useEffect(() => {
+        if (flash.success) toast.success(flash.success);
+        if (flash.error) toast.error(flash.error);
+        if (flash.warning) toast.warning(flash.warning);
+        if (flash.info) toast.info(flash.info);
+
+    }, [flash]);
 
     const [file, setFile] = React.useState(null);
     const [citys, setCitys] = React.useState(allCity);
@@ -47,6 +55,8 @@ const Create = ({ allCountry, allState, allCity, defult_selected_country_id, def
 
     }
 
+
+
     const submit = (e) => {
         e.preventDefault();
         createForm.post(route('stores.store'));
@@ -54,10 +64,11 @@ const Create = ({ allCountry, allState, allCity, defult_selected_country_id, def
 
     return (
         <section className='flex items-center justify-center h-screen w-screen bg-mainColor'>
+            <ToastContainer />
             <Head title={'Create Shop'} />
             <CardContainer className='w-2/3'>
                 <h1 className='text-2xl font-bold '>Create Shop</h1>
-                    <div className='border-b border-gray-300 mt-5'></div>
+                <div className='border-b border-gray-300 mt-5'></div>
                 <form onSubmit={submit}>
                     <div className='w-full p-5 flex items-center justify-center'>
                         <div className='w-1/2 p-5 '>

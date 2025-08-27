@@ -30,7 +30,7 @@ export default function DashboardLayout({ children, head }) {
   
   const user = usePage().props.auth.user;
   const [showSidebar, setShowSidebar] = useState(true);
-  // console.log(user);
+
   const form = useForm({
 
   });
@@ -44,7 +44,6 @@ export default function DashboardLayout({ children, head }) {
   }, [flash]);
 
   const signOut = () => {
-    // event.preventDefault();
     form.post(route('logout'));
   };
 
