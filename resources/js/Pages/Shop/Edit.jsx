@@ -13,6 +13,7 @@ import {Link} from '@inertiajs/react';
 
 const Create = ({store, allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
     const createForm = useForm({
+        id: store.id,
         name: store.name || '',
         shop_email: store.shop_email || '',
         shop_phone_number: store.shop_phone_number || '',
@@ -96,8 +97,8 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
 
                     <div className='border-b border-gray-300 mb-5'></div>
                     <div className='flex justify-end w-full px-10 gap-x-2'>
-                        <SaveButton onClick={submit} >Create Shop </SaveButton>
-                        <CancelButton as={Link} href={route('home')}>Cancel</CancelButton>
+                        <SaveButton onClick={submit} >Update Shop </SaveButton>
+                        <CancelButton as={Link} href={route('store.dashboard', createForm.data.id)}>Cancel</CancelButton>
                     </div>
                 </form>
             </CardContainer>
