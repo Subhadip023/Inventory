@@ -11,6 +11,7 @@ use App\Http\Controllers\CountryStateCityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StoreDashboardController;
+use App\Http\Controllers\SettingController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -44,5 +45,8 @@ Route::prefix('store')->group(function () {
 })->middleware('auth');
 
 Route::post('/editShopeImage', [ShopController::class, 'editShopeImage'])->name('editShopeImage');
+
+Route::resource('settings', SettingController::class)->middleware('auth');
+
 
 require __DIR__.'/auth.php';

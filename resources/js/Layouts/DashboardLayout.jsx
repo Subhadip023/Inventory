@@ -25,11 +25,15 @@ import "react-toastify/dist/ReactToastify.css";
 export default function DashboardLayout({ children, head }) {
   const { flash } = usePage().props;
   const user = usePage().props.auth.user;
+  const {theme_mode} = usePage().props;
   const [showSidebar, setShowSidebar] = useState(true);
-  // console.log(user);
   const form = useForm({
 
   });
+
+  useEffect(() => {
+    document.body.className = theme_mode;
+  }, [theme_mode]);
 
   useEffect(() => {
     if (flash.success) toast.success(flash.success);

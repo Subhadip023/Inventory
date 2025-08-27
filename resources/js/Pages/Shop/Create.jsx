@@ -10,6 +10,7 @@ import SaveButton from '@/Components/SaveButton';
 import CancelButton from '@/Components/CancelButton';
 import { Link } from '@inertiajs/react';
 import { ToastContainer, toast } from 'react-toastify';
+import create_store from '@/Images/create_store.jpg'
 
 const Create = ({ allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
     const createForm = useForm({
@@ -63,10 +64,11 @@ const Create = ({ allCountry, allState, allCity, defult_selected_country_id, def
     }
 
     return (
-        <section className='flex items-center justify-center h-screen w-screen bg-mainColor'>
+        <section className='flex items-center justify-center h-screen w-screen '>
+            <img src={create_store} className='absolute top-0 left-0 w-full h-full object-cover -z-10' />
             <ToastContainer />
             <Head title={'Create Shop'} />
-            <CardContainer className='w-2/3'>
+            <CardContainer className='w-2/3 bg-white/95 dark:bg-gray-800/80'>
                 <h1 className='text-2xl font-bold '>Create Shop</h1>
                 <div className='border-b border-gray-300 mt-5'></div>
                 <form onSubmit={submit}>

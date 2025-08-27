@@ -1,14 +1,14 @@
 import { Head, Link } from '@inertiajs/react';
 import React, { useEffect } from 'react';
 import storeImage from '@/Images/store.png'
-import { Button, Card} from 'flowbite-react';
+import { Button, Card } from 'flowbite-react';
 import { usePage } from '@inertiajs/react';
 import { ToastContainer, toast } from 'react-toastify';
 import defultImgCDNs from '@/utils/defultImgCDNs';
 // import Image from "next/image";
 
 import AddButton from '@/Components/AddButton';
-import {useForm} from  '@inertiajs/react'
+import { useForm } from '@inertiajs/react'
 const Welcome = ({ stores }) => {
     const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
     const { user } = usePage().props.auth;
@@ -23,8 +23,14 @@ const Welcome = ({ stores }) => {
 
 
     const logout = () => {
-       deleteFrom.post(route('logout'));
+        deleteFrom.post(route('logout'));
     };
+
+    useEffect(()=>{
+        const root = window.document.documentElement;
+        root.classList.add('light');
+
+    },[])
 
     return (
         <div className="flex flex-col-reverse md:flex-row">
@@ -35,8 +41,8 @@ const Welcome = ({ stores }) => {
             <section className="h-[50vh] md:h-screen flex justify-center items-center w-full md:w-1/3 bg-mainColor">
                 <img src={storeImage} className="w-[80%] md:w-[700px]" />
             </section>
-           {user && <Button color={'dark'} className='absolute top-5 right-5 hover:cursor-pointer z-20' onClick={logout}>logout</Button>
-}
+            {user && <Button color={'dark'} className='absolute top-5 right-5 hover:cursor-pointer z-20' onClick={logout}>logout</Button>
+            }
             {/* Right Section (Content) */}
             <section className="h-auto md:h-screen w-full md:w-2/3 flex flex-col items-center justify-center relative p-5">
                 <h1 className="text-3xl md:text-4xl font-mono text-mainColor font-bold text-center my-6 md:my-10">
@@ -56,19 +62,26 @@ const Welcome = ({ stores }) => {
                         <div className='my-10 flex flex-wrap gap-5 ' >
                             {stores.map((store) => (
                                 <Card
-                                    className="max-w-sm "
-                                    renderImage={() => <img className="rounded-md w-32 mx-auto mt-2" src={store.logo ? '/storage/' + store.logo:defultImgCDNs.defaultLogoCDN} alt="image 1" />}
+                                    className="max-w-sm dark:text-black bg-white dark:bg-white border border-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-100 shadow-s"
+                                    renderImage={() => (
+                                        <img
+                                            className="rounded-md w-32 mx-auto mt-2"
+                                            src={store.logo ? '/storage/' + store.logo : defultImgCDNs.defaultLogoCDN}
+                                            alt="store logo"
+                                        />
+                                    )}
                                     key={store.id}
-
                                     as={Link}
-                                    onClick={() => { sessionStorage.setItem('current_shop', store.id) }}
-                                    href={route('store.dashboard', store.id)}
+                                    onClick={() => {
+                                        sessionStorage.setItem("current_shop", store.id);
+                                    }}
+                                    href={route("store.dashboard", store.id)}
                                 >
-                                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                    <h5 className="text-2xl font-bold tracking-tight">
                                         {store.name}
                                     </h5>
-                                    
                                 </Card>
+
                             ))}
                         </div> : null
                 }

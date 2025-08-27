@@ -14,6 +14,8 @@ import { Link } from '@inertiajs/react';
 import { twMerge } from "tailwind-merge";
 import { IoSettingsSharp } from "react-icons/io5";
 import { usePage } from "@inertiajs/react";
+import { MdOutlineStorefront } from "react-icons/md";
+
 
 
 const StoreSideBar = ({classNames,signOut}) => {
@@ -23,7 +25,7 @@ const StoreSideBar = ({classNames,signOut}) => {
 
     return (
         <section className= {`h-screen ${classNames} sticky top-0 `}>
-            <Sidebar aria-label="Sidebar with multi-level dropdown example">
+            <Sidebar aria-label="Sidebar with multi-level dropdown example" className='dark:bg-gray-800'>
                 <SidebarItems>
                     <SidebarItemGroup>
                         <SidebarItem as={Link} href={route('dashboard')} icon={HiChartPie} active={route().current('dashboard')}>
@@ -54,7 +56,10 @@ const StoreSideBar = ({classNames,signOut}) => {
                         <SidebarItem href="#" icon={HiShoppingBag}>
                             Products
                         </SidebarItem>
-                        <SidebarItem as={Link} href={route('stores.edit',current_shop || session_shop)} active={route().current('stores.edit')} icon={IoSettingsSharp}>
+                        <SidebarItem as={Link} href={route('stores.edit',current_shop || session_shop)} active={route().current('stores.edit')} icon={MdOutlineStorefront}>
+                            Store Profile
+                        </SidebarItem>
+                        <SidebarItem as={Link} href={route('settings.index')} active={route().current('settings.index')} icon={IoSettingsSharp}>
                             Settings
                         </SidebarItem>
                         <SidebarItem onClick={signOut} icon={HiArrowSmRight}>

@@ -33,6 +33,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
@@ -42,6 +43,7 @@ class HandleInertiaRequests extends Middleware
                 
             ],
             'current_shop'=>session()->get('current_shop') ?? null,
+            'theme_mode'=>session()->get('theme_mode') ?? 'light',
         ];
     }
 }

@@ -21,12 +21,14 @@ import { usePage } from '@inertiajs/react';
 import { ToastContainer , toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import StoreSideBar from '@/Components/StoreSideBar';
+import { use } from 'react';
 
 
 
 
 export default function DashboardLayout({ children, head }) {
   const { flash } = usePage().props;
+  const {theme_mode} = usePage().props;
   
   const user = usePage().props.auth.user;
   const [showSidebar, setShowSidebar] = useState(true);
@@ -34,6 +36,10 @@ export default function DashboardLayout({ children, head }) {
   const form = useForm({
 
   });
+console.log(theme_mode);
+  useEffect(() => {
+    document.body.className = theme_mode;
+  }, [theme_mode]);
 
   useEffect(() => {
     if (flash.success) toast.success(flash.success);
@@ -63,7 +69,7 @@ export default function DashboardLayout({ children, head }) {
       >
         <Navbar className="z-10 shadow-md sticky top-0">
           <RxHamburgerMenu
-            className="hover:cursor-pointer scale-105"
+            className="hover:cursor-pointer scale-105 dark:text-white"
             onClick={() => setShowSidebar(!showSidebar)}
           />
           <div className="flex md:order-2">
@@ -102,7 +108,7 @@ export default function DashboardLayout({ children, head }) {
         </Navbar>
 
         {/* Main content goes here */}
-        <div className="flex-1 p-4 overflow-auto bg-blue-50">
+        <div className="flex-1 p-4 overflow-auto bg-blue-50 dark:bg-gray-600">
           {children}    </div>
       </section>
     </section>

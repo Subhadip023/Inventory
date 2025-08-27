@@ -10,7 +10,7 @@ import axios from 'axios';
 import SaveButton from '@/Components/SaveButton';
 import CancelButton from '@/Components/CancelButton';
 import {Link} from '@inertiajs/react';
-
+import create_store from '@/Images/create_store.jpg'
 const Create = ({store, allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
     const createForm = useForm({
         id: store.id,
@@ -35,9 +35,6 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
         logo:store.logo || '',
         shop_id: store.id,
     })
-
-    console.log(editShoreImageForm.data);
-
 
 
     const [file, setFile] = React.useState(null);
@@ -72,15 +69,17 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
     }
 
     return (
-        <section className='flex items-center justify-center h-screen w-screen bg-mainColor'>
+        <section className='flex items-center justify-center h-screen w-screen '>
             <Head title={'Create Shop'} />
-            <CardContainer className='w-2/3'>
-                <h1 className='text-2xl font-bold '>Create Shop</h1>
+                        <img src={create_store} className='absolute top-0 left-0 w-full h-full object-cover -z-10' />
+
+            <CardContainer className='w-2/3 bg-white/95 dark:bg-gray-800/95'>
+                <h1 className='text-2xl font-bold dark:text-white '>Edit Shop - {store.name}</h1>
                     <div className='border-b border-gray-300 mt-5'></div>
                 <form onSubmit={submit}>
                     <div className='w-full p-5 flex items-center justify-center'>
                         <div className='w-1/2 p-5 '>
-                            <div className='w-fit flex items-center justify-center  border-2 border-gray-300 hover:border-gray-400 hover:cursor-pointer ' onClick={() => document.getElementById('logo').click()}>
+                            <div className='w-fit flex items-center justify-center dark:bg-slate-500  border-2 border-gray-300 hover:border-gray-400 hover:cursor-pointer ' onClick={() => document.getElementById('logo').click()}>
                                 <img 
                                 className='h-32' 
                                 src={
@@ -95,7 +94,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
                                 {editShoreImageForm.errors.logo && <span className='text-xs text-red-600'>{editShoreImageForm.errors.logo}</span>}
                                 <input type="file" name="logo" id="logo" hidden onChange={editLogochange} accept='image/*' />
                             </div>
-                                                            <button type='button' onClick={saveChangeLogo}>Change</button>
+                                                            <button type='button' className='mt-2 text-green-600' onClick={saveChangeLogo}>Change</button>
 
                             <div className='my-2 flex items-center gap-x-2 '>
 
