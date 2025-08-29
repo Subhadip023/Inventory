@@ -127,7 +127,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
                     <div className='border-b border-gray-300 mb-5'></div>
                     <div className='flex justify-end w-full px-10 gap-x-2'>
                         <SaveButton onClick={submit} >Update Shop </SaveButton>
-                        <CancelButton as={Link} href={route('store.dashboard', createForm.data.id)}>Cancel</CancelButton>
+                        <CancelButton as={Link} href={route('store.dashboard')}>Cancel</CancelButton>
                     </div>
                 </form>
             </CardContainer>
