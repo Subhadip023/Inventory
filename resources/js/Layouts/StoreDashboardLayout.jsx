@@ -36,7 +36,6 @@ export default function DashboardLayout({ children, head }) {
   const form = useForm({
 
   });
-console.log(theme_mode);
   useEffect(() => {
     document.body.className = theme_mode;
   }, [theme_mode]);
@@ -90,7 +89,7 @@ console.log(theme_mode);
                   {user.email}
                 </span>
               </DropdownHeader>
-              <DropdownItem>Dashboard</DropdownItem>
+              <DropdownItem as={Link} href={route('dashboard')}>Dashboard</DropdownItem>
               <DropdownItem>Settings</DropdownItem>
               <DropdownItem>Earnings</DropdownItem>
               <DropdownDivider />

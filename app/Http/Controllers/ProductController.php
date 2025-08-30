@@ -10,12 +10,16 @@ use Inertia\Response;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct()
     {
-        $products = Product::all();
+        $this->currentShop = session()->get('current_shop');
+    }
+
+    public function index()
+    {   
+        $currentShop = $this->currentShop;
+        
+        $products = Product::where('shop_id', $currentShop)->get();
         return Inertia::render('Product/Index',['products' => $products]);
     }
 
@@ -32,9 +36,16 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $validated = $request->validated();
-        Product::create($validated);
-        return redirect()->intended(route('products.index', absolute: false));
+        try{
+            $validated = $request->validated();
+            $validated['description'] = $valdatated['description'] = $validated['description'] ?? " ";
+            $validated['shop_id'] = $this->currentShop;
+            Product::create($validated);
+            return redirect()->intended(route('products.index', absolute: false));
+        }catch(\Exception $e){
+            log($e);
+            return redirect()->back()->with('error', 'Something went wrong.');
+        }
     }
 
     /**

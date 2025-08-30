@@ -28,7 +28,7 @@ const StoreSideBar = ({classNames,signOut}) => {
             <Sidebar aria-label="Sidebar with multi-level dropdown example" className='dark:bg-gray-800'>
                 <SidebarItems>
                     <SidebarItemGroup>
-                        <SidebarItem as={Link} href={route('dashboard')} icon={HiChartPie} active={route().current('dashboard')}>
+                        <SidebarItem as={Link} href={route('store.dashboard',current_shop || session_shop)} icon={HiChartPie} active={route().current('dashboard')}>
                             Dashboard
                         </SidebarItem>
                         <SidebarCollapse

@@ -14,8 +14,8 @@ const Show = ({ order }) => {
             </div>
             <div className='grid grid-cols-3 gap-4 my-10 mx-10 '>
                 <h3><span className='font-bold text-blue-600'>Order ID: </span>  {order.id}</h3>
-                <h3><span className='font-bold text-blue-600'>Order Created By: </span> {order.created_by.name}</h3>
-                <h3><span className='font-bold text-blue-600'>Customer Name : </span>  {order.customer.name}</h3>
+                <h3><span className='font-bold text-blue-600'>Order Created By: </span> {order.created_by?.name??""}</h3>
+                <h3><span className='font-bold text-blue-600'>Customer Name : </span>  {order.customer?.name??"gust"}</h3>
             </div>
            
 

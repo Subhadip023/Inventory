@@ -11,7 +11,9 @@ use App\Http\Controllers\CountryStateCityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StoreDashboardController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\UserSettingController;
+use App\Http\Controllers\ShopProductController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -31,7 +33,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('products', ProductController::class)->middleware('auth');
 Route::resource('orders', OrderController::class)->middleware('auth');
 Route::resource('users', UserController::class)->middleware('auth');
 Route::post('users-add-profile', [UserController::class, 'addProfile'])->name('user.profile.add')->middleware('auth');
@@ -39,14 +40,17 @@ Route::post('users-add-profile', [UserController::class, 'addProfile'])->name('u
 Route::post('/getCity', [CountryStateCityController::class, 'getCity'])->name('getCity');
 
 Route::resource('stores', ShopController::class)->middleware('auth');
-
+ Route::get('store/{shop}/dashboard', StoreDashboardController::class )->name('store.dashboard');
 Route::prefix('store')->group(function () {
-    Route::get('/{shop}/dashboard', StoreDashboardController::class )->name('store.dashboard');
+   Route::resource('products', ProductController::class)->middleware('auth');
+
 })->middleware('auth');
 
 Route::post('/editShopeImage', [ShopController::class, 'editShopeImage'])->name('editShopeImage');
 
-Route::resource('settings', SettingController::class)->middleware('auth');
+Route::prefix('user')->group(function () {
+Route::resource('settings', UserSettingController::class);
+})->middleware('auth');
 
 
 require __DIR__.'/auth.php';

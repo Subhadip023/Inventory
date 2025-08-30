@@ -12,6 +12,7 @@ import CancelButton from '@/Components/CancelButton';
 import {Link} from '@inertiajs/react';
 import create_store from '@/Images/create_store.jpg'
 const Create = ({store, allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
+    console.log(store);
     const createForm = useForm({
         id: store.id,
         name: store.name || '',
@@ -71,7 +72,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
     return (
         <section className='flex items-center justify-center h-screen w-screen '>
             <Head title={'Create Shop'} />
-                        <img src={create_store} className='absolute top-0 left-0 w-full h-full object-cover -z-10' />
+            <img src={create_store} className='absolute top-0 left-0 w-screen h-screen object-cover -z-10' />
 
             <CardContainer className='w-2/3 bg-white/95 dark:bg-gray-800/95'>
                 <h1 className='text-2xl font-bold dark:text-white '>Edit Shop - {store.name}</h1>
@@ -127,7 +128,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
                     <div className='border-b border-gray-300 mb-5'></div>
                     <div className='flex justify-end w-full px-10 gap-x-2'>
                         <SaveButton onClick={submit} >Update Shop </SaveButton>
-                        <CancelButton as={Link} href={route('store.dashboard')}>Cancel</CancelButton>
+                        <CancelButton as={Link} href={route('store.dashboard',store.id)}>Cancel</CancelButton>
                     </div>
                 </form>
             </CardContainer>

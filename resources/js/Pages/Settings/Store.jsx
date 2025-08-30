@@ -9,7 +9,7 @@ const Store = ({setting}) => {
     console.log(setting);
     const settingsForm = useForm({
 
-        theme_mode:setting?.theme_mode || 'light',
+        theme:setting?.theme || 'light',
     });
 
 
@@ -28,7 +28,7 @@ const Store = ({setting}) => {
         root.classList.add(selected);
     }
 
-    settingsForm.setData('theme_mode',selected);
+    settingsForm.setData('theme',selected);
 
    }
    const saveSetting = (e) => {

@@ -10,7 +10,7 @@ const Create = () => {
         description : '',
         sku : '',
         price : '',
-        quantity : '',
+        quantity : 1,
     });
 
     useEffect(() => {
@@ -22,7 +22,6 @@ const Create = () => {
 
     const submit = (e) => {
         e.preventDefault();
-        // console.log(data);
     
         post(route('products.store'));
     }
@@ -66,7 +65,7 @@ const Create = () => {
             {/* Quantity */}
             <div>
               <Label htmlFor="quantity" value="Quantity" >Quantity</Label>
-              <TextInput id="quantity" type="number" placeholder="Enter stock quantity"   value={data.quantity} onChange={(e) => setData('quantity', e.target.value)} />
+              <TextInput id="quantity" type="number" placeholder="Enter stock quantity" value={data.quantity} onChange={(e) => setData('quantity', e.target.value)} />
               <div className="text-red-600">{errors.quantity}</div>
             </div>
 
