@@ -10,11 +10,14 @@ use App\Repositories\CountryRepository;
 use App\Repositories\CityRepository;
 use App\Repositories\StateRepository;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable,SoftDeletes;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.

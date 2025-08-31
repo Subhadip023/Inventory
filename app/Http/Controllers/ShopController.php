@@ -124,7 +124,7 @@ class ShopController extends Controller
         }
         
         $store->update($valData);
-        return redirect()->route('home')->with('success', 'Shop updated successfully.');
+        return redirect()->back()->with('success', 'Shop updated successfully.');
         } catch (\Throwable $th) {
             logger()->error($th->getMessage());
             return redirect()->back()->with('error', 'Something went wrong.');
@@ -143,6 +143,7 @@ class ShopController extends Controller
 
     public function editShopeImage(Request $request)
     {
+        return redirect()->back()->with('success', 'Logo updated successfully.');
         $shop = Shop::find($request->shop_id);
 
         if (!$shop) {
@@ -159,6 +160,6 @@ class ShopController extends Controller
             $shop->save();
         }
 
-        return response()->json(['success' => true, 'logo' => $shop->logo]);
+        return redirect()->back()->with('success', 'Logo updated successfully.');
         }
 }

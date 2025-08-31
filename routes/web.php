@@ -13,11 +13,16 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StoreDashboardController;
 use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\ShopProductController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
+    if(auth()->user()->hasRole('super-admin')){
+        return redirect()->route('superadmin.dashboard');
+    }
     if(auth()->user()->shops()->count() == 0){
         return redirect()->route('home')->with('warning', 'Please add a shop first.');
     }
@@ -51,6 +56,16 @@ Route::post('/editShopeImage', [ShopController::class, 'editShopeImage'])->name(
 Route::prefix('user')->group(function () {
 Route::resource('settings', UserSettingController::class);
 })->middleware('auth');
+
+
+Route::prefix('superadmin')
+    ->middleware(['auth', 'role:super-admin'])
+    ->group(function () {
+        Route::get('dashboard', [HomeController::class, 'superadminDashboard'])->name('superadmin.dashboard');
+        Route::resource('role', RoleController::class);
+        Route::resource('permission', PermissionController::class);
+    });
+
 
 
 require __DIR__.'/auth.php';

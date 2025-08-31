@@ -5,14 +5,13 @@ import { Head, useForm } from '@inertiajs/react';
 import storeImage from '@/Images/store.png'
 import defultImgCDNs from '@/utils/defultImgCDNs';
 import FormSelect from '@/Components/FormSelect';
-import { all } from 'axios';
 import axios from 'axios';
 import SaveButton from '@/Components/SaveButton';
 import CancelButton from '@/Components/CancelButton';
 import {Link} from '@inertiajs/react';
 import create_store from '@/Images/create_store.jpg'
+import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
 const Create = ({store, allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
-    console.log(store);
     const createForm = useForm({
         id: store.id,
         name: store.name || '',
@@ -70,11 +69,12 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
     }
 
     return (
-        <section className='flex items-center justify-center h-screen w-screen '>
+       <StoreDashboardLayout>
+         <section className='flex items-center justify-center h-full'>
             <Head title={'Create Shop'} />
-            <img src={create_store} className='absolute top-0 left-0 w-screen h-screen object-cover -z-10' />
 
             <CardContainer className='w-2/3 bg-white/95 dark:bg-gray-800/95'>
+
                 <h1 className='text-2xl font-bold dark:text-white '>Edit Shop - {store.name}</h1>
                     <div className='border-b border-gray-300 mt-5'></div>
                 <form onSubmit={submit}>
@@ -85,7 +85,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
                                 className='h-32' 
                                 src={
                                     file 
-                                    ? URL.createObjectURL(file) 
+                                    ? file 
                                     : (store?.logo 
                                         ? '/storage/' + store.logo 
                                         : defultImgCDNs.defaultLogoCDN)
@@ -95,7 +95,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
                                 {editShoreImageForm.errors.logo && <span className='text-xs text-red-600'>{editShoreImageForm.errors.logo}</span>}
                                 <input type="file" name="logo" id="logo" hidden onChange={editLogochange} accept='image/*' />
                             </div>
-                                                            <button type='button' className='mt-2 text-green-600' onClick={saveChangeLogo}>Change</button>
+                                                            <button type='button' className=' text-green-600' onClick={saveChangeLogo}>Change</button>
 
                             <div className='my-2 flex items-center gap-x-2 '>
 
@@ -133,6 +133,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
                 </form>
             </CardContainer>
         </section>
+       </StoreDashboardLayout>
     );
 }
 

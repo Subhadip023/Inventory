@@ -20,4 +20,8 @@ class HomeController extends Controller
         }
         return Inertia::render('Welcome', ['stores' => $stores ?? []]);
     }
+
+    public function superadminDashboard(){
+        return Inertia::render('SuperAdmin/Dashboard');
+    }
 }
