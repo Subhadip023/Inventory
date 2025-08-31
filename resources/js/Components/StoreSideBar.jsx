@@ -15,6 +15,7 @@ import { twMerge } from "tailwind-merge";
 import { IoSettingsSharp } from "react-icons/io5";
 import { usePage } from "@inertiajs/react";
 import { MdOutlineStorefront } from "react-icons/md";
+import { LiaUsersCogSolid } from "react-icons/lia";
 
 
 
@@ -61,6 +62,9 @@ const StoreSideBar = ({classNames,signOut}) => {
                         </SidebarItem>
                         <SidebarItem as={Link} href={route('settings.index')} active={route().current('settings.index')} icon={IoSettingsSharp}>
                             Settings
+                        </SidebarItem>
+                        <SidebarItem as={Link} href={route('shop.roles.index',current_shop || session_shop)}  icon={LiaUsersCogSolid}>
+                            Role and Permission
                         </SidebarItem>
                         <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
                             Sign Out

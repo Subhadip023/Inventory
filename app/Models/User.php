@@ -25,6 +25,9 @@ class User extends Authenticatable
      * @var list<string>
      */
 
+    protected $guard_name = 'web'; // default
+
+
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'name',

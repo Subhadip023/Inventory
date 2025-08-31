@@ -15,6 +15,7 @@ use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\ShopProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ShopRolePermissionController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -56,6 +57,17 @@ Route::post('/editShopeImage', [ShopController::class, 'editShopeImage'])->name(
 Route::prefix('user')->group(function () {
 Route::resource('settings', UserSettingController::class);
 })->middleware('auth');
+
+
+Route::prefix('shops/{shopId}')->group(function () {
+    Route::get('roles', [ShopRolePermissionController::class, 'index'])->name('shop.roles.index');
+    Route::get('roles/create', [ShopRolePermissionController::class, 'create'])->name('shop.roles.create');
+    Route::post('roles', [ShopRolePermissionController::class, 'store'])->name('shop.roles.store');
+    Route::post('roles/assign', [ShopRolePermissionController::class, 'assignRoleToUser'])->name('shop.roles.assign');
+});
+
+
+
 
 
 Route::prefix('superadmin')
