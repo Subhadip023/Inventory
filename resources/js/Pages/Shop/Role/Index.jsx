@@ -11,13 +11,15 @@ import FormInput from '@/Components/FormInput';
 import { useForm } from '@inertiajs/react';
 import Icons from '@/Components/Icons';
 import { RxCrossCircled } from "react-icons/rx";
+import ConfirmModal from '@/Components/ConfirmModal';
 
-const Index = ({ roles, all_permissions, all_users }) => {
+const Index = ({ roles, all_permissions, all_users, shopId }) => {
     const [openAddRoleModal, setOpenAddRoleModal] = React.useState(false);
     const [isEditRole, setIsEditRole] = React.useState(false);
     const [showPermissionModal, setShowPermissionModal] = React.useState(false);
     const [openAddPermissionModal, setOpenAddPermissionModal] = React.useState(false);
     const [isEditPermission, setIsEditPermission] = React.useState(false);
+    const [confirmDeleteRole, setConfirmDeleteRole] = React.useState(false);
 
     const addRoleForm = useForm({
         name: '',
@@ -59,7 +61,7 @@ const Index = ({ roles, all_permissions, all_users }) => {
             }
             );
         } else {
-            addRoleForm.post(route('role.store'), {
+            addRoleForm.post(route('shop.roles.store', shopId), {
                 onSuccess: () => {
                     addRoleForm.reset();
                     setOpenAddRoleModal(false);
@@ -100,8 +102,18 @@ const Index = ({ roles, all_permissions, all_users }) => {
 
     }
 
+    const deleteRoleForm = useForm({});
+
+const deleteRole = (role) => {
+    console.log(role);
+    setConfirmDeleteRole(true);
+    deleteRoleForm.setData('id', role.id);
+}
+
+
     return (
         <SuperAdminDashboardLayout >
+            <ConfirmModal show={confirmDeleteRole} onClose={() => setConfirmDeleteRole(false)} onConfirm={() => { }} title={"Delete Role"} message={"Are you sure you want to delete this role?"}/>
             <Head title="Role" />
             <Modal show={openAddRoleModal} onClose={() => setOpenAddRoleModal(false)} maxWidth='md:w-1/2' >
                 <div className=' mx-10 my-5 '>
@@ -185,6 +197,7 @@ const Index = ({ roles, all_permissions, all_users }) => {
                                 </TableCell>
                                 <TableCell className="whitespace-nowrap py-4">
                                     <button onClick={() => editRoleFunction(role)}><Icons name='edit' /></button>
+                                    <button onClick={() => deleteRole(role)}><Icons name='delete' /></button>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -200,7 +213,7 @@ const Index = ({ roles, all_permissions, all_users }) => {
                     <h1 className="text-3xl md:text-4xl font-mono text-mainColor font-bold text-center my-6 md:my-10">
                         Permissions
                     </h1>
-                   
+
                     <div className='my-5 mx-10 flex items-end justify-end '>
                         <AddButton onClick={() => setOpenAddPermissionModal(true)}>Add</AddButton>
                     </div>

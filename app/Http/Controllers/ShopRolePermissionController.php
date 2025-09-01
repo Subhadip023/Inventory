@@ -7,16 +7,17 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
 
 class ShopRolePermissionController extends Controller
 {
     public function index($shopId)
     {
         // List roles and permissions for a specific shop
-        $roles = Role::where('shop_id', $shopId)->get();
-        $all_permissions = Permission::;
+        $roles = Role::where('shop_id', $shopId)->with('permissions')->get();
+        $all_permissions = Permission::all();
         $all_users = User::all();
-        return Inertia::render('Shop/Role/Index', compact('roles'));
+        return Inertia::render('Shop/Role/Index', compact('roles', 'all_permissions', 'all_users', 'shopId'));
     }
 
     public function create($shopId)
@@ -27,14 +28,13 @@ class ShopRolePermissionController extends Controller
 
     public function store(Request $request, $shopId)
     {
-        $request->validate([
-            'name' => 'required|string|unique:roles,name',
-        ]);
+        
+
 
         // Create role scoped to shop
         $role = Role::create([
             'name' => $request->name,
-            'shop_id' => $shopId,   // 👈 important
+            'shop_id' => $shopId,
             'guard_name' => 'web'
         ]);
 
@@ -60,5 +60,13 @@ class ShopRolePermissionController extends Controller
         $user->roles()->attach($role->id, ['shop_id' => $shopId]);
 
         return back()->with('success', 'Role assigned successfully to user');
+    }
+    public function deleteRole(Request $request, $shopId)
+    {
+        $role = Role::where('id', $request->role_id)
+                    ->where('shop_id', $shopId)
+                    ->firstOrFail();
+        $role->delete();
+        return back()->with('success', 'Role deleted successfully');
     }
 }

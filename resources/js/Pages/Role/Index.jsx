@@ -11,6 +11,7 @@ import FormInput from '@/Components/FormInput';
 import { useForm } from '@inertiajs/react';
 import Icons from '@/Components/Icons';
 import { RxCrossCircled } from "react-icons/rx";
+import ConfirmModal from '@/Components/ConfirmModal';
 
 const Index = ({ roles, all_permissions, all_users }) => {
     const [openAddRoleModal, setOpenAddRoleModal] = React.useState(false);
@@ -18,6 +19,7 @@ const Index = ({ roles, all_permissions, all_users }) => {
     const [showPermissionModal, setShowPermissionModal] = React.useState(false);
     const [openAddPermissionModal, setOpenAddPermissionModal] = React.useState(false);
     const [isEditPermission, setIsEditPermission] = React.useState(false);
+    const [confirmDeleteRole, setConfirmDeleteRole] = React.useState(false);
 
     const addRoleForm = useForm({
         name: '',
@@ -99,10 +101,44 @@ const Index = ({ roles, all_permissions, all_users }) => {
         }
 
     }
+    const deleteRoleForm = useForm({});
+    const deletePermissionForm = useForm({});
+
+    const deleteRole = (role) => {
+        setConfirmDeleteRole(true);
+        deleteRoleForm.setData('id', role.id);
+        deleteRoleForm.setData('name', role.name);
+    }
+
+    const deleteRoleSubmit = () => {
+        deleteRoleForm.delete(route('role.destroy', deleteRoleForm.data.id),{
+            onSuccess: () => {
+                setConfirmDeleteRole(false);
+            },
+            onError: () => {
+                console.log('error', deleteRoleForm.errors);
+            }
+        });
+    }
+
+    const deletePermission = (permission) => {
+        deletePermissionForm.setData('id', permission.id);
+        deletePermissionForm.setData('name', permission.name);
+        deletePermissionForm.delete(route('permission.destroy',permission.id),{
+            onSuccess: () => {
+                setShowPermissionModal(true);
+            },
+            onError: () => {
+                console.log('error', deleteRoleForm.errors);
+            }
+        });
+    }
+
 
     return (
         <SuperAdminDashboardLayout >
             <Head title="Role" />
+            <ConfirmModal open={confirmDeleteRole} title={'Delete Role'} message={`Are you sure you want to delete ${deleteRoleForm.data.name} role?`} onConfirm={deleteRoleSubmit} onCancel={() => setConfirmDeleteRole(false)} />
             <Modal show={openAddRoleModal} onClose={() => setOpenAddRoleModal(false)} maxWidth='md:w-1/2' >
                 <div className=' mx-10 my-5 '>
                     <div>
@@ -180,11 +216,13 @@ const Index = ({ roles, all_permissions, all_users }) => {
                                 <TableCell className="whitespace-nowrap py-4">
                                     {role.name}
                                 </TableCell>
-                                <TableCell className="whitespace-nowrap py-4">
-                                    {role.permissions.map((permission) => permission.name).join(', ')}
+                                <TableCell className=" py-4 ">
+                                    {role.permissions.map((permission) => permission.name).join(", ")}
                                 </TableCell>
+
                                 <TableCell className="whitespace-nowrap py-4">
                                     <button onClick={() => editRoleFunction(role)}><Icons name='edit' /></button>
+                                    <button onClick={() => deleteRole(role)}><Icons name='delete' /></button>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -200,11 +238,11 @@ const Index = ({ roles, all_permissions, all_users }) => {
                     <h1 className="text-3xl md:text-4xl font-mono text-mainColor font-bold text-center my-6 md:my-10">
                         Permissions
                     </h1>
-                   
+
                     <div className='my-5 mx-10 flex items-end justify-end '>
                         <AddButton onClick={() => setOpenAddPermissionModal(true)}>Add</AddButton>
                     </div>
-                    <div className='w-[90%] mb-5 mx-auto max-h-[60vh] overflow-auto'>
+                    <div className='w-[90%] mb-5 mx-auto max-h-[50vh] overflow-auto'>
                         <Table hoverable >
                             <TableHead>
                                 <TableRow>
@@ -227,6 +265,7 @@ const Index = ({ roles, all_permissions, all_users }) => {
 
                                         <TableCell className="whitespace-nowrap py-4">
                                             <button onClick={() => editPermissionFunction(permission)}><Icons name='edit' /></button>
+                                            <button onClick={() => deletePermission(permission)}><Icons name='delete' /></button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -272,6 +311,7 @@ const Index = ({ roles, all_permissions, all_users }) => {
                             <CancelButton
                                 onClick={() => {
                                     setOpenAddPermissionModal(false);
+                                    setShowPermissionModal(true)
                                     addPermission.reset();
                                 }}
                             >

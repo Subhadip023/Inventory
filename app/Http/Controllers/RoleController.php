@@ -105,6 +105,17 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+       
+            $role=Role::findOrFail($id);
+            if ($role->name == 'super-admin') {
+                return redirect()->route('role.index')->with('error', 'Super Admin cannot be deleted.');
+            }
+            $role->delete();
+            return redirect()->route('role.index')->with('success', 'Role deleted successfully.');
+        }catch(\Exception $e){
+            logger()->error($e->getMessage());
+            return redirect()->route('role.index')->with('error','Something went wrong.');
+        }
     }
 }

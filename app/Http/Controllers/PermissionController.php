@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 class PermissionController extends Controller
 {
     /**
@@ -33,6 +34,8 @@ class PermissionController extends Controller
 
         try{
             $permission=Permission::create(['name'=>$request->name]);
+            $role=Role::where('name','super-admin')->first();
+            $role->givePermissionTo($permission);
             return redirect()->back()->with('success', 'Permission created successfully.');
         }catch(\Exception $e){
             logger()->error($e->getMessage());
@@ -81,6 +84,13 @@ class PermissionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            $permission=Permission::findOrFail($id);
+            $permission->delete();
+            return redirect()->back()->with('success', 'Permission deleted successfully.');
+        }catch(\Exception $e){
+            logger()->error($e->getMessage());
+            return redirect()->back()->with('error','Something went wrong.');
+        }
     }
 }
