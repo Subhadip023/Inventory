@@ -16,7 +16,7 @@ use App\Http\Controllers\ShopProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ShopRolePermissionController;
-
+use App\Http\Controllers\UniversalProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -76,6 +76,7 @@ Route::prefix('superadmin')
         Route::get('dashboard', [HomeController::class, 'superadminDashboard'])->name('superadmin.dashboard');
         Route::resource('role', RoleController::class);
         Route::resource('permission', PermissionController::class);
+        Route::resource('universal-products', UniversalProductController::class);
     });
 
 

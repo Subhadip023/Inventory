@@ -72,20 +72,23 @@ export default function DashboardLayout({ children, head }) {
     
 
       <section className= {`h-screen shadow-md transition-all duration-300 ease-in-out 
-      ${showSidebar ? 'w-64' : 'w-0 overflow-hidden'} sticky top-0 `}>
+                  ${showSidebar ? 'w-64' : 'w-0 overflow-hidden'} sticky top-0 `}>
                   <Sidebar aria-label="Sidebar with multi-level dropdown example">
                       <SidebarItems>
                           <SidebarItemGroup>
                               <SidebarItem as={Link} href={route('dashboard')} icon={HiChartPie} active={route().current('dashboard')}>
                                   Dashboard
                               </SidebarItem>
+                              <SidebarItem as={Link} href={route('universal-products.index')} active={route().current('universal-products.index')} icon={HiShoppingBag}>
+                                  Universal Products
+                              </SidebarItem>    
                               <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} icon={HiUser}>
                                   Role
                               </SidebarItem>    
                           </SidebarItemGroup>
                       </SidebarItems>
                   </Sidebar>
-              </section>
+      </section>
 
       <section
         className={`flex flex-col transition-all duration-300 ease-in-out

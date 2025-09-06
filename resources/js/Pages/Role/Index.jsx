@@ -10,7 +10,6 @@ import SaveButton from '@/Components/SaveButton';
 import FormInput from '@/Components/FormInput';
 import { useForm } from '@inertiajs/react';
 import Icons from '@/Components/Icons';
-import { RxCrossCircled } from "react-icons/rx";
 import ConfirmModal from '@/Components/ConfirmModal';
 
 const Index = ({ roles, all_permissions, all_users }) => {
@@ -187,8 +186,8 @@ const Index = ({ roles, all_permissions, all_users }) => {
                     </div>
                 </div>
             </Modal>
-            <CardContainer className='w-full '>
-                <h1 className="text-3xl md:text-4xl font-mono text-mainColor font-bold text-center my-6 md:my-10">
+            <CardContainer className='w-full h-fit my-auto'>
+                <h1 className="text-3xl md:text-4xl font-mono text-mainColor font-bold text-start my-6 md:my-10">
                     Role
                 </h1>
 
@@ -230,17 +229,16 @@ const Index = ({ roles, all_permissions, all_users }) => {
                     </TableBody>
                 </Table>
 
-                <div className='w-full border-b border-gray-400 my-10'>
-
-                </div>
+       
 
                 <Modal show={showPermissionModal} onClose={() => setShowPermissionModal(false)} maxWidth='md:w-1/2' className='w-full' >
                     <h1 className="text-3xl md:text-4xl font-mono text-mainColor font-bold text-center my-6 md:my-10">
                         Permissions
                     </h1>
 
-                    <div className='my-5 mx-10 flex items-end justify-end '>
-                        <AddButton onClick={() => setOpenAddPermissionModal(true)}>Add</AddButton>
+                    <div className='my-5 mx-10 flex items-end justify-end gap-x-2'>
+                        <AddButton onClick={() =>{ setOpenAddPermissionModal(true);setShowPermissionModal(false);}}>Add</AddButton>
+                        <CancelButton onClick={() => setShowPermissionModal(false)}>Close</CancelButton>
                     </div>
                     <div className='w-[90%] mb-5 mx-auto max-h-[50vh] overflow-auto'>
                         <Table hoverable >
@@ -274,9 +272,9 @@ const Index = ({ roles, all_permissions, all_users }) => {
                         </Table>
 
                     </div>
-                    <div className='flex justify-end mx-5 mb-5'>
+                    {/* <div className='flex justify-end mx-5 mb-5'>
                         <CancelButton onClick={() => setShowPermissionModal(false)}>Close</CancelButton>
-                    </div>
+                    </div> */}
 
                 </Modal>
 
