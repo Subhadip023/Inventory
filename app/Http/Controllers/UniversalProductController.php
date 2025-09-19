@@ -14,11 +14,24 @@ class UniversalProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products=universalProduct::paginate(10);
-        return Inertia::render('UniversalProduct/Index',['universalProducts'=>$products]);
+        $per_page = $request->input('per_page', 10);
+
+        if ($per_page == 'all') {
+            // Get all products without pagination
+            $products = universalProduct::all();
+        } else {
+            // Normal pagination
+            $products = universalProduct::paginate($per_page);
+        }
+
+        return Inertia::render('UniversalProduct/Index', [
+            'universalProducts' => $products,
+            'per_page' => $per_page,
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

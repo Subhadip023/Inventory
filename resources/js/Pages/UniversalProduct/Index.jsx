@@ -1,6 +1,5 @@
 import React from 'react';
 import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
-import { Card } from 'flowbite-react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button, TextInput, Pagination } from "flowbite-react";
 import paginationOptions from '@/utils/paginationOptions';
 import CardContainer from '@/Components/CardContainer';
@@ -10,11 +9,12 @@ import { FaSearch } from "react-icons/fa";
 import axios from 'axios';
 import FormSelect from '@/Components/FormSelect';
 import { useForm } from '@inertiajs/react';
-const Index = ({ universalProducts }) => {
+const Index = ({ universalProducts,per_page }) => {
     console.log(universalProducts);
     const [products, setProducts] = React.useState(universalProducts.data || []);
     const [currentPage, setCurrentPage] = React.useState(universalProducts.current_page || 1);
-    const [totalPages, setTotalPages] = React.useState(universalProducts.links.length || 1);
+    const [totalPages, setTotalPages] = React.useState(universalProducts.links.length-2 || 1);
+    const [perPage, setPerPage] = React.useState(per_page ||10);
     const paginationForm = useForm();
 
     const searchProduct = (e) => {
@@ -27,6 +27,13 @@ const Index = ({ universalProducts }) => {
         paginationForm.setData('page', page);
         paginationForm.get(route('universal-products.index',{page:page}));
     };
+
+    const handlePerPageChange = (e) => {
+        const newPerPage = e.target.value;
+        setPerPage(newPerPage);
+        paginationForm.setData('per_page', newPerPage);
+        paginationForm.get(route('universal-products.index',{per_page:newPerPage}));
+    }
 
     return (
         <SuperAdminDashboardLayout>
@@ -45,7 +52,7 @@ const Index = ({ universalProducts }) => {
                 </div>
                 <div className='w-full'>
                     <div className='flex items-center justify-end mb-2'>
-                        <FormSelect options={paginationOptions} label="Per Page" width='w-1/6' />
+                        <FormSelect onChange={handlePerPageChange} options={paginationOptions} defaultValue={perPage} label="Per Page" width='w-1/6' />
                     </div>
                     <Table hoverable className='w-full'>
                         <TableHead>
