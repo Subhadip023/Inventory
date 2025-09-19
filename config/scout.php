@@ -16,7 +16,18 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'algolia'),
+    'driver' => env('SCOUT_DRIVER', 'tntsearch'),
+
+    'tntsearch' => [
+    'storage'  => storage_path('tntsearch'), // where indexes are stored
+    'fuzziness' => true,
+    'fuzzy' => [
+        'prefix_length' => 2,
+        'max_expansions' => 50,
+        'distance' => 2
+    ],
+],
+
 
     /*
     |--------------------------------------------------------------------------

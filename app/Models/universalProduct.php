@@ -12,16 +12,16 @@ class universalProduct extends Model
     use HasFactory;
     use Searchable;
 
-
-
-
-    public function toSearchableArray()
+ public function toSearchableArray(): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            
         ];
     }
+
 }
 
 

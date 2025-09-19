@@ -85,6 +85,10 @@ export default function DashboardLayout({ children, head }) {
                               <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} icon={HiUser}>
                                   Role
                               </SidebarItem>    
+
+                              <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
+                            Sign Out
+                        </SidebarItem>
                           </SidebarItemGroup>
                       </SidebarItems>
                   </Sidebar>

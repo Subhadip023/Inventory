@@ -77,7 +77,14 @@ Route::prefix('superadmin')
         Route::resource('role', RoleController::class);
         Route::resource('permission', PermissionController::class);
         Route::resource('universal-products', UniversalProductController::class);
+        Route::post('universal-products-search', [UniversalProductController::class, 'search'])->name('universal-products.search');
     });
+
+
+
+Route::get('/php-info', function () {
+    phpinfo();
+});
 
 
 

@@ -16,8 +16,8 @@ class UniversalProductController extends Controller
      */
     public function index()
     {
-        $products=universalProduct::all();
-        return Inertia::render('UniversalProduct/Index',['products'=>$products]);
+        $products=universalProduct::paginate(10);
+        return Inertia::render('UniversalProduct/Index',['universalProducts'=>$products]);
     }
 
     /**
@@ -66,5 +66,18 @@ class UniversalProductController extends Controller
     public function destroy(universalProduct $universalProduct)
     {
         //
+    }
+
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        if (empty($search)) {
+            $results = universalProduct::all();
+        }else{
+            $results = UniversalProduct::search($search)->get();
+
+        }
+        return response()->json($results);
     }
 }
