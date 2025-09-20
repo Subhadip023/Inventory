@@ -59,7 +59,6 @@ export default function DashboardLayout({ children, head }) {
     if (flash.error) toast.error(flash.error);
     if(flash.warning) toast.warning(flash.warning);
     if(flash.info) toast.info(flash.info);
-    console.log(flash);
   }, [flash]);
 
   const signOut = () => {

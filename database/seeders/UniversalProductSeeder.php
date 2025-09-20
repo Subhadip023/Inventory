@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\ShopCategories;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\universalProduct;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\shopCategory;
 class UniversalProductSeeder extends Seeder
 {
     /**
@@ -19,116 +21,116 @@ class UniversalProductSeeder extends Seeder
     [
         'name' => 'Paracetamol',
         'description' => 'Pain reliever and fever reducer',
-        'category' => 'Medicines'
+        'shop_category_id' => 1
     ],
     [
         'name' => 'Ibuprofen',
         'description' => 'Anti-inflammatory and pain relief',
-        'category' => 'Medicines'
+        'shop_category_id' => 1
     ],
     [
         'name' => 'Amoxicillin',
         'description' => 'Antibiotic for bacterial infections',
-        'category' => 'Medicines'
+        'shop_category_id' => 1
     ],
     [
         'name' => 'Vitamin C',
         'description' => 'Immune system booster supplement',
-        'category' => 'Medicines'
+        'shop_category_id' => 1
     ],
     [
         'name' => 'Cough Syrup',
         'description' => 'Relieves cough and cold symptoms',
-        'category' => 'Medicines'
+        'shop_category_id' => 1
     ],
     [
         'name' => 'Band-Aids (20ct)',
         'description' => 'Adhesive bandages for minor cuts',
-        'category' => 'Medicines'
+        'shop_category_id' => 1
     ],
     
     // Books
     [
         'name' => 'The Great Gatsby',
         'description' => 'Classic novel by F. Scott Fitzgerald',
-        'category' => 'Books'
+        'shop_category_id' => 4
     ],
     [
         'name' => '1984',
         'description' => 'Dystopian novel by George Orwell',
-        'category' => 'Books'
+        'shop_category_id' => 4
     ],
     [
         'name' => 'The Alchemist',
         'description' => 'Inspirational novel by Paulo Coelho',
-        'category' => 'Books'
+        'shop_category_id' => 4
     ],
     [
         'name' => 'Harry Potter and the Sorcerer\'s Stone',
         'description' => 'Fantasy novel by J.K. Rowling',
-        'category' => 'Books'
+        'shop_category_id' => 4
     ],
     [
         'name' => 'To Kill a Mockingbird',
         'description' => 'Pulitzer Prize-winning novel by Harper Lee',
-        'category' => 'Books'
+        'shop_category_id' => 4
     ],
     [
         'name' => 'Dune',
         'description' => 'Classic science fiction novel by Frank Herbert',
-        'category' => 'Books'
+        'shop_category_id' => 4
     ],
 
     // Grocery
     [
         'name' => 'Rice (Basmati)',
         'description' => 'Premium long-grain rice',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Wheat Flour',
         'description' => 'Essential for making bread and chapati',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Milk (1L)',
         'description' => 'Dairy product, full cream',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Sugar',
         'description' => 'Refined white sugar',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Cooking Oil (Sunflower)',
         'description' => 'Used for frying and cooking',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Salt (Iodized)',
         'description' => 'Essential seasoning',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Eggs (Dozen)',
         'description' => 'Farm fresh eggs',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Bread (Whole Wheat)',
         'description' => 'Healthy whole grain bread loaf',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Tea Leaves',
         'description' => 'Used for making tea',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
     [
         'name' => 'Coffee Powder',
         'description' => 'Ground coffee for brewing',
-        'category' => 'Grocery'
+        'shop_category_id' => 3
     ],
 ];
 
@@ -136,8 +138,8 @@ class UniversalProductSeeder extends Seeder
             universalProduct::create([
                 'name' => $product['name'],
                 'slug' => Str::slug($product['name']),
-                'category' => $product['category'],
                 'description' => $product['description'],
+                'shop_category_id'=> $product['shop_category_id'],
                 'verified' => rand(0, 1)
             ]);
         }

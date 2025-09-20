@@ -9,14 +9,18 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Services\Interfaces\UniversalProductServiceInterface;
 use App\Repositories\Interfaces\UniversalProductRepositoryInterface;
+use App\Repositories\Interfaces\ShopCategoriesRepositoryInterface;
 class UniversalProductController extends Controller
 {
     protected $service;
     protected $repository;
 
-    public function __construct(UniversalProductServiceInterface $service,UniversalProductRepositoryInterface $repository){
+    protected $shopCategoryRepository;
+
+    public function __construct(UniversalProductServiceInterface $service,UniversalProductRepositoryInterface $repository, ShopCategoriesRepositoryInterface $shopCategoryRepository){
         $this->service = $service;
         $this->repository = $repository;
+        $this->shopCategoryRepository = $shopCategoryRepository;
     }
     
 
@@ -29,10 +33,11 @@ class UniversalProductController extends Controller
         } else {
             $products = $this->service->paginate($per_page);
         }
-
+        $allCategory = $this->shopCategoryRepository->allActiveCategoryIdName();
         return Inertia::render('UniversalProduct/Index', [
             'universalProducts' => $products,
             'per_page' => $per_page,
+            'allCategory' => $allCategory,
         ]);
     }
 
@@ -48,7 +53,7 @@ class UniversalProductController extends Controller
      */
     public function store(StoreuniversalProductRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

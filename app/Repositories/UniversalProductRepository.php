@@ -7,7 +7,7 @@ use App\Repositories\Interfaces\UniversalProductRepositoryInterface;
 class UniversalProductRepository implements UniversalProductRepositoryInterface {
     public function all()
     {
-        $products=universalProduct::all();
+        $products=universalProduct::with('category')->get();
         return [
             'data' => $products,
             'total' =>count($products)
@@ -16,7 +16,7 @@ class UniversalProductRepository implements UniversalProductRepositoryInterface 
 
     public function paginate(int $perPage = 5)
     {
-        return UniversalProduct::paginate($perPage);
+        return UniversalProduct::with('category')->paginate($perPage);
     }
 
     public function findById(int $id)
@@ -57,4 +57,6 @@ class UniversalProductRepository implements UniversalProductRepositoryInterface 
             return false;
         }
     }
+
+  
 }

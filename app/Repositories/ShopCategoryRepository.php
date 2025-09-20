@@ -9,7 +9,16 @@ use App\Repositories\Interfaces\ShopCategoriesRepositoryInterface;
 class ShopCategoryRepository implements ShopCategoriesRepositoryInterface{
     public function all(){
         return ShopCategories::all();
-    }
+    }  
+    public function allActiveCategoryIdName(){
+        $allCat=ShopCategories::where('is_active',true)->get();
+        $allCat = $allCat->map(function($cat){
+            return [
+                'id'=>$cat->id,
+                'name'=>$cat->name
+            ];
+        });
+        return $allCat;    }
     public function create(array $data){
         return ShopCategories::create(attributes: $data);
     }

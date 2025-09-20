@@ -10,6 +10,7 @@ const FormSelect = ({
   error, 
   defaultValue,
   width='w-full' 
+  
 }) => {
   
   return (
