@@ -11,6 +11,24 @@ class ShopCategoryRepository implements ShopCategoriesRepositoryInterface{
         return ShopCategories::all();
     }
     public function create(array $data){
-        return ShopCategories::create($data);
+        return ShopCategories::create(attributes: $data);
+    }
+    public function update(int $id, array $data)    {
+        $shopCategory = ShopCategories::find($id);
+        if($shopCategory){
+            return $shopCategory->update($data);
+            
+        }else{
+            return false;
+        }
+            
+    }
+    public function delete(int $id){
+        $shopCategory = ShopCategories::find($id);
+        if($shopCategory){
+            return $shopCategory->delete();
+        }else{
+            return false;
+        }
     }
 }

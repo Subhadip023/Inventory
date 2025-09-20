@@ -11,10 +11,11 @@ import CancelButton from '@/Components/CancelButton';
 import SaveButton from '@/Components/SaveButton';
 import { useForm } from '@inertiajs/react';
 import Checkbox from '@/Components/Checkbox';
-
+import ConfirmModal from '@/Components/ConfirmModal';
 function Index({ shopCategories }) {
     const [openCategoryModal, setOpenCategoryModal] = useState(false);
     const [isCategoryEdit, setIsCategoryEdit] = useState(false);
+    const [confirmDeleteCategory,setConfirmDeleteCategory] = useState(false);
     const shopCategoryForm = useForm({
         id: null,
         name: '',
@@ -42,12 +43,24 @@ function Index({ shopCategories }) {
         });
     };
 
+    const deleteCatSubmit = (e) => { 
+        e.preventDefault();
+        shopCategoryForm.delete(route('shop-categories.destroy',shopCategoryForm.data.id),{
+            onSuccess:()=>{
+                setConfirmDeleteCategory(false);
+                shopCategoryForm.reset();
+            }
+        })
+    }
+
 
 
 
     return (
 
         <SuperAdminDashboardLayout head={'Shop Categories'}>
+            <ConfirmModal open={confirmDeleteCategory} title={'Delete Role'} message={`Are you sure you want to delete ${shopCategoryForm.data.name} role?`} onConfirm={deleteCatSubmit} onCancel={() => setConfirmDeleteCategory(false)} />
+
             <Modal show={openCategoryModal} onClose={() => setOpenCategoryModal(false)} maxWidth='md:w-1/2' >
                 <div className=' mx-10 my-5 '>
                     <div>
@@ -113,7 +126,13 @@ function Index({ shopCategories }) {
                                         })
                                     }}><Icons name='edit' className='text-blue-500 hover:text-blue-700 cursor-pointer' /></button>
 
-                                    <button ><Icons name='delete'/> </button>
+                                    <button onClick={(e)=>{
+                                        setConfirmDeleteCategory(true);
+                                        shopCategoryForm.setData({
+                                            id: cat.id,
+                                            name: cat.name,
+                                        })
+                                    }}><Icons name='delete'/> </button>
                                 </TableCell>
 
                             </TableRow>

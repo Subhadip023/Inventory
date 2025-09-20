@@ -23,18 +23,7 @@ class ShopCategoriesController extends Controller
             'shopCategories' => $this->repository->all()
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request)
     {
         $request->validate([
@@ -42,55 +31,41 @@ class ShopCategoriesController extends Controller
             'is_active' => 'required|boolean',
         ]);
 
-        ShopCategories::create([
+        $cat=$this->repository->create([
             'name' => $request->name,
             'is_active' => $request->is_active,
         ]);
+
 
         return redirect()->back()->with('success', 'Shop category created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ShopCategories $shopCategories)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ShopCategories $shopCategories)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ShopCategories $shop_category)
+    public function update(Request $request, $shop_category)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('shop_categories', 'name')->ignore($shop_category->id)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('shop_categories', 'name')->ignore($shop_category)],
             'is_active' => 'required|boolean',
         ]);
 
-        $shop_category->update([
+        $isUpdate=$this->repository->update($shop_category, [
             'name' => $request->name,
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('shop-categories.index')->with('success', 'Shop category updated successfully.');
+        if($isUpdate){
+        return redirect()->route('shop-categories.index')->with('success', 'Shop category updated successfully.');        
+        }else{
+            return redirect()->back()->with('error', 'Failed to update shop category.');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ShopCategories $shop_category)
+    public function destroy($shop_category)
     {
-    
-        $shop_category->delete();
-        return redirect()->back()->with('success', value: 'Shop category deleted successfully.');
+        $isDeleted=$this->repository->delete($shop_category);
+        if($isDeleted){
+            return redirect()->back()->with('success', 'Shop category deleted successfully.');
+        }else{
+            return redirect()->back()->with('error', 'Failed to delete shop category.');
+        }
     }
 }
