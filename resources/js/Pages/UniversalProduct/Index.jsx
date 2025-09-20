@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
-import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button, TextInput, Pagination } from "flowbite-react";
+import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button, TextInput, Pagination, Tooltip } from "flowbite-react";
 import paginationOptions from '@/utils/paginationOptions';
 import CardContainer from '@/Components/CardContainer';
 import AddButton from '@/Components/AddButton';
-import FormInput from '@/Components/FormInput';
 import { FaSearch } from "react-icons/fa";
 import axios from 'axios';
 import FormSelect from '@/Components/FormSelect';
 import { useForm } from '@inertiajs/react';
+import Icons from '@/Components/Icons';
 const Index = ({ universalProducts,per_page }) => {
-    console.log(universalProducts);
+    console.log(universalProducts)
     const [products, setProducts] = React.useState(universalProducts.data || []);
     const [currentPage, setCurrentPage] = React.useState(universalProducts.current_page || 1);
-    const [totalPages, setTotalPages] = React.useState(universalProducts.links.length-2 || 1);
+    const [totalPages, setTotalPages] = React.useState(universalProducts.links?.length-2 || 1);
     const [perPage, setPerPage] = React.useState(per_page ||10);
     const paginationForm = useForm();
+
+    const allpaginationOptions = paginationOptions.filter(option=>{
+        if (option.id=='all') return true
+        return option.id < universalProducts.total
+    });
 
     const searchProduct = (e) => {
         e.preventDefault();
@@ -25,7 +30,7 @@ const Index = ({ universalProducts,per_page }) => {
     }
     const onPageChange = (page) => {
         paginationForm.setData('page', page);
-        paginationForm.get(route('universal-products.index',{page:page}));
+        paginationForm.get(route('universal-products.index',{page:page,per_page:perPage}));
     };
 
     const handlePerPageChange = (e) => {
@@ -42,25 +47,29 @@ const Index = ({ universalProducts,per_page }) => {
                     <h1 className='text-3xl font-bold'>Universal Product</h1>
                 </div>
 
-                <div className='flex items-center justify-between w-full mb-10'>
+                <div className='flex items-center justify-between w-full mb-0'>
 
-                    <div className='w-2/3 flex items-center justify-center'>
-                        <TextInput id="email4" type="email" icon={FaSearch} placeholder="Search Product" required className='w-1/3 hover:border-none focus:border-none' onChange={searchProduct} />
+                    <div className='w-2/3 flex items-center justify-start'>
+                        <TextInput id="search" type="text" icon={FaSearch} placeholder="Search Product" required className='w-1/3 hover:border-none focus:border-none' onChange={searchProduct} />
                     </div>
                     <AddButton > Add Product
                     </AddButton>
                 </div>
                 <div className='w-full'>
                     <div className='flex items-center justify-end mb-2'>
-                        <FormSelect onChange={handlePerPageChange} options={paginationOptions} defaultValue={perPage} label="Per Page" width='w-1/6' />
+                        <FormSelect onChange={handlePerPageChange} options={allpaginationOptions} defaultValue={perPage} label="Per Page" width='w-1/6' />
                     </div>
-                    <Table hoverable className='w-full'>
+                    {products.length==0&& <div>
+                        No products found
+                        </div>}
+                    {products.length!=0&&  <Table hoverable className='w-full'>
                         <TableHead>
                             <TableRow>
                                 <TableHeadCell>ID</TableHeadCell>
                                 <TableHeadCell>Name</TableHeadCell>
                                 <TableHeadCell>Description</TableHeadCell>
                                 <TableHeadCell>Category</TableHeadCell>
+                                <TableHeadCell>Verified</TableHeadCell>
                                 <TableHeadCell>
                                     <span className="sr-only">Edit</span>
                                 </TableHeadCell>
@@ -68,7 +77,7 @@ const Index = ({ universalProducts,per_page }) => {
                         </TableHead>
                         <TableBody className="divide-y">
                             {products.map((products) => (
-                                <TableRow key={products.id}>
+                                <TableRow key={products.id} >
                                     <TableCell className="whitespace-nowrap py-4">
                                         {products.id}
                                     </TableCell>
@@ -80,6 +89,21 @@ const Index = ({ universalProducts,per_page }) => {
                                     </TableCell>
                                     <TableCell className=" py-4 ">
                                         {products.category}
+                                    </TableCell> 
+                                    <TableCell className=" py-4 hover:cursor-pointer">
+                                        {products.verified?
+                                    <div className='text-green-500 text-xl'>
+                                        <Tooltip content="Not verified">
+                                            <Icons name='verified'/>
+                                        </Tooltip>
+                                    </div>:
+                                   <div className='text-red-500 text-xl'>
+                                        <Tooltip content="verify">
+                                            <Icons name='cross'/>
+                                        </Tooltip>
+
+                                    </div>
+                                    }
                                     </TableCell>
 
                                     <TableCell className="whitespace-nowrap py-4">
@@ -89,11 +113,11 @@ const Index = ({ universalProducts,per_page }) => {
                             ))}
 
                         </TableBody>
-                    </Table>
+                    </Table>}
 
-                    <div className="flex overflow-x-auto sm:justify-center">
+                    {per_page!=='all' && <div className="flex overflow-x-auto sm:justify-center my-5">
                         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
-                    </div>
+                    </div>}
                 </div>
 
 

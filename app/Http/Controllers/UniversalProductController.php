@@ -7,23 +7,25 @@ use App\Http\Requests\StoreuniversalProductRequest;
 use App\Http\Requests\UpdateuniversalProductRequest;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
+use App\Services\Interfaces\UniversalProductServiceInterface;
+use function Laravel\Prompts\search;
 class UniversalProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $service;
+
+    public function __construct(UniversalProductServiceInterface $service){
+        $this->service = $service;
+    }
+    
+
     public function index(Request $request)
     {
-        $per_page = $request->input('per_page', 10);
+        $per_page = $request->input('per_page',5);
 
         if ($per_page == 'all') {
-            // Get all products without pagination
-            $products = universalProduct::all();
+            $products = $this->service->getAll();
         } else {
-            // Normal pagination
-            $products = universalProduct::paginate($per_page);
+            $products = $this->service->paginate($per_page);
         }
 
         return Inertia::render('UniversalProduct/Index', [
@@ -33,9 +35,7 @@ class UniversalProductController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
+   
     public function create()
     {
         //
@@ -85,12 +85,7 @@ class UniversalProductController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-        if (empty($search)) {
-            $results = universalProduct::all();
-        }else{
-            $results = UniversalProduct::search($search)->get();
-
-        }
-        return response()->json($results);
+        $searchProducts = $this->service->search($search);
+        return $searchProducts;
     }
 }
