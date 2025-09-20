@@ -9,13 +9,18 @@ import axios from 'axios';
 import FormSelect from '@/Components/FormSelect';
 import { useForm } from '@inertiajs/react';
 import Icons from '@/Components/Icons';
+import ConfirmModal from '@/Components/ConfirmModal';
 const Index = ({ universalProducts,per_page }) => {
     console.log(universalProducts)
     const [products, setProducts] = React.useState(universalProducts.data || []);
     const [currentPage, setCurrentPage] = React.useState(universalProducts.current_page || 1);
     const [totalPages, setTotalPages] = React.useState(universalProducts.links?.length-2 || 1);
+    const [openActiveConfirmationModal, setOpenActiveConfirmationModal] = React.useState(false);
+    const [openInactiveConfirmationModal, setOpenInactiveConfirmationModal] = React.useState(false);
     const [perPage, setPerPage] = React.useState(per_page ||10);
+    const [selectedProductId, setSelectedProductId] = React.useState(null);
     const paginationForm = useForm();
+    const productActiation = useForm();
 
     const allpaginationOptions = paginationOptions.filter(option=>{
         if (option.id=='all') return true
@@ -40,8 +45,32 @@ const Index = ({ universalProducts,per_page }) => {
         paginationForm.get(route('universal-products.index',{per_page:newPerPage}));
     }
 
+    const handleProductVerification = (e) => {
+        e.preventDefault();
+        productActiation.post(route('universal-products.changeVarifyStatus'), {
+            onSuccess: (response) => {
+              setOpenActiveConfirmationModal(false);
+                setOpenInactiveConfirmationModal(false);
+                productActiation.reset();
+            },
+            onError: (errors) => {
+                // Handle error (e.g., show an error message)
+                console.error('Error changing product status:', errors);
+            },
+            onFinish: () => {
+                paginationForm.get(route('universal-products.index',{per_page:perPage,page:currentPage}));                
+            },
+        });
+    }
+
     return (
         <SuperAdminDashboardLayout>
+            {/* Active product  */}
+            <ConfirmModal open={openActiveConfirmationModal} onCancel={()=>setOpenActiveConfirmationModal(false)} title={'Active Product'} message='Do You to active the product ? ' confirmText='Active' onConfirm={handleProductVerification}/>
+                
+            {/* Inactive product  */}
+            <ConfirmModal open={openInactiveConfirmationModal} onCancel={()=>setOpenInactiveConfirmationModal(false)} title={'InActive Product'} message='Do You to Inactive the product ? ' confirmText='InActive' onConfirm={handleProductVerification} />
+
             <CardContainer className='h-fit flex flex-col items-center justify-center w-full'>
                 <div className='flex  items-center justify-start w-full mt-10 mb-5 text-mainColor '>
                     <h1 className='text-3xl font-bold'>Universal Product</h1>
@@ -92,14 +121,14 @@ const Index = ({ universalProducts,per_page }) => {
                                     </TableCell> 
                                     <TableCell className=" py-4 hover:cursor-pointer">
                                         {products.verified?
-                                    <div className='text-green-500 text-xl'>
+                                    <div className='text-green-500 text-xl'  onClick={()=>{setOpenInactiveConfirmationModal(true); productActiation.setData('id', products.id)}}>
                                         <Tooltip content="Not verified">
                                             <Icons name='verified'/>
                                         </Tooltip>
                                     </div>:
-                                   <div className='text-red-500 text-xl'>
-                                        <Tooltip content="verify">
-                                            <Icons name='cross'/>
+                                   <div className='text-red-500 text-xl' onClick={()=>{setOpenActiveConfirmationModal(true); productActiation.setData('id', products.id);}}>
+                                        <Tooltip content="verify" >
+                                            <Icons name='cross' />
                                         </Tooltip>
 
                                     </div>

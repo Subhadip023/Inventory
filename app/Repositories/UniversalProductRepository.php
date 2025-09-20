@@ -45,4 +45,16 @@ class UniversalProductRepository implements UniversalProductRepositoryInterface 
     {
         return UniversalProduct::destroy($id);
     }
+    public function changeVarifyStatus(int $id): bool
+    {
+        try {
+            $product = UniversalProduct::findOrFail($id);
+            $product->verified = !$product->verified;
+            $product->save();
+        return true;
+        } catch (\Throwable $th) {
+            log($th->getMessage());
+            return false;
+        }
+    }
 }

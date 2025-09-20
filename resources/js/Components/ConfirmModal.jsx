@@ -14,16 +14,16 @@ const ConfirmModal = ({
   onCancel,
 }) => {
   return (
-    <ReactModal dismissible show={open} onClose={onCancel}>
+    <ReactModal dismissible show={open} onClose={onCancel} size="md">
       <ModalHeader>{title}</ModalHeader>
       <ModalBody>
         <div className="space-y-6">
-          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 my-5">
+          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 my-2">
             {message}
           </p>
         </div>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter className="flex justify-end">
         <Button color={confirmColor} onClick={onConfirm}>
           {confirmText}
         </Button>

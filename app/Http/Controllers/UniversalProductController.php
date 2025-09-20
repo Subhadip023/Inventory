@@ -8,13 +8,15 @@ use App\Http\Requests\UpdateuniversalProductRequest;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Services\Interfaces\UniversalProductServiceInterface;
-use function Laravel\Prompts\search;
+use App\Repositories\Interfaces\UniversalProductRepositoryInterface;
 class UniversalProductController extends Controller
 {
     protected $service;
+    protected $repository;
 
-    public function __construct(UniversalProductServiceInterface $service){
+    public function __construct(UniversalProductServiceInterface $service,UniversalProductRepositoryInterface $repository){
         $this->service = $service;
+        $this->repository = $repository;
     }
     
 
@@ -80,7 +82,23 @@ class UniversalProductController extends Controller
     {
         //
     }
+    
+    public function changeVarifyStatus(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:universal_products,id',
+        ]);
+        $id = $request['id'];
+        $status = $this->repository->changeVarifyStatus($id);
+        if ($status) {
+            return redirect()->route('universal-products.index')->with('success', 'Product status changed successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to change product status.');
+        }
 
+        
+        
+    }
 
     public function search(Request $request)
     {

@@ -78,6 +78,7 @@ Route::prefix('superadmin')
         Route::resource('permission', PermissionController::class);
         Route::resource('universal-products', UniversalProductController::class);
         Route::post('universal-products-search', [UniversalProductController::class, 'search'])->name('universal-products.search');
+        Route::post('universal-products-change-status', [UniversalProductController::class, 'changeVarifyStatus'])->name('universal-products.changeVarifyStatus');
     });
 
 
