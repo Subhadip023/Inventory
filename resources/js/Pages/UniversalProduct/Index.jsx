@@ -11,14 +11,12 @@ import { useForm } from '@inertiajs/react';
 import Icons from '@/Components/Icons';
 import ConfirmModal from '@/Components/ConfirmModal';
 const Index = ({ universalProducts,per_page }) => {
-    console.log(universalProducts)
     const [products, setProducts] = React.useState(universalProducts.data || []);
     const [currentPage, setCurrentPage] = React.useState(universalProducts.current_page || 1);
     const [totalPages, setTotalPages] = React.useState(universalProducts.links?.length-2 || 1);
     const [openActiveConfirmationModal, setOpenActiveConfirmationModal] = React.useState(false);
     const [openInactiveConfirmationModal, setOpenInactiveConfirmationModal] = React.useState(false);
     const [perPage, setPerPage] = React.useState(per_page ||10);
-    const [selectedProductId, setSelectedProductId] = React.useState(null);
     const paginationForm = useForm();
     const productActiation = useForm();
 
@@ -91,7 +89,8 @@ const Index = ({ universalProducts,per_page }) => {
                     {products.length==0&& <div>
                         No products found
                         </div>}
-                    {products.length!=0&&  <Table hoverable className='w-full'>
+                    {products.length!=0&&  
+                    <Table hoverable className='w-full'>
                         <TableHead>
                             <TableRow>
                                 <TableHeadCell>ID</TableHeadCell>

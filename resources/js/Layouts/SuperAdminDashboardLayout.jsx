@@ -31,6 +31,8 @@ import {
     HiTable,
     HiUser,
 } from "react-icons/hi";
+import { FaStore } from 'react-icons/fa';
+
 
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useEffect, useState } from 'react';
@@ -84,6 +86,10 @@ export default function DashboardLayout({ children, head }) {
                               </SidebarItem>    
                               <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} icon={HiUser}>
                                   Role
+                              </SidebarItem>  
+                              
+                              <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
+                                  Shop Categories
                               </SidebarItem>    
 
                               <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
