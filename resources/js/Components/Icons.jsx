@@ -6,6 +6,7 @@ import {Tooltip} from "flowbite-react";
 import { MdCheckCircleOutline } from "react-icons/md";
 import { MdVerified } from "react-icons/md";
 import { RxCrossCircled } from "react-icons/rx";
+import { GrPowerReset } from "react-icons/gr";
 
 
 const Icons = ({name=""}) => {
@@ -22,7 +23,9 @@ const Icons = ({name=""}) => {
         case 'verified':
             return <MdVerified/>  
         case 'cross':
-            return <RxCrossCircled/>      
+            return <RxCrossCircled/>     
+        case 'reset':
+            return <GrPowerReset className='hover:scale-110 duration-200 ease-in-out'/>     
         default:
             return <Tooltip content="Edit"> <FaRegEdit className='text-xl hover:scale-110 duration-200 ease-in-out'/> </Tooltip>;
     }

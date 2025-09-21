@@ -7,7 +7,7 @@ import AddButton from '@/Components/AddButton';
 import { FaSearch } from "react-icons/fa";
 import axios from 'axios';
 import FormSelect from '@/Components/FormSelect';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import Icons from '@/Components/Icons';
 import ConfirmModal from '@/Components/ConfirmModal';
 import FormInput from '@/Components/FormInput';
@@ -226,6 +226,11 @@ const Index = ({ universalProducts, per_page, allCategory, filterData }) => {
                         <FormSelect onChange={filterCategory} options={[{ id: "all", name: 'Select Category' }, ...allCategory]} value={categoryId} id="category" label="Category" width='w-1/6' />
 
                         <FormSelect onChange={handlePerPageChange} options={allpaginationOptions} value={perPage} id={'per_page'} label="Per Page" width='w-1/6' />
+                        <Link href={route('universal-products.index')} className='flex items-center text-2xl justify-center bg-blue-500 text-white h-10 w-12 mt-7 rounded-lg '>
+                        <Tooltip content="Reset filter">
+                            <Icons name='reset' />
+                        </Tooltip>
+                        </Link>
 
                     </div>
                     {products.length == 0 && <div>

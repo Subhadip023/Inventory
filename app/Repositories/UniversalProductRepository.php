@@ -72,10 +72,11 @@ class UniversalProductRepository implements UniversalProductRepositoryInterface
             $query->where('shop_category_id', $filterData['shop_category_id']);
         }
 
-        if ($filterData['verified'] !== 'all') {
-                $query->where('verified', $filterData['verified']);
-        }
-     
+        if (array_key_exists('verified', $filterData) && $filterData['verified'] !== 'all') {
+    $query->where('verified', $filterData['verified']);
+}
+
+
 
 
         if ($perPage === 'all') {
