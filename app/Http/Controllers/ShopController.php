@@ -13,6 +13,7 @@ use App\Repositories\StateRepository;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\Interfaces\ShopCategoriesRepositoryInterface;
 
 
 class ShopController extends Controller
@@ -21,10 +22,11 @@ class ShopController extends Controller
      * Display a listing of the resource.
      */
 
-    public function __construct(CountryRepository $countryRepository,StateRepository $stateRepository,CityRepository $cityRepository){
+    public function __construct(CountryRepository $countryRepository,StateRepository $stateRepository,CityRepository $cityRepository,ShopCategoriesRepositoryInterface $shopCategoriesRepo){
         $this->countries=$countryRepository;
         $this->states=$stateRepository;
         $this->cities=$cityRepository;
+        $this->shop_cat_repo=$shopCategoriesRepo;
     }
     
     
@@ -51,8 +53,9 @@ class ShopController extends Controller
      */
     public function create()
     {
-        //resources\js\Pages\Shop\Create.jsx
-        return Inertia::render('Shop/Create',[...$this->getLocationData()]);
+        $all_shop_cats=$this->shop_cat_repo->allActiveCategoryIdName();
+        return Inertia::render('Shop/Create',[...$this->getLocationData(),'allShopCats'=>$all_shop_cats
+    ]);
     }
 
     /**

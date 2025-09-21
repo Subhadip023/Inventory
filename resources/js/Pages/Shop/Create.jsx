@@ -12,7 +12,7 @@ import { Link } from '@inertiajs/react';
 import { ToastContainer, toast } from 'react-toastify';
 import create_store from '@/Images/create_store.jpg'
 
-const Create = ({ allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
+const Create = ({ allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id,allShopCats }) => {
     const createForm = useForm({
         name: '',
         shop_email: '',
@@ -22,6 +22,7 @@ const Create = ({ allCountry, allState, allCity, defult_selected_country_id, def
         registration_number: '',
         registration_certificate: '',
         reg_upi_id: '',
+        category_id:null,
         logo: '',
         status: '',
         pincode: '',
@@ -99,7 +100,10 @@ const Create = ({ allCountry, allState, allCity, defult_selected_country_id, def
                         </div>
                         <div className='w-1/2 p-5 '>
                             <FormInput id='name' label='Name' type='text' placeholder='Enter Shop Name' value={createForm.data.name} onChange={(e) => createForm.setData('name', e.target.value)} error={createForm.errors.name} />
-                            <FormInput id='email' label='Email' type='email' placeholder='Enter Shop Email' error={createForm.errors.shop_email} value={createForm.data.shop_email} onChange={(e) => createForm.setData('shop_email', e.target.value)} />
+                            <div className='flex gap-x-2'>
+                                <FormInput id='email' label='Email' type='email' placeholder='Enter Shop Email' error={createForm.errors.shop_email} value={createForm.data.shop_email} onChange={(e) => createForm.setData('shop_email', e.target.value)} />
+                                <FormSelect id="shop_cat" label='Shop Category' options={[{id:null,name:'Select'},...allShopCats]} value={createForm.data.category_id} onChange={(e)=>createForm.setData('category_id',e.target.value)} error={createForm.errors.category_id}/>    
+                            </div>
                             <FormInput id='phone_number' label='Phone Number' type='number' placeholder='Enter Shop Phone Number' error={createForm.errors.shop_phone_number} value={createForm.data.shop_phone_number} onChange={(e) => createForm.setData('shop_phone_number', e.target.value)} />
                             <FormInput id='gst_number' label='GST Number' type='text' placeholder='Enter GST Number' error={createForm.errors.gst_number} value={createForm.data.gst_number} onChange={(e) => createForm.setData('gst_number', e.target.value)} />
                             <FormInput id='pan_number' label='PAN Number' type='text' placeholder='Enter PAN Number' error={createForm.errors.pan_number} value={createForm.data.pan_number} onChange={(e) => createForm.setData('pan_number', e.target.value)} />

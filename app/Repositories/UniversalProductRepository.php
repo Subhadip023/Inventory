@@ -73,11 +73,8 @@ class UniversalProductRepository implements UniversalProductRepositoryInterface
         }
 
         if (array_key_exists('verified', $filterData) && $filterData['verified'] !== 'all') {
-    $query->where('verified', $filterData['verified']);
-}
-
-
-
+            $query->where('verified', $filterData['verified']);
+        }
 
         if ($perPage === 'all') {
             $allProducts = $query->orderByDesc('id')->get();
