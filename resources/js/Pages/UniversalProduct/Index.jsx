@@ -32,6 +32,7 @@ const Index = ({ universalProducts, per_page, allCategory, filterData }) => {
     const [openProductFormModal, setOpenProductFormModal] = React.useState(false);
     const [perPage, setPerPage] = React.useState(filterData['per_page'] || 5);
     const [categoryId, setCategoryId] = React.useState(filterData['shop_category_id'] || null);
+    const [filterVarified, setFilerVarified] = useState(filterData['verified'] || 'all');
     const [searchText, setSerchText] = useState('');
     const paginationForm = useForm();
     const productActiation = useForm();
@@ -49,7 +50,13 @@ const Index = ({ universalProducts, per_page, allCategory, filterData }) => {
         setCategoryId(e.target.value)
         paginationForm.setData('shop_category_id', categoryId);
         paginationForm.setData('page', currentPage);
-        paginationForm.get(route('universal-products.index', { per_page: perPage, shop_category_id: e.target.value }));
+        paginationForm.get(route('universal-products.index', { per_page: perPage, shop_category_id: e.target.value, verified:filterVarified}));
+    }
+
+    const filterVarifiedChange = (e) => {
+        e.preventDefault()
+        setFilerVarified(e.target.value);
+        paginationForm.get(route('universal-products.index', { per_page: perPage, shop_category_id: categoryId,verified:e.target.value }));
     }
 
     const allpaginationOptions = paginationOptions.filter(option => {
@@ -74,14 +81,14 @@ const Index = ({ universalProducts, per_page, allCategory, filterData }) => {
     const onPageChange = (page) => {
         paginationForm.setData('page', page);
         console.log(categoryId)
-        paginationForm.get(route('universal-products.index', { page: page, per_page: perPage, shop_category_id: categoryId }));
+        paginationForm.get(route('universal-products.index', { page: page, per_page: perPage, shop_category_id: categoryId,verified:filterVarified }));
     };
 
     const handlePerPageChange = (e) => {
         const newPerPage = e.target.value;
         setPerPage(newPerPage);
         paginationForm.setData('per_page', newPerPage);
-        paginationForm.get(route('universal-products.index', { per_page: newPerPage, shop_category_id: categoryId }));
+        paginationForm.get(route('universal-products.index', { per_page: newPerPage, shop_category_id: categoryId ,verified:filterVarified}));
     }
 
     const handleProductVerification = (e) => {
@@ -209,6 +216,13 @@ const Index = ({ universalProducts, per_page, allCategory, filterData }) => {
                 </div>
                 <div className='w-full'>
                     <div className='flex items-center justify-end mb-2 gap-x-2'>
+                        <FormSelect onChange={filterVarifiedChange} options={
+                            [
+                                { id: 'all', name: "Select One" },
+                                { id: 1, name: "Varified" },
+                                { id: 0, name: "Not Varified" },
+                            ]
+                        } value={filterVarified} id="Varified" label="Varified" width='w-1/6' />
                         <FormSelect onChange={filterCategory} options={[{ id: "all", name: 'Select Category' }, ...allCategory]} value={categoryId} id="category" label="Category" width='w-1/6' />
 
                         <FormSelect onChange={handlePerPageChange} options={allpaginationOptions} value={perPage} id={'per_page'} label="Per Page" width='w-1/6' />
