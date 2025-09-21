@@ -11,7 +11,7 @@ class UpdateuniversalProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class UpdateuniversalProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'shop_category_id' => 'required|exists:shop_categories,id',
+            'verified' => 'boolean',
+            'id' => 'required|exists:universal_products,id',
         ];
     }
 }

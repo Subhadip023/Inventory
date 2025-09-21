@@ -22,6 +22,9 @@ class UniversalProductService implements UniversalProductServiceInterface{
     public function paginate(int $perPage=10){
         return $this->repository->paginate($perPage);
     }
+    public function filterProducts(array $filterData){
+        return $this->repository->filterProducts($filterData);
+    }
 
     public function getById(int $id)
     {

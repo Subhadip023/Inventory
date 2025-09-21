@@ -1,5 +1,5 @@
 import React from "react";
-import { Label, Textarea, TextInput } from "flowbite-react";
+import { Label, Textarea } from "flowbite-react";
 
 const FormTextArea = ({ 
   id, 
@@ -19,6 +19,7 @@ const FormTextArea = ({
       <Textarea
         id={id}
         type={type}
+        value={value}
         placeholder={placeholder}
         rows={4}
         onChange={onChange}

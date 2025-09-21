@@ -11,6 +11,7 @@ interface UniversalProductRepositoryInterface{
     public function update(int $id, array $data);
     public function delete(int $id);
     public function changeVarifyStatus(int $id);
+    public function filterProducts(array $filterData);
 
 }
 

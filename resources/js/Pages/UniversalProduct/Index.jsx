@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button, TextInput, Pagination, Tooltip } from "flowbite-react";
 import paginationOptions from '@/utils/paginationOptions';
@@ -15,45 +15,73 @@ import CancelButton from '@/Components/CancelButton';
 import SaveButton from '@/Components/SaveButton';
 import Modal from '@/Components/Modal';
 import FormTextArea from '@/Components/FormTextArea';
+import HighlightText from '@/Components/HighLightText';
 import Checkbox from '@/Components/Checkbox';
-const Index = ({ universalProducts, per_page, allCategory }) => {
+
+
+const Index = ({ universalProducts, per_page, allCategory, filterData }) => {
+
+    console.log(universalProducts)
+
     const [products, setProducts] = React.useState(universalProducts.data || []);
     const [currentPage, setCurrentPage] = React.useState(universalProducts.current_page || 1);
     const [totalPages, setTotalPages] = React.useState(universalProducts.links?.length - 2 || 1);
     const [openActiveConfirmationModal, setOpenActiveConfirmationModal] = React.useState(false);
     const [openInactiveConfirmationModal, setOpenInactiveConfirmationModal] = React.useState(false);
+    const [openConfirmProductDeleteModal, setOpenConfirmProductDeleteModal] = React.useState(false);
     const [openProductFormModal, setOpenProductFormModal] = React.useState(false);
-    const [perPage, setPerPage] = React.useState(per_page || 10);
+    const [perPage, setPerPage] = React.useState(filterData['per_page'] || 5);
+    const [categoryId, setCategoryId] = React.useState(filterData['shop_category_id'] || null);
+    const [searchText, setSerchText] = useState('');
     const paginationForm = useForm();
     const productActiation = useForm();
     const universalProductForm = useForm({
-        id: '',
         name: '',
         description: '',
         shop_category_id: '',
         verified: true,
     });
+
+
+
+    const filterCategory = (e) => {
+        e.preventDefault();
+        setCategoryId(e.target.value)
+        paginationForm.setData('shop_category_id', categoryId);
+        paginationForm.setData('page', currentPage);
+        paginationForm.get(route('universal-products.index', { per_page: perPage, shop_category_id: e.target.value }));
+    }
+
     const allpaginationOptions = paginationOptions.filter(option => {
         if (option.id == 'all') return true
         return option.id < universalProducts.total
     });
 
+    useEffect(() => {
+        setProducts(universalProducts.data || []);
+        setCurrentPage(universalProducts.current_page || 1);
+        setTotalPages(universalProducts.links?.length - 2 || 1);
+    }, [universalProducts]);
+
     const searchProduct = (e) => {
         e.preventDefault();
+        setSerchText(e.target.value);
         axios.post(route('universal-products.search', { search: e.target.value })).then(res => {
-            setProducts(res.data);
+            setProducts(res.data.data);
+            setTotalPages(res.data.total === 0 ? 1 : res.data.total);
         })
     }
     const onPageChange = (page) => {
         paginationForm.setData('page', page);
-        paginationForm.get(route('universal-products.index', { page: page, per_page: perPage }));
+        console.log(categoryId)
+        paginationForm.get(route('universal-products.index', { page: page, per_page: perPage, shop_category_id: categoryId }));
     };
 
     const handlePerPageChange = (e) => {
         const newPerPage = e.target.value;
         setPerPage(newPerPage);
         paginationForm.setData('per_page', newPerPage);
-        paginationForm.get(route('universal-products.index', { per_page: newPerPage }));
+        paginationForm.get(route('universal-products.index', { per_page: newPerPage, shop_category_id: categoryId }));
     }
 
     const handleProductVerification = (e) => {
@@ -74,48 +102,88 @@ const Index = ({ universalProducts, per_page, allCategory }) => {
         });
     }
 
-    const handelProductFormSubmit = (e) => { 
+    const handelProductFormSubmit = (e) => {
         e.preventDefault();
-        universalProductForm.post(route('universal-products.store'),{
-            onSuccess:()=>{
+        if (universalProductForm.data.id) {
+            universalProductForm.put(route('universal-products.update', { universal_product: universalProductForm.data.id }), {
+                onSuccess: () => {
+                    setOpenProductFormModal(false);
+                    universalProductForm.reset();
+                },
+                onError: (errors) => {
+                    console.log(errors);
+                    setOpenProductFormModal(true);
+
+                },
+
+            })
+            return;
+        }
+        universalProductForm.post(route('universal-products.store'), {
+            onSuccess: () => {
                 setOpenProductFormModal(false);
                 universalProductForm.reset();
             },
-            onError:(errors)=>{
+            onError: (errors) => {
                 console.log(errors);
+                setOpenProductFormModal(true);
+
             },
-            onFinish:()=>{
-                paginationForm.get(route('universal-products.index',{per_page:perPage,page:currentPage}));
+
+
+
+        })
+    }
+
+    const deleteProductSubmit = (e) => {
+        e.preventDefault();
+        universalProductForm.delete(route('universal-products.destroy', { universal_product: universalProductForm.data.id }), {
+            onSuccess: () => {
+                setOpenConfirmProductDeleteModal(false);
+                universalProductForm.reset();
+            },
+            onError: (errors) => {
+                console.log(errors);
+                setOpenConfirmProductDeleteModal(true);
+
             }
         })
     }
 
     return (
         <SuperAdminDashboardLayout>
+            {/* delete universal product ConfirmModal  */}
+
+            <ConfirmModal open={openConfirmProductDeleteModal} onCancel={() => setOpenConfirmProductDeleteModal(false)} title={'Delete Product '} message={`Do You want to delete ${universalProductForm.data.name} ?`} confirmText='Delete' onConfirm={deleteProductSubmit} />
+
             {/* Add and Edit product form */}
 
             <Modal show={openProductFormModal} onClose={() => setOpenProductFormModal(false)} maxWidth='md:w-1/3' >
                 <div className=' mx-10 my-5 '>
                     <div>
                         <h2 className="text-3xl md:text-4xl font-serif text-mainColor font-bold text-straight my-6 md:my-10">
-                            Add Product
+                            {universalProductForm.data.id ? "Edit" : "Add"} Product
                         </h2>
                     </div>
                     <div>
                         <FormInput id='name' label=' Name' type='text' placeholder=' Name' value={universalProductForm.data.name} onChange={(e) => universalProductForm.setData('name', e.target.value)} error={universalProductForm.errors.name} />
-                        <FormTextArea id={'description'} label="Description" type='textarea' value={universalProductForm.data.description} onChange={(e) => universalProductForm.setData('description', e.target.value)} placeholder='Description' />
-                        <FormSelect id='shop_category_id' label='Category' options={[{ id: null, name: 'Select Category' }, ...allCategory]} value={universalProductForm.data.shop_category_id} onChange={(e) => universalProductForm.setData('shop_category_id', e.target.value)} />
-                            <div className='my-5 flex items-center gap-x-2'>
-                            <Checkbox checked={universalProductForm.data.verified}  onChange={
-                                (e)=>universalProductForm.setData('verified',e.target.checked)
-                            }/> verified
+                        <FormTextArea id={'description'} label="Description" type='textarea' value={universalProductForm.data.description} onChange={(e) => universalProductForm.setData('description', e.target.value)} placeholder='Description' error={universalProductForm.errors.description} />
+                        <FormSelect id='shop_category_id' label='Category' options={[{ id: 'all', name: 'Select Category' }, ...allCategory]} value={universalProductForm.data.shop_category_id} onChange={(e) => universalProductForm.setData('shop_category_id', e.target.value)} error={universalProductForm.errors.shop_category_id} />
+                        <div className='my-5 flex items-center gap-x-2'>
+                            <Checkbox checked={universalProductForm.data.verified} onChange={
+                                (e) => universalProductForm.setData('verified', e.target.checked)
+                            } /> verified
+
+                            <div>
+                                {universalProductForm.errors.verified && <div className="text-red-500">{universalProductForm.errors.verified}</div>}
+                            </div>
                         </div>
                     </div>
 
 
                     <div className='flex justify-end items-center gap-x-2 my-5'>
                         <CancelButton onClick={() => { setOpenProductFormModal(false); universalProductForm.reset(); }}>Cancel</CancelButton>
-                        <SaveButton onClick={handelProductFormSubmit}>Save</SaveButton>
+                        <SaveButton disable={universalProductForm.processing} onClick={handelProductFormSubmit}>Save</SaveButton>
                     </div>
                 </div>
             </Modal>
@@ -140,8 +208,11 @@ const Index = ({ universalProducts, per_page, allCategory }) => {
                     </AddButton>
                 </div>
                 <div className='w-full'>
-                    <div className='flex items-center justify-end mb-2'>
-                        <FormSelect onChange={handlePerPageChange} options={allpaginationOptions} defaultValue={perPage} label="Per Page" width='w-1/6' />
+                    <div className='flex items-center justify-end mb-2 gap-x-2'>
+                        <FormSelect onChange={filterCategory} options={[{ id: "all", name: 'Select Category' }, ...allCategory]} value={categoryId} id="category" label="Category" width='w-1/6' />
+
+                        <FormSelect onChange={handlePerPageChange} options={allpaginationOptions} value={perPage} id={'per_page'} label="Per Page" width='w-1/6' />
+
                     </div>
                     {products.length == 0 && <div>
                         No products found
@@ -167,10 +238,14 @@ const Index = ({ universalProducts, per_page, allCategory }) => {
                                             {products.id}
                                         </TableCell>
                                         <TableCell className="whitespace-nowrap py-4">
-                                            {products.name}
+                                            {/* {products.name} */}
+                                            <HighlightText text={products.name} search={searchText} />
                                         </TableCell>
                                         <TableCell className=" py-4 ">
-                                            {products.description}
+                                            {products.description == null ? 'No Description' : <HighlightText text={products.description} search={searchText} />
+                                            }
+
+
                                         </TableCell>
                                         <TableCell className=" py-4 ">
                                             {products.category ? products.category.name : 'N/A'}
@@ -192,6 +267,25 @@ const Index = ({ universalProducts, per_page, allCategory }) => {
                                         </TableCell>
 
                                         <TableCell className="whitespace-nowrap py-4">
+                                            <button onClick={() => {
+                                                universalProductForm.setData('id', products.id);
+                                                universalProductForm.setData('name', products.name);
+                                                universalProductForm.setData('description', products.description);
+                                                universalProductForm.setData('shop_category_id', products.shop_category_id);
+                                                universalProductForm.setData('verified', products.verified);
+                                                setOpenProductFormModal(true);
+                                            }}>
+                                                <Icons name='edit' />
+                                            </button>
+
+                                            <button onClick={() => {
+                                                universalProductForm.reset();
+                                                universalProductForm.setData('id', products.id);
+                                                universalProductForm.setData('name', products.name);
+                                                setOpenConfirmProductDeleteModal(true);
+                                            }}>
+                                                <Icons name='delete' />
+                                            </button>
 
                                         </TableCell>
                                     </TableRow>

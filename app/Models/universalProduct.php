@@ -9,7 +9,7 @@ class universalProduct extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description','shop_category_id','verified'];
+    protected $fillable = ['name','slug', 'description','shop_category_id','verified'];
 
     public function category()
     {

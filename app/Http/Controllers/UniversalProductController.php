@@ -26,18 +26,21 @@ class UniversalProductController extends Controller
 
     public function index(Request $request)
     {
-        $per_page = $request->input('per_page',5);
-
-        if ($per_page == 'all') {
-            $products = $this->service->getAll();
-        } else {
-            $products = $this->service->paginate($per_page);
+        $filterData=$request->all();
+        if (!empty($filterData['shop_category_id'])) {
+        $filterData['shop_category_id']=$filterData['shop_category_id'] =="all"?null:$filterData['shop_category_id'];
+        }
+        if (count(value: $filterData)>0) {
+            $products = $this->service->filterProducts($filterData);
+        }else{
+            $products=$this->service->paginate(5);
         }
         $allCategory = $this->shopCategoryRepository->allActiveCategoryIdName();
         return Inertia::render('UniversalProduct/Index', [
             'universalProducts' => $products,
-            'per_page' => $per_page,
+            'per_page' => $per_page??5,
             'allCategory' => $allCategory,
+            'filterData' =>$filterData,
         ]);
     }
 
@@ -53,7 +56,12 @@ class UniversalProductController extends Controller
      */
     public function store(StoreuniversalProductRequest $request)
     {
-        dd($request->all());
+        $data=$request->validated();
+        $data['slug']=\Str::slug($data['name'],'-');
+
+        $this->service->create($data);
+        return redirect()->back()->with('success', 'Universal Product created successfully.');
+        
     }
 
     /**
@@ -75,17 +83,21 @@ class UniversalProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateuniversalProductRequest $request, universalProduct $universalProduct)
+    public function update(UpdateuniversalProductRequest $request,$universal_product)
     {
-        //
+        $data=$request->validated();
+        $this->service->update($universal_product,$data);
+        return redirect()->route('universal-products.index')->with('success', 'Universal Product updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(universalProduct $universalProduct)
+    public function destroy($universal_product)
     {
-        //
+    
+        $this->service->delete($universal_product);
+        return redirect()->back()->with('success', 'Universal Product deleted successfully.');
     }
     
     public function changeVarifyStatus(Request $request)

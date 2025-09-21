@@ -22,7 +22,10 @@ class StoreuniversalProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'shop_category_id' => 'required|exists:shop_categories,id',
+            'verified' => 'boolean',
         ];
     }
 }
