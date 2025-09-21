@@ -66,7 +66,7 @@ const Welcome = ({ stores }) => {
                                     renderImage={() => (
                                         <img
                                             className="rounded-md w-32 mx-auto mt-2"
-                                            src={store.logo ? '/storage/' + store.logo : defultImgCDNs.defaultLogoCDN}
+                                            src={'/storage/' + store.logo || defultImgCDNs.defaultLogoCDN}
                                             alt="store logo"
                                         />
                                     )}

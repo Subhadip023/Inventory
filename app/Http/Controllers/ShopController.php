@@ -146,7 +146,7 @@ class ShopController extends Controller
 
     public function editShopeImage(Request $request)
     {
-        return redirect()->back()->with('success', 'Logo updated successfully.');
+
         $shop = Shop::find($request->shop_id);
 
         if (!$shop) {
