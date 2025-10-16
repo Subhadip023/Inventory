@@ -22,7 +22,7 @@ use App\Http\Controllers\UniversalProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', action: function () {
     if(auth()->user()->hasRole('super-admin')){
         return redirect()->route('superadmin.dashboard');
     }
@@ -76,12 +76,13 @@ Route::prefix('superadmin')
     ->middleware(['auth', 'role:super-admin'])
     ->group(function () {
         Route::get('dashboard', [HomeController::class, 'superadminDashboard'])->name('superadmin.dashboard');
-        Route::resource('role', RoleController::class);
+        Route::resource('role', controller: RoleController::class);
         Route::resource('permission', PermissionController::class);
         Route::resource('universal-products', UniversalProductController::class);
         Route::post('universal-products-search', [UniversalProductController::class, 'search'])->name('universal-products.search');
         Route::post('universal-products-change-status', [UniversalProductController::class, 'changeVarifyStatus'])->name('universal-products.changeVarifyStatus');
         Route::resource('shop-categories', ShopCategoriesController::class);
+        
     });
 
 

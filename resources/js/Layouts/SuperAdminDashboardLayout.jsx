@@ -127,7 +127,7 @@ export default function DashboardLayout({ children, head }) {
                 </span>
               </DropdownHeader>
               <DropdownItem>Dashboard</DropdownItem>
-              <DropdownItem>Settings</DropdownItem>
+              <DropdownItem as={Link} href={route('settings.index')}>Settings</DropdownItem>
               <DropdownItem>Earnings</DropdownItem>
               <DropdownDivider />
               <DropdownItem onClick={signOut}>Sign out</DropdownItem>
