@@ -323,7 +323,7 @@ const Index = ({ users, allCountry, defult_selected_country_id, allState, allCit
         <h1 className='text-2xl font-bold '>All Users</h1>
         <Button color="green" onClick={() => setAddUserModal(true)}>Add User</Button>
       </div>
-<CardContainer>
+      <CardContainer>
         <Table hoverable>
           <TableHead>
             <TableRow>
@@ -344,7 +344,8 @@ const Index = ({ users, allCountry, defult_selected_country_id, allState, allCit
                   <div className="text-sm text-gray-900">{user.name} - {userType[user.user_type]}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">      <Avatar img={`${user.profile_image ? '/storage/' + user.profile_image : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}`} />
+                  <div className="text-sm text-gray-900">
+                    <Avatar img={`${user.profile_image ? '/storage/' + user.profile_image : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}`} />
                   </div>
                 </TableCell>
 
@@ -366,7 +367,10 @@ const Index = ({ users, allCountry, defult_selected_country_id, allState, allCit
 
           </TableBody>
         </Table>
-</CardContainer>    </DashboardLayout>
+      </CardContainer>   
+      
+      
+       </DashboardLayout>
   );
 }
 

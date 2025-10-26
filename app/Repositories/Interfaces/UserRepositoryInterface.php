@@ -1,18 +1,13 @@
 <?php 
 namespace App\Repositories\Interfaces;
-use App\Models\UniversalProduct;
-use Illuminate\Database\Eloquent\Collection;
-interface UniversalProductRepositoryInterface{
+
+interface UserRepositoryInterface{
 
     public function all();
     public function paginate(int $per_page=10);
     public function findById(int $id);
-    public function search(str $search);
     public function create(array $data);
     public function update(int $id, array $data);
     public function delete(int $id);
-    public function changeVarifyStatus(int $id);
-    public function filterProducts(array $filterData);
-
 }
 

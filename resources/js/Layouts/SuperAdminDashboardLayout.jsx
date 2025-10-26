@@ -86,6 +86,9 @@ export default function DashboardLayout({ children, head }) {
               <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} icon={HiUser}>
                 Role
               </SidebarItem>
+              <SidebarItem as={Link} href={route('superadmin.users.index')} active={route().current('superadmin.users.index')} icon={HiUser}>
+                Users
+              </SidebarItem>
 
               <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
                 Shop Categories
@@ -144,7 +147,7 @@ export default function DashboardLayout({ children, head }) {
         </Navbar>
 
         {/* Main content goes here */}
-        <div className="flex h-full   p-4 overflow-auto bg-blue-50  dark:bg-gray-600">
+        <div className="flex h-full  p-4 overflow-auto bg-blue-50  dark:bg-gray-600">
           {children}    </div>
       </section>
     </section>

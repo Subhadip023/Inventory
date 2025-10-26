@@ -63,7 +63,6 @@ class UserController extends Controller
 
         $userData=$request->validated();
         $userData['added_by']=auth()->user()->id;
-                // dd($userData['profile_image']);
         if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
 
@@ -77,12 +76,16 @@ class UserController extends Controller
             // Save only relative path or filename in DB
             // $userData['profile_image'] = $path;
             $userData['profile_image'] = $path;
+            $path=Storage::putFileAs('profile_image', $file, $file_name);
+
         }
         // dd($userData);
 
-        $path=Storage::putFileAs('profile_image', $file, $file_name);
         unset($userData['confirm_password']);
-        User::create($userData);
+        $userRole=$userData['user_type'];
+        unset($userData['user_type']);
+        $user=User::create($userData);
+        $user->assignRole($userRole);
         return redirect()->route('users.index')->with('success', 'User created successfully.');
         }catch(\Exception $e){
             logger()->error($e->getMessage());

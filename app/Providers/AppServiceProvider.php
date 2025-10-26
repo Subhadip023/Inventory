@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Interfaces\ShopCategoriesRepositoryInterface;
 use App\Repositories\ShopCategoryRepository;
-
+use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\UserRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -34,6 +35,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UniversalProductServiceInterface::class,
             UniversalProductService::class
+        );
+
+        $this->app->bind(
+           UserRepositoryInterface::class,
+           UserRepository::class
         );
     }
 
