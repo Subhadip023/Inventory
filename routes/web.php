@@ -72,18 +72,7 @@ Route::prefix('shops/{shopId}')->group(function () {
 
 
 
-Route::prefix('superadmin')
-    ->middleware(['auth', 'role:super-admin'])
-    ->group(function () {
-        Route::get('dashboard', [HomeController::class, 'superadminDashboard'])->name('superadmin.dashboard');
-        Route::resource('role', controller: RoleController::class);
-        Route::resource('permission', PermissionController::class);
-        Route::resource('universal-products', UniversalProductController::class);
-        Route::post('universal-products-search', [UniversalProductController::class, 'search'])->name('universal-products.search');
-        Route::post('universal-products-change-status', [UniversalProductController::class, 'changeVarifyStatus'])->name('universal-products.changeVarifyStatus');
-        Route::resource('shop-categories', ShopCategoriesController::class);
-        
-    });
+
 
 
 
@@ -94,3 +83,4 @@ Route::get('/php-info', function () {
 
 
 require __DIR__.'/auth.php';
+require __DIR__.'/superadmin.php';

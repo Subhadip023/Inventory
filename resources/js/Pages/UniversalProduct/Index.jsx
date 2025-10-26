@@ -21,7 +21,7 @@ import Checkbox from '@/Components/Checkbox';
 
 const Index = ({ universalProducts, per_page, allCategory, filterData }) => {
 
-    console.log(universalProducts)
+    // console.log(universalProducts)
 
     const [products, setProducts] = React.useState(universalProducts.data || []);
     const [currentPage, setCurrentPage] = React.useState(universalProducts.current_page || 1);

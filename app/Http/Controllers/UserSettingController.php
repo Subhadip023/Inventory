@@ -13,7 +13,7 @@ class UserSettingController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Settings/Store');
+        return Inertia::render('Users/Settings');
     }
 
     /**
@@ -31,7 +31,9 @@ class UserSettingController extends Controller
     {
         $userSettingData = $request->validated();
         $userSettingData['user_id'] = auth()->user()->id;
-
+        if ($userSettingData['theme'] ) {
+            session(['theme_mode' => $userSettingData['theme']]);
+        }
         UserSetting::updateOrCreate($userSettingData);
 
         return redirect()->back()->with('success', 'Settings saved successfully.');

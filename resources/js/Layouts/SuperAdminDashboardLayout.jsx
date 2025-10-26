@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import { Alert } from "flowbite-react";
 import { Avatar } from "flowbite-react";
-import AdminSideBar from '@/Components/AdminSideBar';
 import { useForm } from '@inertiajs/react';
 import {
   Dropdown,
@@ -18,18 +17,18 @@ import {
   SidebarItems,
   SidebarItem,
   SidebarItemGroup,
-  
+
 } from "flowbite-react";
 
 import {
-    HiArrowSmRight,
-    HiChartPie,
-    HiInbox,
-    HiOutlineMinusSm,
-    HiOutlinePlusSm,
-    HiShoppingBag,
-    HiTable,
-    HiUser,
+  HiArrowSmRight,
+  HiChartPie,
+  HiInbox,
+  HiOutlineMinusSm,
+  HiOutlinePlusSm,
+  HiShoppingBag,
+  HiTable,
+  HiUser,
 } from "react-icons/hi";
 import { FaStore } from 'react-icons/fa';
 
@@ -37,18 +36,19 @@ import { FaStore } from 'react-icons/fa';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
-import { ToastContainer , toast} from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
 export default function DashboardLayout({ children, head }) {
   const { flash } = usePage().props;
   const user = usePage().props.auth.user;
-  const {theme_mode} = usePage().props;
+  const { theme_mode } = usePage().props;
   const [showSidebar, setShowSidebar] = useState(true);
   const form = useForm({
 
   });
+  console.log(theme_mode);
 
   useEffect(() => {
     document.body.className = theme_mode;
@@ -57,8 +57,8 @@ export default function DashboardLayout({ children, head }) {
   useEffect(() => {
     if (flash.success) toast.success(flash.success);
     if (flash.error) toast.error(flash.error);
-    if(flash.warning) toast.warning(flash.warning);
-    if(flash.info) toast.info(flash.info);
+    if (flash.warning) toast.warning(flash.warning);
+    if (flash.info) toast.info(flash.info);
   }, [flash]);
 
   const signOut = () => {
@@ -70,33 +70,33 @@ export default function DashboardLayout({ children, head }) {
     <section className="flex h-screen ">
       <Head title={head || 'Dashboard'} />
       <ToastContainer />
-    
 
-      <section className= {`h-screen shadow-md transition-all duration-300 ease-in-out 
+
+      <section className={`h-screen shadow-md transition-all duration-300 ease-in-out 
                   ${showSidebar ? 'w-64' : 'w-0 overflow-hidden'} sticky top-0 `}>
-                  <Sidebar aria-label="Sidebar with multi-level dropdown example">
-                      <SidebarItems>
-                          <SidebarItemGroup>
-                              <SidebarItem as={Link} href={route('dashboard')} icon={HiChartPie} active={route().current('dashboard')}>
-                                  Dashboard
-                              </SidebarItem>
-                              <SidebarItem as={Link} href={route('universal-products.index')} active={route().current('universal-products.index')} icon={HiShoppingBag}>
-                                  Universal Products
-                              </SidebarItem>    
-                              <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} icon={HiUser}>
-                                  Role
-                              </SidebarItem>  
-                              
-                              <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
-                                  Shop Categories
-                              </SidebarItem>    
+        <Sidebar aria-label="Sidebar with multi-level dropdown example" className='dark:bg-gray-800'>
+          <SidebarItems>
+            <SidebarItemGroup>
+              <SidebarItem as={Link} href={route('dashboard')} icon={HiChartPie} active={route().current('dashboard')}>
+                Dashboard
+              </SidebarItem>
+              <SidebarItem as={Link} href={route('universal-products.index')} active={route().current('universal-products.index')} icon={HiShoppingBag}>
+                Universal Products
+              </SidebarItem>
+              <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} icon={HiUser}>
+                Role
+              </SidebarItem>
 
-                              <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
-                            Sign Out
-                        </SidebarItem>
-                          </SidebarItemGroup>
-                      </SidebarItems>
-                  </Sidebar>
+              <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
+                Shop Categories
+              </SidebarItem>
+
+              <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
+                Sign Out
+              </SidebarItem>
+            </SidebarItemGroup>
+          </SidebarItems>
+        </Sidebar>
       </section>
 
       <section
@@ -105,7 +105,7 @@ export default function DashboardLayout({ children, head }) {
       >
         <Navbar className="z-10 shadow-md sticky top-0">
           <RxHamburgerMenu
-            className="hover:cursor-pointer scale-105"
+            className="hover:cursor-pointer hover:scale-105 dark:text-white"
             onClick={() => setShowSidebar(!showSidebar)}
           />
           <div className="flex md:order-2">
@@ -115,7 +115,7 @@ export default function DashboardLayout({ children, head }) {
               label={
                 <Avatar
                   alt="User settings"
-                  img={user.profile_image?'/storage/'+user.profile_image:'https://cdn.pixabay.com/photo/2017/11/10/05/46/user-2935524_960_720.png'}
+                  img={user.profile_image ? '/storage/' + user.profile_image : 'https://cdn.pixabay.com/photo/2017/11/10/05/46/user-2935524_960_720.png'}
                   rounded
                 />
               }
