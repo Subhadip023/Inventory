@@ -93,7 +93,13 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
                   <div className="text-sm text-gray-900">{user.phone_number || "N/A"}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{user.full_address || "N/A"}</div>
+                  <div className="text-sm text-gray-900">
+                    {user.full_address
+                      ? user.full_address.length > 20
+                        ? user.full_address.slice(0, 20) + "..."
+                        : user.full_address
+                      : "N/A"}
+                  </div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4 flex items-center justify-center gap-x-2 ">
                   edit
