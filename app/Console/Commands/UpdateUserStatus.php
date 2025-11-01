@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User;
+use App\Models\UserStatus;
 use Carbon\Carbon;
+use Workbench\App\Models\User as ModelsUser;
 
 class UpdateUserStatus extends Command
 {
@@ -14,26 +16,29 @@ class UpdateUserStatus extends Command
     public function handle()
     {
         $now = Carbon::now();
+        $online = UserStatus::find(1);
+        $away = UserStatus::find(5);
+        $offline = UserStatus::find(7);
+        $users=User::whereNull('manual_status_id')->get();
+    
 
-        // Find users who were active more than 5 minutes ago
-        $inactiveUsers = User::where('status', 'active')
-            ->where('last_activity_at', '<', $now->subMinutes(5))
-            ->where('manual_status_set', false)
-            ->get();
+            foreach ($users as $user) {
+            if (!$user->last_activity_at) {
+                $user->user_status_id = $offline->id;
+                $user->save();
+                continue;
+            }
 
-        foreach ($inactiveUsers as $user) {
-            $user->status = 'inactive';
-            $user->save();
-        }
+            $diff = $now->diffInMinutes($user->last_activity_at);
 
-        //  Find users who were active more than 30 minutes ago
-        $offlineUsers = User::where('status', 'inactive')
-            ->where('last_activity_at', '<', $now->subMinutes(30))
-            ->where('manual_status_set', false)
-            ->get();
+            if ($diff <= 2) {
+                $user->user_status_id = $online->id;
+            } elseif ($diff <= 5) {
+                $user->user_status_id = $away->id;
+            } else {
+                $user->user_status_id = $offline->id;
+            }
 
-        foreach ($offlineUsers as $user) {
-            $user->status = 'offline';
             $user->save();
         }
         $this->info('User statuses updated successfully!');

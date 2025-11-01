@@ -22,7 +22,7 @@ use App\Http\Controllers\UniversalProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/dashboard', action: function () {
+Route::get('/dashboard',  function () {
     if(auth()->user()->hasRole('super-admin')){
         return redirect()->route('superadmin.dashboard');
     }
@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
 Route::resource('orders', OrderController::class)->middleware('auth');
 Route::resource('users', UserController::class)->middleware('auth');
 Route::post('users-add-profile', [UserController::class, 'addProfile'])->name('user.profile.add')->middleware('auth');
+Route::post('users-status-change', [UserController::class, 'statusChange'])->name('user.status.change')->middleware('auth');
 
 Route::post('/getCity', [CountryStateCityController::class, 'getCity'])->name('getCity');
 

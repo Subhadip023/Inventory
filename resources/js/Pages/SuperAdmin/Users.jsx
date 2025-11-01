@@ -15,6 +15,7 @@ import { formatToIST } from "@/utils/formatToIST";
 import AdduserModal from '@/Components/AdduserModal';
 const Users = ({ allusers, allCountry, defult_selected_country_id, allState, allCity, defult_selected_state_id, allRoles }) => {
   const [addUserModal, setAddUserModal] = React.useState(false);
+  console.log(allusers);
   return (
     <SuperAdminDashboardLayout head={'Users'}>
       <AdduserModal open={addUserModal} setOpen={setAddUserModal} allCountry={allCountry} defult_selected_country_id={defult_selected_country_id} allState={allState} allCity={allCity} defult_selected_state_id={defult_selected_state_id} allRoles={allRoles} />
@@ -29,6 +30,7 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
               <TableHeadCell>Name</TableHeadCell>
               <TableHeadCell>Profile</TableHeadCell>
               <TableHeadCell>Status</TableHeadCell>
+              <TableHeadCell>Manual Status</TableHeadCell>
               <TableHeadCell>Role</TableHeadCell>
               <TableHeadCell>Active At</TableHeadCell>
               <TableHeadCell>Email</TableHeadCell>
@@ -53,6 +55,9 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
 
                 <TableCell className="whitespace-nowrap py-4">
                   <div className="text-sm text-gray-900  dark:text-white">{user.status?.name || "N/A"}</div>
+                </TableCell>
+                <TableCell className="whitespace-nowrap py-4">
+                  <div className="text-sm text-gray-900  dark:text-white">{user.manual_status?.name || "N/A"}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
                   <div className="text-sm text-gray-900  dark:text-white">{user.roles?.map((role) => role.name).join(', ') || "N/A"}</div>

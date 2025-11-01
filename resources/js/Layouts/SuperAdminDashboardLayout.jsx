@@ -33,18 +33,21 @@ import { useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserActivity from '@/Components/UserActivity';
 
 
 export default function DashboardLayout({ children, head }) {
   const { flash } = usePage().props;
   const user = usePage().props.auth.user;
+  const { user_status } = usePage().props;
+
   const { theme_mode } = usePage().props;
   const [showSidebar, setShowSidebar] = useState(true);
   const [status, setStatus] = useState(user.status);
   const form = useForm({
 
   });
-  console.log(theme_mode);
+
 
   useEffect(() => {
     document.body.className = theme_mode;
@@ -61,6 +64,7 @@ export default function DashboardLayout({ children, head }) {
     // event.preventDefault();
     form.post(route('logout'));
   };
+
 
   const handelStatusChange = (e) => {
     const status = e.target.value;
@@ -122,43 +126,52 @@ export default function DashboardLayout({ children, head }) {
               arrowIcon={false}
               inline
               label={
-                <Avatar
-                  alt="User settings"
-                  img={user.profile_image ? '/storage/' + user.profile_image : 'https://cdn.pixabay.com/photo/2017/11/10/05/46/user-2935524_960_720.png'}
-                  rounded
-                />
+                <div className="flex flex-col items-center">
+                  <Avatar
+                    alt="User settings"
+                    img={
+                      user.profile_image
+                        ? '/storage/' + user.profile_image
+                        : 'https://cdn.pixabay.com/photo/2017/11/10/05/46/user-2935524_960_720.png'
+                    }
+                    rounded
+                  />
+                  <div
+                    className="relative -top-3 -right-4 -mb-2"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        user_status && user_status.length > 0
+                          ? user_status[
+                            user.manual_status_id
+                              ? user.manual_status_id - 1
+                              : user.user_status_id - 1
+                          ].svg
+                          : '',
+                    }}
+                  />
+
+
+                </div>
               }
             >
               <DropdownHeader>
                 <span className="block text-sm">{user.name}</span>
-                <span className="block truncate text-sm font-medium">
-                  {user.email}
-                </span>
+                <span className="block truncate text-sm font-medium">{user.email}</span>
               </DropdownHeader>
-              {/* user status show here */}
-              <div className='mx-2'>
-                <div className="flex flex-col space-y-1">
-                  <select
-                    value={status}
-                    className=" rounded-md text-sm p-1 mt-1"
-                    onChange={handelStatusChange}
-                  >
-                    <option value="active">🟢 Active</option>
-                    <option value="away">🟡 Away</option>
-                    <option value="busy">🔴 Busy</option>
-                    <option value="offline">⚫ Offline</option>
-                  </select>
-                </div>
-              </div>
+
+              <UserActivity />
 
               <DropdownItem>Dashboard</DropdownItem>
-              <DropdownItem as={Link} href={route('settings.index')}>Settings</DropdownItem>
+              <DropdownItem as={Link} href={route('settings.index')}>
+                Settings
+              </DropdownItem>
               <DropdownItem>Earnings</DropdownItem>
               <DropdownDivider />
               <DropdownItem onClick={signOut}>Sign out</DropdownItem>
             </Dropdown>
             <NavbarToggle />
           </div>
+
           <NavbarCollapse>
             <NavbarLink href="#" active>Home</NavbarLink>
             <NavbarLink href="#">About</NavbarLink>

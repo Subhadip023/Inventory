@@ -11,6 +11,7 @@ use App\Repositories\StateRepository;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
 
 class UserController extends Controller
@@ -19,10 +20,18 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
 
-    public function __construct(CountryRepository $countryRepository,StateRepository $stateRepository,CityRepository $cityRepository){
+    private $countries;
+    private $states;
+    private $cities;
+    private $userRepository;
+    private $currentUser;
+
+    public function __construct(CountryRepository $countryRepository,StateRepository $stateRepository,CityRepository $cityRepository,UserRepositoryInterface $userRepository)   {
         $this->countries=$countryRepository;
         $this->states=$stateRepository;
         $this->cities=$cityRepository;
+        $this->userRepository=$userRepository;
+        $this->currentUser=auth()->user();
     }
     public function getLocationData()
     {
@@ -179,5 +188,17 @@ public function update(UpdateUserRequest $request, User $user)
 
     return redirect()->back()->with('success', 'Profile Image updated successfully.');
 }
+
+public function statusChange(Request $request){
+    $status=(int) $request->status;
+    $change=$this->userRepository->changeStatus($this->currentUser->id,$status);
+    if ($change) {
+        return redirect()->back()->with('success', 'Status changed successfully.');
+    }else{
+        return redirect()->back()->with('error', 'Failed to change status.');
+    }
+}
+
+
 
 }

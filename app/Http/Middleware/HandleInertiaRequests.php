@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-
+use App\Models\UserStatus;
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'current_shop'=>session()->get('current_shop') ?? null,
             'theme_mode'=>session()->get('theme_mode') ?? 'light',
+            'user_status'=>UserStatus::where('show', true)->get(),
         ];
     }
 }

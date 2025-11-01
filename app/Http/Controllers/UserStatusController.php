@@ -29,7 +29,14 @@ class UserStatusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id=$request->id;
+        $status=UserStatus::find($id);
+        $status->name=$request->name;
+        $status->manual=$request->manual;
+        $status->show=$request->show;
+        $status->svg=$request->svg;
+        $status->save();
+        return redirect()->route('superadmin.users-status.index')->with('success', 'Status updated successfully.');
     }
 
     /**
