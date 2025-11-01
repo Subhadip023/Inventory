@@ -54,6 +54,11 @@ class UserStatusSeeder extends Seeder
                 'name' => 'Offline',
                 'manual' => 0,
                 'description' => 'User is inactive/logged out',
+            ],[
+                'id' => 8,
+                'name' => 'logout',
+                'manual' => 0,
+                'description' => 'User is logged out',
             ],
         ]);
     }

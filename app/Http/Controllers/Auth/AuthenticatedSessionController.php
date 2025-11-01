@@ -43,7 +43,7 @@ class AuthenticatedSessionController extends Controller
     {
         $user=Auth::user();
         $user->last_activity_at=now();
-        $user->status=$user->manual_status_set ? $user->status : 'logout';
+        $user->user_status_id=8;
         $user->save();
         Auth::guard('web')->logout();
 
