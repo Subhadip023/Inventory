@@ -12,7 +12,7 @@ class UpdateUserActivity
     {
         if (Auth::check()) {
             $user = Auth::user();
-            $user->status = $user->manual_status_set ? $user->status : 'active';
+            $user->user_status_id = 1;
             $user->last_activity_at = now();
             $user->save();
         }

@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\superadminUsers;
 use App\Http\Controllers\UniversalProductController;
+use App\Http\Controllers\UserStatusController;
 
 Route::prefix('superadmin')
     ->middleware(['auth', 'role:super-admin'])
@@ -27,4 +28,5 @@ Route::prefix('superadmin')
     ->group(function () {
         Route::get('dashboard', [HomeController::class, 'superadminDashboard'])->name('dashboard');
         Route::resource('users',superadminUsers::class);        
+        Route::resource('users-status',UserStatusController::class);        
 });

@@ -11,7 +11,7 @@ use App\Repositories\CityRepository;
 use App\Repositories\StateRepository;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
-
+use App\Models\UserStatus;
 
 class User extends Authenticatable
 {
@@ -93,6 +93,16 @@ class User extends Authenticatable
     public function shops(){
         return $this->hasMany(Shop::class);
     }
+
+    public function status(){
+        return $this->belongsTo(UserStatus::class,'user_status_id');
+    }
+
+    public function manualStatus()
+    {
+        return $this->belongsTo(UserStatus::class, 'manual_status_id');
+    }
+
 
 
  

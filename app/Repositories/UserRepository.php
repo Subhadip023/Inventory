@@ -9,7 +9,7 @@ class UserRepository implements UserRepositoryInterface
 {
     public function all()
     {
-        return User::with('roles')->get();
+        return User::with('roles','status')->get();
     }
     public function paginate(int $per_page = 10)
     {
@@ -41,4 +41,5 @@ class UserRepository implements UserRepositoryInterface
         }
         return false;
     }
+    
 }

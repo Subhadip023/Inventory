@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/react';
 import { Alert } from "flowbite-react";
 import { Avatar } from "flowbite-react";
 import { useForm } from '@inertiajs/react';
+
 import {
   Dropdown,
   DropdownDivider,
@@ -45,6 +46,7 @@ export default function DashboardLayout({ children, head }) {
   const user = usePage().props.auth.user;
   const { theme_mode } = usePage().props;
   const [showSidebar, setShowSidebar] = useState(true);
+  const [status, setStatus] = useState(user.status);
   const form = useForm({
 
   });
@@ -64,6 +66,13 @@ export default function DashboardLayout({ children, head }) {
   const signOut = () => {
     // event.preventDefault();
     form.post(route('logout'));
+  };
+
+  const handelStatusChange = (e) => {
+    const status = e.target.value;
+    setStatus(status);
+    // form.put(route('superadmin.users.update', user.id), { status: status });
+
   };
 
   return (
@@ -88,6 +97,9 @@ export default function DashboardLayout({ children, head }) {
               </SidebarItem>
               <SidebarItem as={Link} href={route('superadmin.users.index')} active={route().current('superadmin.users.index')} icon={HiUser}>
                 Users
+              </SidebarItem>
+              <SidebarItem as={Link} href={route('superadmin.users.index')} active={route().current('superadmin.users.index')} icon={HiUser}>
+                User Status
               </SidebarItem>
 
               <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
@@ -129,6 +141,22 @@ export default function DashboardLayout({ children, head }) {
                   {user.email}
                 </span>
               </DropdownHeader>
+              {/* user status show here */}
+              <div className='mx-2'>
+                <div className="flex flex-col space-y-1">
+                  <select
+                    value={status}
+                    className=" rounded-md text-sm p-1 mt-1"
+                    onChange={handelStatusChange}
+                  >
+                    <option value="active">🟢 Active</option>
+                    <option value="away">🟡 Away</option>
+                    <option value="busy">🔴 Busy</option>
+                    <option value="offline">⚫ Offline</option>
+                  </select>
+                </div>
+              </div>
+
               <DropdownItem>Dashboard</DropdownItem>
               <DropdownItem as={Link} href={route('settings.index')}>Settings</DropdownItem>
               <DropdownItem>Earnings</DropdownItem>

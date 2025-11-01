@@ -5,39 +5,16 @@ import Modal from '@/Components/Modal';
 import { RxCross2 } from "react-icons/rx";
 import {
   Button,
-  Checkbox,
-  FileInput,
-  Label,
-  Radio,
-  RangeSlider,
-  Select,
-  Textarea,
-  TextInput,
-  ToggleSwitch,
-  HelperText,
-  Tooltip,
+
   Avatar
 } from "flowbite-react";
 
-import { HiMail } from "react-icons/hi";
-import { FaPhoneSquareAlt } from "react-icons/fa";
-import { FaCircleUser } from "react-icons/fa6";
-import { TbLockPassword } from "react-icons/tb";
-import axios from 'axios';
-import { Link, useForm } from '@inertiajs/react';
-import userData from '@/utils/defultUserData';
-import { Modal as ReactModal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
-import userType from '@/utils/userType';
-import SaveButton from '@/Components/SaveButton';
-import CancelButton from '@/Components/CancelButton';
 import CardContainer from '@/Components/CardContainer';
-import Icons from '@/Components/Icons';
 import { formatToIST } from "@/utils/formatToIST";
 
 import AdduserModal from '@/Components/AdduserModal';
 const Users = ({ allusers, allCountry, defult_selected_country_id, allState, allCity, defult_selected_state_id, allRoles }) => {
   const [addUserModal, setAddUserModal] = React.useState(false);
-  console.log(allusers);
   return (
     <SuperAdminDashboardLayout head={'Users'}>
       <AdduserModal open={addUserModal} setOpen={setAddUserModal} allCountry={allCountry} defult_selected_country_id={defult_selected_country_id} allState={allState} allCity={allCity} defult_selected_state_id={defult_selected_state_id} allRoles={allRoles} />
@@ -75,7 +52,7 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
                 </TableCell>
 
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{user.status}</div>
+                  <div className="text-sm text-gray-900">{user.status?.name || "N/A"}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
                   <div className="text-sm text-gray-900">{user.roles?.map((role) => role.name).join(', ') || "N/A"}</div>
