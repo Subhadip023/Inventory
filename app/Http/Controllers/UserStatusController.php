@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserStatus;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 class UserStatusController extends Controller
@@ -11,7 +12,8 @@ class UserStatusController extends Controller
      */
     public function index()
     {
-        return Inertia::render('SuperAdmin/UserStatus');
+        $status=UserStatus::all();
+        return Inertia::render('SuperAdmin/UserStatus',['allStatus'=>$status]);
     }
 
     /**

@@ -43,19 +43,19 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
             {allusers.map((user) => (
               <TableRow key={user.id}>
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{user.name} </div>
+                  <div className="text-sm text-gray-900  dark:text-white">{user.name} </div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">
+                  <div className="text-sm text-gray-900  dark:text-white">
                     <Avatar img={`${user.profile_image ? '/storage/' + user.profile_image : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}`} />
                   </div>
                 </TableCell>
 
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{user.status?.name || "N/A"}</div>
+                  <div className="text-sm text-gray-900  dark:text-white">{user.status?.name || "N/A"}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{user.roles?.map((role) => role.name).join(', ') || "N/A"}</div>
+                  <div className="text-sm text-gray-900  dark:text-white">{user.roles?.map((role) => role.name).join(', ') || "N/A"}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
                   <div className="text-sm text-gray-900">
@@ -67,10 +67,10 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
                   <div className={`text-sm ${user.email_verified_at ? "text-green-600" : "text-gray-900"}`}>{user.email}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{user.phone_number || "N/A"}</div>
+                  <div className="text-sm text-gray-900  dark:text-white">{user.phone_number || "N/A"}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">
+                  <div className="text-sm text-gray-900  dark:text-white">
                     {user.full_address
                       ? user.full_address.length > 20
                         ? user.full_address.slice(0, 20) + "..."

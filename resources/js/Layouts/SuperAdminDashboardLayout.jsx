@@ -1,6 +1,5 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { Alert } from "flowbite-react";
 import { Avatar } from "flowbite-react";
 import { useForm } from '@inertiajs/react';
 
@@ -10,7 +9,6 @@ import {
   DropdownHeader,
   DropdownItem,
   Navbar,
-  NavbarBrand,
   NavbarCollapse,
   NavbarLink,
   NavbarToggle,
@@ -24,11 +22,7 @@ import {
 import {
   HiArrowSmRight,
   HiChartPie,
-  HiInbox,
-  HiOutlineMinusSm,
-  HiOutlinePlusSm,
   HiShoppingBag,
-  HiTable,
   HiUser,
 } from "react-icons/hi";
 import { FaStore } from 'react-icons/fa';
@@ -76,7 +70,7 @@ export default function DashboardLayout({ children, head }) {
   };
 
   return (
-    <section className="flex h-screen ">
+    <section className="flex h-screen dark:text-white">
       <Head title={head || 'Dashboard'} />
       <ToastContainer />
 
@@ -98,7 +92,7 @@ export default function DashboardLayout({ children, head }) {
               <SidebarItem as={Link} href={route('superadmin.users.index')} active={route().current('superadmin.users.index')} icon={HiUser}>
                 Users
               </SidebarItem>
-              <SidebarItem as={Link} href={route('superadmin.users.index')} active={route().current('superadmin.users.index')} icon={HiUser}>
+              <SidebarItem as={Link} href={route('superadmin.users-status.index')} active={route().current('superadmin.users-status.index')} icon={HiUser}>
                 User Status
               </SidebarItem>
 
