@@ -11,10 +11,12 @@ import {
 
 import CardContainer from '@/Components/CardContainer';
 import { formatToIST } from "@/utils/formatToIST";
-
+import { Link, usePage } from '@inertiajs/react';
 import AdduserModal from '@/Components/AdduserModal';
 const Users = ({ allusers, allCountry, defult_selected_country_id, allState, allCity, defult_selected_state_id, allRoles }) => {
   const [addUserModal, setAddUserModal] = React.useState(false);
+  const { user_status } = usePage().props
+  console.log(user_status[0].svg);
   console.log(allusers);
   return (
     <SuperAdminDashboardLayout head={'Users'}>
@@ -51,6 +53,19 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
                   <div className="text-sm text-gray-900  dark:text-white">
                     <Avatar img={`${user.profile_image ? '/storage/' + user.profile_image : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}`} />
                   </div>
+
+                  <div
+                    className="relative -top-3 -right-4 -mb-2"
+                  >
+
+                    <div
+                      className="relative  -right-5 -mb-2"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          user_status[user.manual_status_id ? user.manual_status_id - 1 : user.user_status_id - 1]?.svg,
+                      }}
+                    />
+                  </div>
                 </TableCell>
 
                 <TableCell className="whitespace-nowrap py-4">
@@ -64,7 +79,7 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
                   <div className="text-sm text-gray-900">
-                      {formatToIST(user.last_activity_at)}
+                    {formatToIST(user.last_activity_at)}
                   </div>
 
                 </TableCell>

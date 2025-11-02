@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'current_shop'=>session()->get('current_shop') ?? null,
             'theme_mode'=>session()->get('theme_mode') ?? 'light',
-            'user_status'=>UserStatus::where('show', true)->get(),
+            'user_status'=>UserStatus::all(),
         ];
     }
 }
