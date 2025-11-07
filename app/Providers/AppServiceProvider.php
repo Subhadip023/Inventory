@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Repositories\Interfaces\UniversalProductRepositoryInterface;
 use App\Repositories\UniversalProductRepository;
 use App\Services\Interfaces\UniversalProductServiceInterface;
@@ -12,6 +13,8 @@ use App\Repositories\Interfaces\ShopCategoriesRepositoryInterface;
 use App\Repositories\ShopCategoryRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
+use App\Repositories\Interfaces\UserActivityLogInterface;
+use App\Repositories\UserActivityLogRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -40,6 +43,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
            UserRepositoryInterface::class,
            UserRepository::class
+        );
+
+        $this->app->bind(
+            UserActivityLogInterface::class,
+            UserActivityLogRepository::class
         );
     }
 

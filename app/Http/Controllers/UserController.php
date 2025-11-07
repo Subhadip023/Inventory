@@ -50,7 +50,7 @@ class UserController extends Controller
     public function index()
     {
         $users=User::all();
-        // dd($users[0]);
+        log_user_activity('users', 'User visited user list page');
         return Inertia::render('Users/Index', ['users' => $users]+$this->getLocationData());
     }
 
@@ -68,8 +68,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         try{
-            // dd($request->all());
-
+        
         $userData=$request->validated();
         $userData['added_by']=auth()->user()->id;
         if ($request->hasFile('profile_image')) {
@@ -95,6 +94,7 @@ class UserController extends Controller
         unset($userData['user_type']);
         $user=User::create($userData);
         $user->assignRole($userRole);
+        log_user_activity('users', 'User created user');
         return redirect()->route('users.index')->with('success', 'User created successfully.');
         }catch(\Exception $e){
             logger()->error($e->getMessage());
@@ -115,6 +115,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        log_user_activity('users', 'User visited user edit page');
         return Inertia::render('Users/Edit', ['user' => $user]+$this->getLocationData());
     }
 
@@ -128,6 +129,7 @@ public function update(UpdateUserRequest $request, User $user)
             $valData=array_filter($valData);
         
             $user->update($valData);
+            log_user_activity('users', 'User updated user');
             return redirect()->route('users.index')->with('success', 'User updated successfully.');
         } catch (\Throwable $th) {
             logger()->error($th->getMessage());
@@ -140,7 +142,7 @@ public function update(UpdateUserRequest $request, User $user)
      */
     public function destroy(User $user)
     {
-        
+        log_user_activity('users', 'User deleted user');
         if($user->user_type==1){
             return redirect()->route('users.index')->with('error', ' Admin cannot be deleted.');
         }
@@ -164,6 +166,7 @@ public function update(UpdateUserRequest $request, User $user)
 
    public function addProfile(Request $request)
 {
+    log_user_activity('users', 'User updated user profile');
     $request->validate([
         'user_id' => 'required|exists:users,id',
         'profile_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
@@ -190,6 +193,7 @@ public function update(UpdateUserRequest $request, User $user)
 }
 
 public function statusChange(Request $request){
+    log_user_activity('users', 'User updated user status');
     $status=(int) $request->status;
     $change=$this->userRepository->changeStatus($this->currentUser->id,$status);
     if ($change) {

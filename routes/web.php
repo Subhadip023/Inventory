@@ -23,6 +23,7 @@ use App\Http\Controllers\UniversalProductController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard',  function () {
+    log_user_activity('dashboard', 'User visited dashboard');
     if(auth()->user()->hasRole('super-admin')){
         return redirect()->route('superadmin.dashboard');
     }

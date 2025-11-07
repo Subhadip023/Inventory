@@ -36,6 +36,7 @@ class UniversalProductController extends Controller
             $products=$this->service->paginate(5);
         }
         $allCategory = $this->shopCategoryRepository->allActiveCategoryIdName();
+        log_user_activity('universal_products', 'User visited universal products page');
         return Inertia::render('UniversalProduct/Index', [
             'universalProducts' => $products,
             'per_page' => $per_page??5,
@@ -60,6 +61,8 @@ class UniversalProductController extends Controller
         $data['slug']=\Str::slug($data['name'],'-');
 
         $this->service->create($data);
+        log_user_activity('universal_products', 'User created universal product');
+
         return redirect()->back()->with('success', 'Universal Product created successfully.');
         
     }
@@ -87,6 +90,7 @@ class UniversalProductController extends Controller
     {
         $data=$request->validated();
         $this->service->update($universal_product,$data);
+        log_user_activity('universal_products', 'User updated universal product');
         return redirect()->route('universal-products.index')->with('success', 'Universal Product updated successfully.');
     }
 
@@ -95,7 +99,7 @@ class UniversalProductController extends Controller
      */
     public function destroy($universal_product)
     {
-    
+        log_user_activity('universal_products', 'User deleted universal product');
         $this->service->delete($universal_product);
         return redirect()->back()->with('success', 'Universal Product deleted successfully.');
     }
@@ -107,20 +111,20 @@ class UniversalProductController extends Controller
         ]);
         $id = $request['id'];
         $status = $this->repository->changeVarifyStatus($id);
+        log_user_activity('universal_products', 'User changed universal product status');
         if ($status) {
             return redirect()->route('universal-products.index')->with('success', 'Product status changed successfully.');
         } else {
             return redirect()->back()->with('error', 'Failed to change product status.');
         }
 
-        
-        
     }
 
     public function search(Request $request)
     {
         $search = $request->input('search');
         $searchProducts = $this->service->search($search);
+        log_user_activity('universal_products', 'User searched universal product');
         return $searchProducts;
     }
 }
