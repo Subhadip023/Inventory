@@ -70,32 +70,32 @@ class UserController extends Controller
         try{
             // dd($request->all());
 
-        $userData=$request->validated();
-        $userData['added_by']=auth()->user()->id;
-        if ($request->hasFile('profile_image')) {
-            $file = $request->file('profile_image');
+            $userData=$request->validated();
+            $userData['added_by']=auth()->user()->id;
+            if ($request->hasFile('profile_image')) {
+                $file = $request->file('profile_image');
 
-            // Generate a unique filename
-            $file_name = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                // Generate a unique filename
+                $file_name = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-            // Store in storage/app/public/profile_image
-            $path = $file->storeAs('profile_image', $file_name,'public');
+                // Store in storage/app/public/profile_image
+                $path = $file->storeAs('profile_image', $file_name,'public');
 
-            
-            // Save only relative path or filename in DB
-            // $userData['profile_image'] = $path;
-            $userData['profile_image'] = $path;
-            $path=Storage::putFileAs('profile_image', $file, $file_name);
+                
+                // Save only relative path or filename in DB
+                // $userData['profile_image'] = $path;
+                $userData['profile_image'] = $path;
+                $path=Storage::putFileAs('profile_image', $file, $file_name);
 
-        }
-        // dd($userData);
+            }
+            dd($userData);
 
-        unset($userData['confirm_password']);
-        $userRole=$userData['user_type'];
-        unset($userData['user_type']);
-        $user=User::create($userData);
-        $user->assignRole($userRole);
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+            unset($userData['confirm_password']);
+            $userRole=$userData['user_type'];
+            unset($userData['user_type']);
+            $user=User::create($userData);
+            $user->assignRole($userRole);
+            return redirect()->route('users.index')->with('success', 'User created successfully.');
         }catch(\Exception $e){
             logger()->error($e->getMessage());
             return redirect()->route('users.index')->with('error', 'Something went wrong.');
