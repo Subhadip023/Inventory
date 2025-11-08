@@ -16,6 +16,7 @@ class RoleController extends Controller
      */
     public function index()
     {
+        log_user_activity('roles', 'User visited role list page');
         $roles=Role::with('permissions','users')->get();
         $all_permissions=Permission::all();
         $all_users=User::all();
@@ -35,6 +36,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        log_user_activity('roles', 'User created role name: '.$request->name);
         $request->validate([
             'name'=>'required | unique:roles,name',
             'permissions'=>'required|array|min:1',
@@ -76,6 +78,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        log_user_activity('roles', 'User updated role name: '.$request->name);
         $request->validate([
         'name' => 'required|string|max:255|unique:roles,name,' . $id,
         'permissions' => 'nullable|array',
@@ -105,6 +108,7 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
+        log_user_activity('roles', 'User deleted role id: '.$id);
         try{
        
             $role=Role::findOrFail($id);

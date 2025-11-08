@@ -19,6 +19,7 @@ class ShopCategoriesController extends Controller
 
     public function index()
     {
+        log_user_activity('shop_categories', 'User visited shop categories page');
         return Inertia::render('ShopCategories/Index', [
             'shopCategories' => $this->repository->all()
         ]);
@@ -35,8 +36,7 @@ class ShopCategoriesController extends Controller
             'name' => $request->name,
             'is_active' => $request->is_active,
         ]);
-
-
+        log_user_activity('shop_categories', 'User created shop category');
         return redirect()->back()->with('success', 'Shop category created successfully.');
     }
 
@@ -52,6 +52,7 @@ class ShopCategoriesController extends Controller
             'is_active' => $request->is_active,
         ]);
 
+        log_user_activity('shop_categories', 'User updated shop category');
         if($isUpdate){
         return redirect()->route('shop-categories.index')->with('success', 'Shop category updated successfully.');        
         }else{
@@ -62,6 +63,7 @@ class ShopCategoriesController extends Controller
     public function destroy($shop_category)
     {
         $isDeleted=$this->repository->delete($shop_category);
+        log_user_activity('shop_categories', 'User deleted shop category');
         if($isDeleted){
             return redirect()->back()->with('success', 'Shop category deleted successfully.');
         }else{

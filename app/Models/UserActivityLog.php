@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserActivityLog extends Model
 {
     use HasFactory;
-
+    public $timestamps = false;
     // Fillable fields for mass assignment
     protected $fillable = [
         'user_id',
@@ -21,9 +21,7 @@ class UserActivityLog extends Model
 
     // Dates to automatically cast to Carbon instances
     protected $dates = [
-        'activity_time',
-        'created_at',
-        'updated_at',
+        'activity_time'   
     ];
 
     /**
