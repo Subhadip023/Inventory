@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ShopCategoriesController;
+use App\Http\Controllers\UserActivityController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
@@ -28,5 +29,7 @@ Route::prefix('superadmin')
     ->group(function () {
         Route::get('dashboard', [HomeController::class, 'superadminDashboard'])->name('dashboard');
         Route::resource('users',superadminUsers::class);        
-        Route::resource('users-status',UserStatusController::class);        
+        Route::resource('users-status',UserStatusController::class);      
+        Route::get('user-activity',[UserActivityController::class,'allActivity'])->name('all-activity');
+        Route::get('user-activity/{id}',[UserActivityController::class,'user_all_activity'])->name('all-activity-user');
 });

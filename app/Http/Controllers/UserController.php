@@ -68,7 +68,6 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         try{
-            // dd($request->all());
 
             $userData=$request->validated();
             $userData['added_by']=auth()->user()->id;
@@ -88,7 +87,6 @@ class UserController extends Controller
                 $path=Storage::putFileAs('profile_image', $file, $file_name);
 
             }
-            dd($userData);
 
             unset($userData['confirm_password']);
             $userRole=$userData['user_type'];

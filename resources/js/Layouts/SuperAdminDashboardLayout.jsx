@@ -100,7 +100,10 @@ export default function DashboardLayout({ children, head }) {
                 User Status
               </SidebarItem>
 
-              <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
+              <SidebarItem as={Link} href={route('superadmin.all-activity')} active={route().current('superadmin.all-activity')} icon={HiUser}>
+                Users Activity
+              </SidebarItem> 
+               <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
                 Shop Categories
               </SidebarItem>
 

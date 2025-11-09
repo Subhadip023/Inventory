@@ -21,10 +21,12 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'nullable |confirmed',
+            'user_type'=>'nullable |exists:roles,name',
             'country' => 'nullable',
             'state' => 'nullable',
             'city' => 'nullable',

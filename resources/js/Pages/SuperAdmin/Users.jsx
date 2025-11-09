@@ -17,7 +17,6 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
   const [addUserModal, setAddUserModal] = React.useState(false);
   const { user_status } = usePage().props
   console.log(user_status[0].svg);
-  console.log(allusers);
   return (
     <SuperAdminDashboardLayout head={'Users'}>
       <AdduserModal open={addUserModal} setOpen={setAddUserModal} allCountry={allCountry} defult_selected_country_id={defult_selected_country_id} allState={allState} allCity={allCity} defult_selected_state_id={defult_selected_state_id} allRoles={allRoles} />

@@ -36,7 +36,7 @@ const AdduserModal = ( {open, setOpen, allCountry, defult_selected_country_id, a
     const [preview, setPreview] = React.useState(null);
     const [citys, setCitys] = React.useState(allCity);
     const createUserForm = useForm({
-        ...userData, country: defult_selected_country_id, state: defult_selected_state_id, user_type: 3
+        ...userData, country: defult_selected_country_id, state: defult_selected_state_id,
     });
     const deleteUserForm = useForm({ user_id: null });
 
@@ -220,6 +220,7 @@ const AdduserModal = ( {open, setOpen, allCountry, defult_selected_country_id, a
                                                 <Label htmlFor="user_type">Role</Label>
                                             </div>
                                             <Select id="user_type"  onChange={(e) => createUserForm.setData('user_type', e.target.value)}>
+                                               <option  value="0" disabled > select</option>
                                                {
                                                 allRoles.map((role)=>(
                                                     <option key={role.id} value={role.name} > {role.name}</option>
