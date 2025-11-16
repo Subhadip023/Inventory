@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('universal_products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('slug')->unique();  // Unique slug for the product use logic product slug + timestamp 
+            $table->string('slug')->unique();  
             $table->text('description')->nullable();
-            $table->string('category')->nullable(); 
             $table->boolean('verified')->default(false);
             $table->timestamps();
         });

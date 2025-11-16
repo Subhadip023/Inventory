@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('theme', ['light', 'dark','system'])->default('light');
             $table->string('language')->default('en');
-            $table->foreignId('default_shop_id')->nullable()->constrained('shops')->onDelete('set null');
             $table->timestamps();
         });
     }

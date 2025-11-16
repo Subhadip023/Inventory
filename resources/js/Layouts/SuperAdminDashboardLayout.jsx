@@ -96,9 +96,7 @@ export default function DashboardLayout({ children, head }) {
               <SidebarItem as={Link} href={route('universal-products.index')} active={route().current('universal-products.index')} icon={HiShoppingBag}>
                 Universal Products
               </SidebarItem>
-              <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} icon={HiUser}>
-                Role
-              </SidebarItem>
+
               <SidebarCollapse
                 icon={HiUser}
                 label="Users"
@@ -107,10 +105,10 @@ export default function DashboardLayout({ children, head }) {
 
                   return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? "on" : "off"])} />;
                 }}
-                open={route().current('superadmin.users.index') || route().current('superadmin.users-status.index') || route().current('superadmin.all-activity')}
+                open={route().current('superadmin.users.index') || route().current('superadmin.users-status.index') || route().current('superadmin.all-activity') || route().current('role.index')}
               >
                 <SidebarItem as={Link} href={route('superadmin.users.index')} active={route().current('superadmin.users.index')} >
-                  Users
+                  All Users
                 </SidebarItem>
                 <SidebarItem as={Link} href={route('superadmin.users-status.index')} active={route().current('superadmin.users-status.index')} >
                   User Status
@@ -119,9 +117,15 @@ export default function DashboardLayout({ children, head }) {
                 <SidebarItem as={Link} href={route('superadmin.all-activity')} active={route().current('superadmin.all-activity')} >
                   Users Activity
                 </SidebarItem>
+                <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} >
+                  Role
+                </SidebarItem>
               </SidebarCollapse>
               <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
                 Shop Categories
+              </SidebarItem>
+              <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
+                Tax
               </SidebarItem>
 
               <SidebarItem onClick={signOut} icon={HiArrowSmRight}>

@@ -53,32 +53,32 @@ class UniversalProductSeeder extends Seeder
     [
         'name' => 'The Great Gatsby',
         'description' => 'Classic novel by F. Scott Fitzgerald',
-        'shop_category_id' => 4
+        'shop_category_id' => 2
     ],
     [
         'name' => '1984',
         'description' => 'Dystopian novel by George Orwell',
-        'shop_category_id' => 4
+        'shop_category_id' => 2
     ],
     [
         'name' => 'The Alchemist',
         'description' => 'Inspirational novel by Paulo Coelho',
-        'shop_category_id' => 4
+        'shop_category_id' => 2
     ],
     [
         'name' => 'Harry Potter and the Sorcerer\'s Stone',
         'description' => 'Fantasy novel by J.K. Rowling',
-        'shop_category_id' => 4
+        'shop_category_id' => 2
     ],
     [
         'name' => 'To Kill a Mockingbird',
         'description' => 'Pulitzer Prize-winning novel by Harper Lee',
-        'shop_category_id' => 4
+        'shop_category_id' => 2
     ],
     [
         'name' => 'Dune',
         'description' => 'Classic science fiction novel by Frank Herbert',
-        'shop_category_id' => 4
+        'shop_category_id' => 2
     ],
 
     // Grocery
