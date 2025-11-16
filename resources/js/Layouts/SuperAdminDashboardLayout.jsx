@@ -40,6 +40,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserActivity from '@/Components/UserActivity';
 import { twMerge } from "tailwind-merge";
+import { HiReceiptTax } from "react-icons/hi";
 
 
 export default function DashboardLayout({ children, head }) {
@@ -124,7 +125,7 @@ export default function DashboardLayout({ children, head }) {
               <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
                 Shop Categories
               </SidebarItem>
-              <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
+              <SidebarItem as={Link} href={route('superadmin.tax.index')} active={route().current('superadmin.tax.index')} icon={HiReceiptTax}>
                 Tax
               </SidebarItem>
 

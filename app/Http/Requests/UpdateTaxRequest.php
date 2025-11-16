@@ -11,7 +11,7 @@ class UpdateTaxRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateTaxRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id' => 'required|exists:taxes,id',
+            'name' => 'required|string|max:255',
+            'rate' => 'required|decimal:0,2|numeric|min:0|max:100',
+            'is_active' => 'required|boolean',
         ];
     }
 }

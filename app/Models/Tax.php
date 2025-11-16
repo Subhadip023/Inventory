@@ -9,4 +9,6 @@ class Tax extends Model
 {
     /** @use HasFactory<\Database\Factories\TaxFactory> */
     use HasFactory;
+
+    protected $guarded = [];
 }

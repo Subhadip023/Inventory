@@ -15,6 +15,8 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\Interfaces\UserActivityLogInterface;
 use App\Repositories\UserActivityLogRepository;
+use App\Repositories\Interfaces\TaxRepositoryInterface;
+use App\Repositories\TaxRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -48,6 +50,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UserActivityLogInterface::class,
             UserActivityLogRepository::class
+        );
+
+        $this->app->bind(
+            TaxRepositoryInterface::class,
+            TaxRepository::class
         );
     }
 

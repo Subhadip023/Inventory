@@ -11,7 +11,7 @@ class StoreTaxRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreTaxRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'rate' => 'required|decimal:0,2|numeric|min:0|max:100',
+            'is_active' => 'required|boolean',
         ];
     }
 }

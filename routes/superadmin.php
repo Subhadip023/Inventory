@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\superadminUsers;
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UniversalProductController;
 use App\Http\Controllers\UserStatusController;
 
@@ -32,4 +33,5 @@ Route::prefix('superadmin')
         Route::resource('users-status',UserStatusController::class);      
         Route::get('user-activity',[UserActivityController::class,'allActivity'])->name('all-activity');
         Route::get('user-activity/{id}',[UserActivityController::class,'user_all_activity'])->name('all-activity-user');
+        Route::resource('tax',TaxController::class);
 });

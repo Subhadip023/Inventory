@@ -88,7 +88,7 @@ const Welcome = ({ stores }) => {
 
                 {user &&
                     <div className='my-10'>
-                        <AddButton as={Link} href={route('stores.create')} color="dark" className='hover:bg-gray-600'>Create a Store  </AddButton>
+                        <AddButton as={Link} href={route('shops.create')} color="dark" className='hover:bg-gray-600'>Create a Store  </AddButton>
                     </div>
                 }
             </section>
