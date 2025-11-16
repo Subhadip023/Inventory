@@ -16,6 +16,7 @@ import {
   SidebarItems,
   SidebarItem,
   SidebarItemGroup,
+  SidebarCollapse,
 
 } from "flowbite-react";
 
@@ -24,6 +25,10 @@ import {
   HiChartPie,
   HiShoppingBag,
   HiUser,
+  HiInbox,
+  HiTable,
+  HiOutlineMinusSm,
+  HiOutlinePlusSm,
 } from "react-icons/hi";
 import { FaStore } from 'react-icons/fa';
 
@@ -34,6 +39,7 @@ import { usePage } from '@inertiajs/react';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserActivity from '@/Components/UserActivity';
+import { twMerge } from "tailwind-merge";
 
 
 export default function DashboardLayout({ children, head }) {
@@ -93,17 +99,28 @@ export default function DashboardLayout({ children, head }) {
               <SidebarItem as={Link} href={route('role.index')} active={route().current('role.index')} icon={HiUser}>
                 Role
               </SidebarItem>
-              <SidebarItem as={Link} href={route('superadmin.users.index')} active={route().current('superadmin.users.index')} icon={HiUser}>
-                Users
-              </SidebarItem>
-              <SidebarItem as={Link} href={route('superadmin.users-status.index')} active={route().current('superadmin.users-status.index')} icon={HiUser}>
-                User Status
-              </SidebarItem>
+              <SidebarCollapse
+                icon={HiUser}
+                label="Users"
+                renderChevronIcon={(theme, open) => {
+                  const IconComponent = open ? HiOutlineMinusSm : HiOutlinePlusSm;
 
-              <SidebarItem as={Link} href={route('superadmin.all-activity')} active={route().current('superadmin.all-activity')} icon={HiUser}>
-                Users Activity
-              </SidebarItem> 
-               <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
+                  return <IconComponent aria-hidden className={twMerge(theme.label.icon.open[open ? "on" : "off"])} />;
+                }}
+                open={route().current('superadmin.users.index') || route().current('superadmin.users-status.index') || route().current('superadmin.all-activity')}
+              >
+                <SidebarItem as={Link} href={route('superadmin.users.index')} active={route().current('superadmin.users.index')} >
+                  Users
+                </SidebarItem>
+                <SidebarItem as={Link} href={route('superadmin.users-status.index')} active={route().current('superadmin.users-status.index')} >
+                  User Status
+                </SidebarItem>
+
+                <SidebarItem as={Link} href={route('superadmin.all-activity')} active={route().current('superadmin.all-activity')} >
+                  Users Activity
+                </SidebarItem>
+              </SidebarCollapse>
+              <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
                 Shop Categories
               </SidebarItem>
 
