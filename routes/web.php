@@ -50,7 +50,8 @@ Route::post('users-status-change', [UserController::class, 'statusChange'])->nam
 Route::post('/getCity', [CountryStateCityController::class, 'getCity'])->name('getCity');
 
 Route::resource('shops', ShopController::class)->middleware('auth');
-Route::get('store/{shop}/dashboard', StoreDashboardController::class )->name('store.dashboard');
+Route::post('setShop', [ShopController::class, 'setShop'])->name('setShop')->middleware('auth');
+Route::get('store/dashboard', StoreDashboardController::class )->name('shop.dashboard');
 Route::prefix('store')->group(function () {
    Route::resource('products', ProductController::class)->middleware('auth');
 

@@ -35,7 +35,6 @@ class StoreShopRequest extends FormRequest
             'landmark' => ['nullable', 'string', 'max:255'],
             'street_number' => ['nullable', 'string', 'max:50'],
             'street_name' => ['nullable', 'string', 'max:255'],
-            'category_id' =>'required | exists:shop_categories,id',
         ];
     }
 

@@ -10,13 +10,15 @@ class StoreDashboardController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, $shop)
+    public function __invoke(Request $request)
     {
-        session()->put('current_shop', $shop);
-        $curent_shop = Shop::find($shop);
-        // dd($curent_shop);
+        $curent_shop_id=session()->get('current_shop');
+        if(empty($curent_shop_id)){
+            return redirect()->route('home');
+        }
+        $curent_shop = Shop::find($curent_shop_id);
         return Inertia::render('Shop/DashBoard', [
-            'curent_shop' => $curent_shop
+            'curent_shop' => $curent_shop,
         ]);
     }
 }

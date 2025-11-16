@@ -29,7 +29,7 @@ const StoreSideBar = ({classNames,signOut}) => {
             <Sidebar aria-label="Sidebar with multi-level dropdown example" className='dark:bg-gray-800'>
                 <SidebarItems>
                     <SidebarItemGroup>
-                        <SidebarItem as={Link} href={route('store.dashboard',current_shop || session_shop)} icon={HiChartPie} active={route().current('dashboard')}>
+                        <SidebarItem as={Link} href={route('shop.dashboard')} icon={HiChartPie} active={route().current('shop.dashboard')}>
                             Dashboard
                         </SidebarItem>
                         <SidebarCollapse
@@ -57,15 +57,15 @@ const StoreSideBar = ({classNames,signOut}) => {
                         <SidebarItem href="#" icon={HiShoppingBag}>
                             Products
                         </SidebarItem>
-                        <SidebarItem as={Link} href={route('stores.edit',current_shop || session_shop)} active={route().current('stores.edit')} icon={MdOutlineStorefront}>
+                        {/* <SidebarItem as={Link} href={route('stores.edit',current_shop || session_shop)} active={route().current('stores.edit')} icon={MdOutlineStorefront}>
                             Store Profile
-                        </SidebarItem>
+                        </SidebarItem> */}
                         <SidebarItem as={Link} href={route('settings.index')} active={route().current('settings.index')} icon={IoSettingsSharp}>
                             Settings
                         </SidebarItem>
-                        <SidebarItem as={Link} href={route('shop.roles.index',current_shop || session_shop)}  icon={LiaUsersCogSolid}>
+                        {/* <SidebarItem as={Link} href={route('shop.roles.index',current_shop || session_shop)}  icon={LiaUsersCogSolid}>
                             Role and Permission
-                        </SidebarItem>
+                        </SidebarItem> */}
                         <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
                             Sign Out
                         </SidebarItem>

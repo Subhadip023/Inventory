@@ -14,6 +14,7 @@ const Welcome = ({ stores }) => {
     const { user } = usePage().props.auth;
     const { flash } = usePage().props;
     const deleteFrom = useForm();
+    const storeForm = useForm();
     useEffect(() => {
         if (flash.success) toast.success(flash.success);
         if (flash.error) toast.error(flash.error);
@@ -31,6 +32,20 @@ const Welcome = ({ stores }) => {
         root.classList.add('light');
 
     },[])
+
+    const selectStore = (e,id) => {
+        e.preventDefault();
+        storeForm.post(route('setShop',{shop_id:id}),{
+            onSuccess: () => {
+                
+            }
+            ,onError: (e) => {
+                console.log('Error', e);
+            }
+        })
+    }
+
+
 
     return (
         <div className="flex flex-col-reverse md:flex-row">
@@ -66,16 +81,14 @@ const Welcome = ({ stores }) => {
                                     renderImage={() => (
                                         <img
                                             className="rounded-md w-32 mx-auto mt-2"
-                                            src={'/storage/' + store.logo || defultImgCDNs.defaultLogoCDN}
+                                            src={store.logo && '/storage/' + store.logo || defultImgCDNs.defaultLogoCDN}
                                             alt="store logo"
                                         />
                                     )}
                                     key={store.id}
                                     as={Link}
-                                    onClick={() => {
-                                        sessionStorage.setItem("current_shop", store.id);
-                                    }}
-                                    href={route("store.dashboard", store.id)}
+                                  
+                                    onClick={(e) => selectStore(e,store.id)}
                                 >
                                     <h5 className="text-2xl font-bold tracking-tight">
                                         {store.name}

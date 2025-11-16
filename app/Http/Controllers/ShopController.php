@@ -54,7 +54,7 @@ class ShopController extends Controller
     public function create()
     {
         $all_shop_cats=$this->shop_cat_repo->allActiveCategoryIdName();
-        return Inertia::render('Shop/Create',[...$this->getLocationData(),'allShopCats'=>$all_shop_cats
+        return Inertia::render('Shop/Create',[...$this->getLocationData(),
     ]);
     }
 
@@ -165,4 +165,16 @@ class ShopController extends Controller
 
         return redirect()->back()->with('success', 'Logo updated successfully.');
         }
+
+
+    public function setShop(Request $request)    {
+        $shop_id=$request->shop_id;
+        $user_shops = auth()->user()->shops()->get();
+
+        if(!in_array($shop_id, $user_shops->pluck('id')->toArray())) {
+            return redirect()->route('home')->with('error', 'Shop Not Found');
+        }
+        session()->put('current_shop', $shop_id);
+        return redirect()->route('shop.dashboard');
+    }
 }
