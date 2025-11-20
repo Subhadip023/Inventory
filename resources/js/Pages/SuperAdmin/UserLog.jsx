@@ -4,7 +4,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from 
 import CardContainer from '@/Components/CardContainer';
 import { Link } from '@inertiajs/react';
 export default function UserLog({ allLogs,view=true}) {
-  console.log(allLogs)
   return (
     <SuperAdminDashboardLayout>
       <CardContainer className='w-full h-fit my-auto'>
