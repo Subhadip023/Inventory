@@ -27,19 +27,19 @@ const Welcome = ({ stores }) => {
         deleteFrom.post(route('logout'));
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         const root = window.document.documentElement;
         root.classList.add('light');
 
-    },[])
+    }, [])
 
-    const selectStore = (e,id) => {
+    const selectStore = (e, id) => {
         e.preventDefault();
-        storeForm.post(route('setShop',{shop_id:id}),{
+        storeForm.post(route('setShop', { shop_id: id }), {
             onSuccess: () => {
-                
+
             }
-            ,onError: (e) => {
+            , onError: (e) => {
                 console.log('Error', e);
             }
         })
@@ -53,7 +53,7 @@ const Welcome = ({ stores }) => {
             <Head title={'Welcome'} />
 
             {/* Left Section (Image) */}
-            <section className="h-[50vh] md:h-screen flex justify-center items-center w-full md:w-1/3 bg-mainColor">
+            <section className="h-[50vh] hidden md:h-screen md:flex justify-center items-center w-full md:w-1/3 bg-mainColor">
                 <img src={storeImage} className="w-[80%] md:w-[700px]" />
             </section>
             {user && <Button color={'dark'} className='absolute top-5 right-5 hover:cursor-pointer z-20' onClick={logout}>logout</Button>
@@ -64,8 +64,8 @@ const Welcome = ({ stores }) => {
                     Welcome to {appName}!
                 </h1>
 
-                <div className="text-justify px-4 md:px-20">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad explicabo voluptatem impedit odit maxime voluptatum soluta molestias obcaecati sed consectetur, sequi molestiae, omnis, veritatis quos quia fugit. Deleniti, laborum similique.
+                <div className="text-justify text-xl px-4 md:px-20">
+                    Everything you need in one place. Easy tools, clean design, and smart features to make your daily workflow smoother and faster.
                 </div>
 
                 {user ? null : <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-5 my-8 md:my-10">
@@ -87,8 +87,8 @@ const Welcome = ({ stores }) => {
                                     )}
                                     key={store.id}
                                     as={Link}
-                                  
-                                    onClick={(e) => selectStore(e,store.id)}
+
+                                    onClick={(e) => selectStore(e, store.id)}
                                 >
                                     <h5 className="text-2xl font-bold tracking-tight">
                                         {store.name}

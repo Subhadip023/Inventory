@@ -194,16 +194,16 @@ export default function DashboardLayout({ children, head }) {
               <DropdownDivider />
               <DropdownItem onClick={signOut}>Sign out</DropdownItem>
             </Dropdown>
-            <NavbarToggle />
+            {/* <NavbarToggle /> */}
           </div>
 
-          <NavbarCollapse>
+          {/* <NavbarCollapse>
             <NavbarLink href="#" active>Home</NavbarLink>
             <NavbarLink href="#">About</NavbarLink>
             <NavbarLink href="#">Services</NavbarLink>
             <NavbarLink href="#">Pricing</NavbarLink>
             <NavbarLink href="#">Contact</NavbarLink>
-          </NavbarCollapse>
+          </NavbarCollapse> */}
         </Navbar>
 
         {/* Main content goes here */}
