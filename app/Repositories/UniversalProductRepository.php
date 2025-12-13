@@ -12,7 +12,7 @@ class UniversalProductRepository implements UniversalProductRepositoryInterface
         return [
             'data' => $products,
             'total' => count($products),
-
+            'per_page' => 'all',
         ];
     }
 

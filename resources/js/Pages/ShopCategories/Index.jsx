@@ -12,25 +12,30 @@ import SaveButton from '@/Components/SaveButton';
 import { useForm } from '@inertiajs/react';
 import Checkbox from '@/Components/Checkbox';
 import ConfirmModal from '@/Components/ConfirmModal';
-function Index({ shopCategories }) {
+import FormSelect from '@/Components/FormSelect';
+import TaxMultiSelect from '@/Components/TaxMultiSelect';
+function Index({ shopCategories, taxes }) {
+    console.log(shopCategories);
     const [openCategoryModal, setOpenCategoryModal] = useState(false);
     const [isCategoryEdit, setIsCategoryEdit] = useState(false);
-    const [confirmDeleteCategory,setConfirmDeleteCategory] = useState(false);
+    const [confirmDeleteCategory, setConfirmDeleteCategory] = useState(false);
     const shopCategoryForm = useForm({
         id: null,
         name: '',
+        tax_id: [],
         is_active: true,
     });
 
     const submitCategory = (e) => {
+        // console.log(shopCategoryForm.data);
         e.preventDefault();
         if (isCategoryEdit) {
-            shopCategoryForm.put(route('shop-categories.update',shopCategoryForm.data.id), {
+            shopCategoryForm.put(route('shop-categories.update', shopCategoryForm.data.id), {
                 onSuccess: () => {
                     setOpenCategoryModal(false);
                     shopCategoryForm.reset();
                 },
-                onError: () => { setIsCategoryEdit(false);}
+                onError: () => { setIsCategoryEdit(false); }
             });
             return;
         }
@@ -39,20 +44,24 @@ function Index({ shopCategories }) {
                 setOpenCategoryModal(false);
                 shopCategoryForm.reset();
             },
-            onError: () => { setIsCategoryEdit(false);}
+            onError: () => { setIsCategoryEdit(false); }
         });
     };
 
-    const deleteCatSubmit = (e) => { 
+    const deleteCatSubmit = (e) => {
         e.preventDefault();
-        shopCategoryForm.delete(route('shop-categories.destroy',shopCategoryForm.data.id),{
-            onSuccess:()=>{
+        shopCategoryForm.delete(route('shop-categories.destroy', shopCategoryForm.data.id), {
+            onSuccess: () => {
                 setConfirmDeleteCategory(false);
                 shopCategoryForm.reset();
             }
         })
     }
 
+    const taxOptions = taxes.map(tax => ({
+        value: tax.id,
+        label: `${tax.name} (${tax.rate}%)`,
+    }));
 
 
 
@@ -65,11 +74,19 @@ function Index({ shopCategories }) {
                 <div className=' mx-10 my-5 '>
                     <div>
                         <h2 className="text-3xl md:text-4xl font-serif text-mainColor font-bold text-straight my-6 md:my-10">
-                            {isCategoryEdit?'Edit':'Add'} Shop Category
+                            {isCategoryEdit ? 'Edit' : 'Add'} Shop Category
                         </h2>
                     </div>
                     <div>
                         <FormInput id='name' label='Category Name' type='text' placeholder='Category Name' value={shopCategoryForm.data.name} onChange={(e) => shopCategoryForm.setData('name', e.target.value)} error={shopCategoryForm.errors.name} />
+                        <TaxMultiSelect
+                            label="Default Tax Rate"
+                            options={taxOptions}
+                            value={shopCategoryForm.data.tax_id}
+                            onChange={(values) => shopCategoryForm.setData("tax_id", values)}
+                            error={shopCategoryForm.errors.tax_id}
+                        />
+
                         <div className='my-5 flex items-center gap-x-2'>
                             <Checkbox checked={shopCategoryForm.data.is_active} onChange={(e) => shopCategoryForm.setData('is_active', e.target.checked)} /> active
                         </div>
@@ -79,7 +96,7 @@ function Index({ shopCategories }) {
 
                     <div className='flex justify-end items-center gap-x-2'>
                         <CancelButton onClick={() => { setOpenCategoryModal(false); shopCategoryForm.reset() }}>Cancel</CancelButton>
-                        <SaveButton onClick={submitCategory}>{isCategoryEdit?"Edit":"Save"}</SaveButton>
+                        <SaveButton onClick={submitCategory}>{isCategoryEdit ? "Edit" : "Save"}</SaveButton>
                     </div>
                 </div>
             </Modal>
@@ -97,6 +114,7 @@ function Index({ shopCategories }) {
                             <TableHeadCell>ID</TableHeadCell>
                             <TableHeadCell>Name</TableHeadCell>
                             <TableHeadCell>Active</TableHeadCell>
+                            <TableHeadCell>Default Tax Rate</TableHeadCell>
 
                             <TableHeadCell>
                                 <span className="sr-only">Edit</span>
@@ -113,7 +131,10 @@ function Index({ shopCategories }) {
                                     {cat.name}
                                 </TableCell>
                                 <TableCell className="whitespace-nowrap py-4">
-                                    {cat.is_active?"Yes":"No"}
+                                    {cat.is_active ? "Yes" : "No"}
+                                </TableCell>
+                                <TableCell className="whitespace-nowrap py-4">
+                                    {cat.category_taxes.map(category_tax => category_tax.tax).map(tax => `${tax.name} (${tax.rate}%)`).join(', ') || 'N/A'}
                                 </TableCell>
                                 <TableCell className="whitespace-nowrap py-4">
                                     <button onClick={() => {
@@ -123,16 +144,17 @@ function Index({ shopCategories }) {
                                             id: cat.id,
                                             name: cat.name,
                                             is_active: cat.is_active,
+                                            tax_id: cat.category_taxes.map(category_tax => category_tax.tax_id) || [], 
                                         })
                                     }}><Icons name='edit' className='text-blue-500 hover:text-blue-700 cursor-pointer' /></button>
 
-                                    <button onClick={(e)=>{
+                                    <button onClick={(e) => {
                                         setConfirmDeleteCategory(true);
                                         shopCategoryForm.setData({
                                             id: cat.id,
                                             name: cat.name,
                                         })
-                                    }}><Icons name='delete'/> </button>
+                                    }}><Icons name='delete' /> </button>
                                 </TableCell>
 
                             </TableRow>

@@ -94,7 +94,6 @@ function Tax({ taxes }) {
                             <TableHeadCell>Name</TableHeadCell>
                             <TableHeadCell>Rate</TableHeadCell>
                             <TableHeadCell>Active</TableHeadCell>
-
                             <TableHeadCell>
                                 <span className="sr-only">Edit</span>
                             </TableHeadCell>

@@ -9,7 +9,8 @@ const FormSelect = ({
   onChange, 
   error, 
   defaultValue,
-  width='w-full' 
+  width='w-full',
+  multiple = false 
   
 }) => {
   
@@ -18,7 +19,7 @@ const FormSelect = ({
       <div className="mb-2 block">
         <Label htmlFor={id}>{label}</Label>
       </div>
-      <Select id={id} value={value} defaultValue={defaultValue} onChange={onChange}>
+      <Select id={id} value={value} defaultValue={defaultValue} onChange={onChange} multiple ={multiple}>
         {options.map((opt) => (
           <option key={opt.id} value={opt.id}>
             {opt.name}
