@@ -8,4 +8,8 @@ use function Laravel\Prompts\table;
 class ShopCategories extends Model
 {
     protected $fillable = ['name', 'is_active'];
+
+    public function categoryTaxes(){
+        return $this->hasMany(CategoryTaxes::class,'category_id');
+    }
 }
