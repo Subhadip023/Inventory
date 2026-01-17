@@ -7,9 +7,13 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Request;
+
+use function Symfony\Component\Clock\now;
 
 class ProductController extends Controller
 {
+    private $currentShop;
     public function __construct()
     {
         $this->currentShop = session()->get('current_shop');
@@ -19,7 +23,7 @@ class ProductController extends Controller
     {   
         $currentShop = $this->currentShop;
         
-        $products = Product::where('shop_id', $currentShop)->get();
+        $products = Product::with('universal_product')->where('shop_id', $currentShop)->get();
         return Inertia::render('Product/Index',['products' => $products]);
     }
 
@@ -34,16 +38,19 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(storeProductRequest $request)
     {
         try{
             $validated = $request->validated();
-            $validated['description'] = $valdatated['description'] = $validated['description'] ?? " ";
+            $validated['universal_products_id'] = $validated['universal_product']['value'] ?? null;
             $validated['shop_id'] = $this->currentShop;
+            // $valdatated['slug'] = now();
+            unset($validated['universal_product']);
+            // dd($validated);
             Product::create($validated);
             return redirect()->intended(route('products.index', absolute: false));
         }catch(\Exception $e){
-            log($e);
+            dd($e->getMessage());
             return redirect()->back()->with('error', 'Something went wrong.');
         }
     }

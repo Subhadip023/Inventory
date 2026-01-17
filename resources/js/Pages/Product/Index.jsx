@@ -7,6 +7,7 @@ import { Link, useForm } from '@inertiajs/react';
 import CardContainer from '@/Components/CardContainer';
 import Icons from '@/Components/Icons';
 const Index = ({ products }) => {
+  console.log(products);
 
   const deleteFrom = useForm();
   const deleteProduct = (id) => {
@@ -36,11 +37,11 @@ const Index = ({ products }) => {
             {products.map((product) => (
               <TableRow key={product.id}>
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{product.name}</div>
+                  <div className="text-sm text-gray-900">{product.universal_product.name}</div>
                 </TableCell>
 
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{product.description==' '?'No description':product.description}</div>
+                  <div className="text-sm text-gray-900">{product.universal_product.description==' '?'No description':product.universal_product.description}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
                   <div className="text-sm text-gray-900">{product.quantity}</div>

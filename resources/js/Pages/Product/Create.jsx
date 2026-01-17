@@ -3,28 +3,56 @@ import React, { useEffect } from 'react';
 import { Button, Label, TextInput, Textarea, Card } from 'flowbite-react';
 import { useForm } from '@inertiajs/react';
 import SaveButton from '@/Components/SaveButton';
-
+import AsyncSelect from 'react-select/async';
+import axios from 'axios';
 const Create = () => {
     const {data,setData,post,processing,errors}=useForm({
-        name : '',
-        description : '',
+        universal_product : null,
         sku : '',
         price : '',
         quantity : 1,
     });
-
     useEffect(() => {
-        if (data.name!='') {
-            setData('sku',data.name.trim().replace(/\s/g, '-').toLowerCase() + '-' + Date.now());
+      if (!data.universal_product?.label || data.sku) return;
 
-        }
-    }, [data.name]);
+      setData(
+        'sku',
+        `${data.universal_product.label
+          .trim()
+          .replace(/\s+/g, '-')
+          .toLowerCase()}`
+      );
+    }, [data.universal_product]);
+
 
     const submit = (e) => {
         e.preventDefault();
-    
         post(route('products.store'));
     }
+
+    const loadUniversalProduct = (inputValue, callback) => {
+      if (!inputValue) {
+        callback([]);
+        return;
+      }
+
+      axios
+        .post(route('products.search'), {
+          search: inputValue,
+        })
+        .then((res) => {
+          const options = res.data.data.map((product) => ({
+            value: product.id,
+            label: product.name + ' - ' + product.description,
+          }));
+
+          callback(options);
+        })
+        .catch(() => {
+          callback([]);
+        });
+    };
+
   return (
     <DashboardLayout>
       <div className="max-w-3xl mx-auto p-6">
@@ -34,11 +62,17 @@ const Create = () => {
             {/* Product Name */}
             <div>
               <Label htmlFor="name" value="Product Name" >Product Name </Label>
-              <TextInput id="name" 
-              value={data.name}
-              onChange={(e) => setData('name', e.target.value)}
-              type="text" placeholder="Enter product name"   />
-              <div className="text-red-600">{errors.name}</div>
+              <AsyncSelect
+                loadOptions={loadUniversalProduct}
+                isClearable
+                onChange={(option) =>
+                  setData('universal_product', option ?? null)
+                }
+                value={data.universal_product}
+                placeholder="Search for a product..."
+              />
+
+              <div className="text-red-600">{errors.universal_product}</div>
             </div>
 
             {/* Description */}

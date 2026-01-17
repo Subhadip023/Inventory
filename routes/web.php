@@ -71,6 +71,7 @@ Route::prefix('shops/{shopId}')->group(function () {
     Route::post('roles/assign', [ShopRolePermissionController::class, 'assignRoleToUser'])->name('shop.roles.assign');
 });
 
+Route::post('search-universal-product', [UniversalProductController::class, 'search'])->name('products.search');
 
 
 
