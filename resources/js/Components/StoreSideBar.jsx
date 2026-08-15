@@ -64,6 +64,10 @@ const StoreSideBar = ({ classNames = '', signOut }) => {
                             Users
                         </SidebarItem>
 
+                        <SidebarItem as={Link} href={route('profile.edit')} active={route().current('profile.edit')} icon={HiUser}>
+                            Profile
+                        </SidebarItem>
+
                         <SidebarItem as={Link} href={route('settings.index')} active={route().current('settings.index')} icon={IoSettingsSharp}>
                             Settings
                         </SidebarItem>

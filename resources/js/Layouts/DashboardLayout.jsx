@@ -2,16 +2,19 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Head, Link, useForm, usePage, router } from '@inertiajs/react';
 import { Avatar, Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from "flowbite-react";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { HiExclamationCircle } from "react-icons/hi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import StoreSideBar from '@/Components/StoreSideBar';
 import SuperAdminSideBar from '@/Components/SuperAdminSideBar';
 import UserActivity from '@/Components/UserActivity';
+import IssueReportModal from '@/Components/IssueReportModal';
 
 export default function DashboardLayout({ children, head, type }) {
     const { flash, theme_mode, user_status } = usePage().props;
     const user = usePage().props.auth?.user || {};
 
+    const [showIssueModal, setShowIssueModal] = useState(false);
     const [showSidebar, setShowSidebar] = useState(() => {
         if (typeof window !== 'undefined') {
             return window.innerWidth >= 768;
@@ -159,7 +162,17 @@ export default function DashboardLayout({ children, head, type }) {
                         </Link>
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={() => setShowIssueModal(true)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-amber-700 bg-amber-50 hover:bg-amber-100 dark:text-amber-300 dark:bg-amber-900/30 dark:hover:bg-amber-900/50 transition border border-amber-200/80 dark:border-amber-800/40"
+                            title="Report an Issue"
+                        >
+                            <HiExclamationCircle className="text-base text-amber-600 dark:text-amber-400" />
+                            <span className="hidden sm:inline">Report Issue</span>
+                        </button>
+
                         <Dropdown
                             arrowIcon={false}
                             inline
@@ -204,8 +217,11 @@ export default function DashboardLayout({ children, head, type }) {
                             <DropdownItem as={Link} href={isSuperAdmin ? route('dashboard') : route('shop.dashboard')}>
                                 Dashboard
                             </DropdownItem>
+                            <DropdownItem as={Link} href={route('profile.edit')}>
+                                Profile Settings
+                            </DropdownItem>
                             <DropdownItem as={Link} href={route('settings.index')}>
-                                Settings
+                                System Settings
                             </DropdownItem>
                             <DropdownDivider />
                             <DropdownItem onClick={signOut} className="text-red-600 dark:text-red-400 font-medium cursor-pointer">
@@ -221,6 +237,11 @@ export default function DashboardLayout({ children, head, type }) {
                         {children}
                     </div>
                 </main>
+
+                <IssueReportModal
+                    show={showIssueModal}
+                    onClose={() => setShowIssueModal(false)}
+                />
             </div>
         </div>
     );
