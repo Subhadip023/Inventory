@@ -3,53 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\UniversalProduct;
+use App\Models\MedicineCategory;
 use App\Http\Requests\StoreUniversalProductRequest;
 use App\Http\Requests\UpdateUniversalProductRequest;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use App\Services\Interfaces\UniversalProductServiceInterface;
-use App\Repositories\Interfaces\UniversalProductRepositoryInterface;
-use App\Repositories\Interfaces\ShopCategoriesRepositoryInterface;
+
 class UniversalProductController extends Controller
 {
-    protected $service;
-    protected $repository;
-
-    protected $shopCategoryRepository;
-
-    public function __construct(UniversalProductServiceInterface $service,UniversalProductRepositoryInterface $repository, ShopCategoriesRepositoryInterface $shopCategoryRepository){
-        $this->service = $service;
-        $this->repository = $repository;
-        $this->shopCategoryRepository = $shopCategoryRepository;
-    }
-    
-
     public function index(Request $request)
     {
-        $filterData=$request->all();
-        if (!empty($filterData['shop_category_id'])) {
-        $filterData['shop_category_id']=$filterData['shop_category_id'] =="all"?null:$filterData['shop_category_id'];
+        $query = UniversalProduct::with('medicineCategory');
+
+        if ($search = $request->input('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('salt_composition', 'like', "%{$search}%")
+                  ->orWhere('manufacturer', 'like', "%{$search}%");
+            });
         }
-        if (count(value: $filterData)>0) {
-            $products = $this->service->filterProducts($filterData);
-        }else{
-            $products=$this->service->paginate(5);
+
+        if ($catId = $request->input('medicine_category_id')) {
+            if ($catId !== 'all') {
+                $query->where('medicine_category_id', $catId);
+            }
         }
-        $allCategory = $this->shopCategoryRepository->allActiveCategoryIdName();
+
+        $products = $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
+        $allCategory = MedicineCategory::orderBy('name')->get();
+
         log_user_activity('universal_products', 'User visited universal products page');
+
         return Inertia::render('UniversalProduct/Index', [
             'universalProducts' => $products,
-            'per_page' => $per_page??5,
             'allCategory' => $allCategory,
-            'filterData' =>$filterData,
+            'filterData' => $request->all(),
         ]);
-    }
-
-
-   
-    public function create()
-    {
-        //
     }
 
     /**
@@ -57,74 +46,61 @@ class UniversalProductController extends Controller
      */
     public function store(StoreUniversalProductRequest $request)
     {
-        $data=$request->validated();
-        $data['slug']=\Str::slug($data['name'],'-');
+        $data = $request->validated();
+        $data['slug'] = \Str::slug($data['name']);
 
-        $this->service->create($data);
+        UniversalProduct::create($data);
         log_user_activity('universal_products', 'User created universal product');
 
         return redirect()->back()->with('success', 'Universal Product created successfully.');
-        
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(UniversalProduct $universalProduct)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(UniversalProduct $universalProduct)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUniversalProductRequest $request,$universal_product)
+    public function update(UpdateUniversalProductRequest $request, UniversalProduct $universalProduct)
     {
-        $data=$request->validated();
-        $this->service->update($universal_product,$data);
+        $data = $request->validated();
+        if (isset($data['name'])) {
+            $data['slug'] = \Str::slug($data['name']);
+        }
+
+        $universalProduct->update($data);
         log_user_activity('universal_products', 'User updated universal product');
-        return redirect()->route('universal-products.index')->with('success', 'Universal Product updated successfully.');
+
+        return redirect()->back()->with('success', 'Universal Product updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($universal_product)
+    public function destroy(UniversalProduct $universalProduct)
     {
         log_user_activity('universal_products', 'User deleted universal product');
-        $this->service->delete($universal_product);
+        $universalProduct->delete();
+
         return redirect()->back()->with('success', 'Universal Product deleted successfully.');
     }
-    
+
     public function changeVarifyStatus(Request $request)
     {
         $request->validate([
             'id' => 'required|exists:universal_products,id',
         ]);
-        $id = $request['id'];
-        $status = $this->repository->changeVarifyStatus($id);
-        log_user_activity('universal_products', 'User changed universal product status');
-        if ($status) {
-            return redirect()->route('universal-products.index')->with('success', 'Product status changed successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Failed to change product status.');
-        }
 
+        $product = UniversalProduct::findOrFail($request->id);
+        $product->update(['verified' => !$product->verified]);
+
+        log_user_activity('universal_products', 'User changed universal product status');
+        return redirect()->back()->with('success', 'Product verification status updated successfully.');
     }
 
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $searchProducts = $this->service->search($search);
-        log_user_activity('universal_products', 'User searched universal product');
-        return $searchProducts;
+        return UniversalProduct::with('medicineCategory')
+            ->where('name', 'like', "%{$search}%")
+            ->orWhere('salt_composition', 'like', "%{$search}%")
+            ->get();
     }
 }

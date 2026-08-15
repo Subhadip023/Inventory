@@ -52,7 +52,14 @@ graph TD
   - Implemented real-time search filtering by Product Name, SKU, and Description.
   - Added stock status badges (**In Stock** `>10`, **Low Stock** `1-10`, **Out of Stock** `0`).
   - Added currency formatting (`₹0.00`) and styled SKU badges.
-  - Integrated `ConfirmModal` dialog for safe product deletions.
+### E. Multi-Tenant Order Data Leak Prevention & Authorization Guards
+- **Problem**: Orders were stored without a `shop_id` foreign key. `OrderController` methods (`index`, `create`, `store`, `show`, `update`, `destroy`) retrieved all orders globally, leaking sensitive transaction data across store tenants and allowing URL parameter tampering.
+- **Solution**:
+  - Added `shop_id` foreign key with an index to `orders` migration (`database/migrations/2026_08_15_193500_add_shop_id_to_orders_table.php`).
+  - Added `shop_id` to `$fillable` array in `App\Models\Order` and defined `shop()` relationship.
+  - Refactored `OrderController@index` and `OrderController@create` to strictly scope queries by `session('current_shop')`.
+  - Added security guards in `OrderController@store` verifying every product item belongs strictly to `session('current_shop')`.
+  - Implemented 403 authorization guards (`authorizeOrderAccess`) across `{order}` route methods (`show`, `edit`, `update`, `destroy`) to block route parameter tampering attempts.
 
 ---
 

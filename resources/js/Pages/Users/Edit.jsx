@@ -1,4 +1,4 @@
-import DashboardLayout from '@/Layouts/DashboardLayout';
+import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
 import React, { use } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import Modal from '@/Components/Modal';
@@ -89,7 +89,7 @@ const Edit = ({ user, allCountry, defult_selected_country_id, allState, allCity,
     };
 
     return (
-        <DashboardLayout>
+        <StoreDashboardLayout>
             <Head title="Edit User" />
             <h1 className='text-2xl font-bold '>Edit Users</h1>
             <div className='mx-5 my-10 flex items-center justify-center '>
@@ -292,7 +292,7 @@ const Edit = ({ user, allCountry, defult_selected_country_id, allState, allCity,
                     </div>
                 </section>
             </div>
-        </DashboardLayout>
+        </StoreDashboardLayout>
     );
 }
 

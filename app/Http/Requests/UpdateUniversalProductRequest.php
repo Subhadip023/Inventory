@@ -22,11 +22,16 @@ class UpdateUniversalProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'shop_category_id' => 'required|exists:shop_categories,id',
-            'verified' => 'boolean',
-            'id' => 'required|exists:universal_products,id',
+            'id'                   => 'required|exists:universal_products,id',
+            'name'                 => 'required|string|max:255',
+            'description'          => 'nullable|string',
+            'salt_composition'     => 'nullable|string|max:255',
+            'manufacturer'         => 'nullable|string|max:255',
+            'hsn_code'             => 'nullable|string|max:20',
+            'gst_rate'             => 'nullable|numeric|min:0|max:100',
+            'drug_schedule'        => 'nullable|in:OTC,H,H1,X,G',
+            'medicine_category_id' => 'nullable|exists:medicine_categories,id',
+            'verified'             => 'boolean',
         ];
     }
 }

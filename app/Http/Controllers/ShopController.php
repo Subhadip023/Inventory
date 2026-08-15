@@ -13,22 +13,19 @@ use App\Repositories\StateRepository;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Repositories\Interfaces\ShopCategoriesRepositoryInterface;
-
 
 class ShopController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $countries;
+    protected $states;
+    protected $cities;
 
-    public function __construct(CountryRepository $countryRepository,StateRepository $stateRepository,CityRepository $cityRepository,ShopCategoriesRepositoryInterface $shopCategoriesRepo){
-        $this->countries=$countryRepository;
-        $this->states=$stateRepository;
-        $this->cities=$cityRepository;
-        $this->shop_cat_repo=$shopCategoriesRepo;
+    public function __construct(CountryRepository $countryRepository, StateRepository $stateRepository, CityRepository $cityRepository)
+    {
+        $this->countries = $countryRepository;
+        $this->states    = $stateRepository;
+        $this->cities    = $cityRepository;
     }
-    
     
     public function getLocationData()
     {
@@ -43,6 +40,7 @@ class ShopController extends Controller
             'defult_selected_state_id' => $defaultStateId,
         ];
     }
+
     public function index()
     {
         //
@@ -53,9 +51,7 @@ class ShopController extends Controller
      */
     public function create()
     {
-        $all_shop_cats=$this->shop_cat_repo->allActiveCategoryIdName();
-        return Inertia::render('Shop/Create',[...$this->getLocationData(),
-    ]);
+        return Inertia::render('Shop/Create', [...$this->getLocationData()]);
     }
 
     /**
@@ -64,22 +60,22 @@ class ShopController extends Controller
     public function store(StoreShopRequest $request)
     {
         try {
-        $validated = $request->validated();
-        $validated['user_id'] = auth()->user()->id;
-        $validated['slug'] = Str::slug($validated['name']).'-'.auth()->user()->id;
-        $is_name_exists = Shop::where('slug', $validated['slug'])->exists();
-        if ($is_name_exists) {
-           return redirect()->back()->withInput()->withErrors(['name' => 'Shop name already exists.']);    
-        }
-        $validated=array_filter($validated);
-        if($request->hasFile('registration_certificate')) {
-            $validated['registration_certificate'] = $request->file('registration_certificate')->store('shop_certificate','public');
-        }
-        if($request->hasFile('logo')) {
-            $validated['logo'] = $request->file('logo')->store('shop','public');
-        }
-        Shop::create($validated);
-        return redirect()->route('home')->with('success', 'Shop created successfully.');
+            $validated = $request->validated();
+            $validated['user_id'] = auth()->user()->id;
+            $validated['slug'] = Str::slug($validated['name']).'-'.auth()->user()->id;
+            $is_name_exists = Shop::where('slug', $validated['slug'])->exists();
+            if ($is_name_exists) {
+                return redirect()->back()->withInput()->withErrors(['name' => 'Shop name already exists.']);    
+            }
+            $validated = array_filter($validated);
+            if ($request->hasFile('registration_certificate')) {
+                $validated['registration_certificate'] = $request->file('registration_certificate')->store('shop_certificate', 'public');
+            }
+            if ($request->hasFile('logo')) {
+                $validated['logo'] = $request->file('logo')->store('shop', 'public');
+            }
+            Shop::create($validated);
+            return redirect()->route('home')->with('success', 'Shop created successfully.');
         } catch (\Throwable $th) {
             logger()->error($th->getMessage());
             return redirect()->back()->with('error', 'Something went wrong.');
@@ -99,8 +95,7 @@ class ShopController extends Controller
      */
     public function edit(Shop $store)
     {
-    
-        return Inertia::render('Shop/Edit',['store' => $store,...$this->getLocationData()]);
+        return Inertia::render('Shop/Edit', ['store' => $store, ...$this->getLocationData()]);
     }
 
     /**
@@ -109,30 +104,29 @@ class ShopController extends Controller
     public function update(UpdateShopRequest $request, Shop $store)
     {
         try {
-            $valData=$request->validated();
-        $city=$valData['city']??null;
-        if (!$city) {
-            $valData['country'] = null;
-            $valData['state'] = null;
-        }
-        $valData=array_filter($valData);
-        
-        $new_slug = Str::slug($valData['name']).'-'.auth()->user()->id;
-        $old_slug = $store->slug;
-        if ($new_slug != $old_slug) {
-            $is_name_exists = Shop::where('slug', $new_slug)->exists();
-            if ($is_name_exists) {
-               return redirect()->back()->withInput()->withErrors(['name' => 'Shop name already exists.']);    
+            $valData = $request->validated();
+            $city = $valData['city'] ?? null;
+            if (!$city) {
+                $valData['country'] = null;
+                $valData['state']   = null;
             }
-        }
-        
-        $store->update($valData);
-        return redirect()->back()->with('success', 'Shop updated successfully.');
+            $valData = array_filter($valData);
+            
+            $new_slug = Str::slug($valData['name']).'-'.auth()->user()->id;
+            $old_slug = $store->slug;
+            if ($new_slug != $old_slug) {
+                $is_name_exists = Shop::where('slug', $new_slug)->exists();
+                if ($is_name_exists) {
+                    return redirect()->back()->withInput()->withErrors(['name' => 'Shop name already exists.']);    
+                }
+            }
+            
+            $store->update($valData);
+            return redirect()->back()->with('success', 'Shop updated successfully.');
         } catch (\Throwable $th) {
             logger()->error($th->getMessage());
             return redirect()->back()->with('error', 'Something went wrong.');
         }
-     
     }
 
     /**
@@ -143,10 +137,8 @@ class ShopController extends Controller
         //
     }
 
-
     public function editShopeImage(Request $request)
     {
-
         $shop = Shop::find($request->shop_id);
 
         if (!$shop) {
@@ -164,14 +156,14 @@ class ShopController extends Controller
         }
 
         return redirect()->back()->with('success', 'Logo updated successfully.');
-        }
+    }
 
-
-    public function setShop(Request $request)    {
-        $shop_id=$request->shop_id;
+    public function setShop(Request $request)
+    {
+        $shop_id = $request->shop_id;
         $user_shops = auth()->user()->shops()->get();
 
-        if(!in_array($shop_id, $user_shops->pluck('id')->toArray())) {
+        if (!in_array($shop_id, $user_shops->pluck('id')->toArray())) {
             return redirect()->route('home')->with('error', 'Shop Not Found');
         }
         session()->put('current_shop', $shop_id);

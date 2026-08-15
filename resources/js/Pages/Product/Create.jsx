@@ -1,4 +1,4 @@
-import DashboardLayout from '@/Layouts/DashboardLayout';
+import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
 import React, { useEffect } from 'react';
 import { Button, Label, TextInput, Textarea, Card } from 'flowbite-react';
 import { useForm } from '@inertiajs/react';
@@ -55,7 +55,7 @@ const Create = () => {
     };
 
   return (
-    <DashboardLayout>
+    <StoreDashboardLayout>
       <div className="max-w-3xl mx-auto p-6">
         <Card className="shadow-md">
           <h2 className="text-2xl font-semibold mb-4">Create Product</h2>
@@ -113,7 +113,7 @@ const Create = () => {
           </form>
         </Card>
       </div>
-    </DashboardLayout>
+    </StoreDashboardLayout>
   );
 };
 

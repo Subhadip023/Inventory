@@ -25,5 +25,8 @@ class DatabaseSeeder extends Seeder
         Role::firstOrCreate(['name' => 'super-admin']);
 
         $user->assignRole('super-admin');
+
+        $this->call(MedicineCategorySeeder::class);
+        $this->call(UniversalProductSeeder::class);
     }
 }

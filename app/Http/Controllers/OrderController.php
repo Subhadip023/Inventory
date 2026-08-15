@@ -3,22 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Customer;
+use App\Models\Payment;
+use App\Models\CustomerLedger;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Product;
-use App\Models\User;
+
 class OrderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get active shop ID from session.
+     */
+    private function getCurrentShopId(): int
+    {
+        return (int) session()->get('current_shop');
+    }
+
+    /**
+     * Display a listing of the resource scoped to current shop.
      */
     public function index()
     {
-        $allOrder=Order::with(['customer','createdBy'])->orderBy('id','desc')->get();
-        // dd($allOrder);
-        return Inertia::render('Orders/Index',['allOrder'=>$allOrder]);
+        Gate::authorize('viewAny', Order::class);
+
+        $currentShopId = $this->getCurrentShopId();
+
+        $allOrder = Order::with(['customer', 'createdBy', 'payments'])
+            ->where('shop_id', $currentShopId)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return Inertia::render('Orders/Index', ['allOrder' => $allOrder]);
     }
 
     /**
@@ -26,54 +46,143 @@ class OrderController extends Controller
      */
     public function create()
     {
-       $products=Product::all();
-       $customers=User::where('user_type',3)->get();
-       return Inertia::render('Orders/Create',['products'=>$products,'customers'=>$customers]);
+        Gate::authorize('create', Order::class);
+
+        $currentShopId = $this->getCurrentShopId();
+
+        // Scope products strictly to the current store
+        $products = Product::with('universal_product')
+            ->where('shop_id', $currentShopId)
+            ->get();
+
+        // Scope customers strictly to the current store
+        $customers = Customer::where('shop_id', $currentShopId)->get();
+
+        return Inertia::render('Orders/Create', [
+            'products' => $products,
+            'customers' => $customers
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage scoped to current shop.
      */
     public function store(StoreOrderRequest $request)
     {
-        
+        Gate::authorize('create', Order::class);
+
+        $currentShopId = $this->getCurrentShopId();
         $validated = $request->validated();
-        $validated['created_by'] = auth()->user()->id;
-        $products = $validated['items'];
+        $itemsInput = $validated['items'] ?? [];
 
-        $validated['grand_total'] = 0;
-        $orderItems = [];
-        foreach ($products as $product) {
-            if(!$product['product']) continue;
-            $tempOrderItem = [
-                'product_id' => $product['product']['value'],
-                'quantity' => $product['quantity'],
-                'price' => $product['product']['price'],
-            ];
-            $orderItems[] = $tempOrderItem;
-            $validated['grand_total'] += $product['product']['price'] * $product['quantity'];
-        }
+        return DB::transaction(function () use ($currentShopId, $validated, $itemsInput) {
+            $grandTotal = 0;
+            $orderItems = [];
 
-        $validated['net_amount'] = $validated['grand_total'] +($validated['grand_total'] * $validated['tax'] / 100) - ($validated['grand_total'] * $validated['discount'] / 100);
+            foreach ($itemsInput as $item) {
+                if (empty($item['product']) || empty($item['product']['value'])) {
+                    continue;
+                }
 
-        $validated['status'] = 'Pending';
+                $productId = (int) $item['product']['value'];
+                $quantity = isset($item['quantity']) ? (int)$item['quantity'] : 1;
 
-        $order=Order::create(
-           [ 'customer_id'=>$validated['customer_id'],
-            'created_by'=>auth()->user()->id,
-            'grand_total'=>$validated['grand_total'],
-            'discount'=>$validated['discount'],
-            'tax'=>$validated['tax'],
-            'net_amount'=>$validated['net_amount'],
-            'status'=>$validated['status'],
-            ]
-        );
+                // Security Guard: Verify product belongs strictly to current shop
+                $productModel = Product::where('id', $productId)
+                    ->where('shop_id', $currentShopId)
+                    ->first();
 
-        $order->orderItems()->createMany($orderItems);
+                if (!$productModel) {
+                    abort(403, 'Unauthorized product selection from another store.');
+                }
 
-        return redirect()->route('orders.index');
-    
-    
+                $price = (float) $productModel->price;
+                $orderItems[] = [
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                    'price' => $price,
+                ];
+                $grandTotal += $price * $quantity;
+            }
+
+            $tax = (float) ($validated['tax'] ?? 0);
+            $discount = (float) ($validated['discount'] ?? 0);
+            $netAmount = $grandTotal + ($grandTotal * $tax / 100) - ($grandTotal * $discount / 100);
+
+            $customerId = !empty($validated['customer_id']) ? (int) $validated['customer_id'] : null;
+
+            // Verify customer belongs to current shop if provided
+            if ($customerId) {
+                $customerModel = Customer::where('id', $customerId)
+                    ->where('shop_id', $currentShopId)
+                    ->first();
+
+                if (!$customerModel) {
+                    abort(403, 'Unauthorized customer selection from another store.');
+                }
+            }
+
+            $order = Order::create([
+                'shop_id' => $currentShopId,
+                'customer_id' => $customerId,
+                'created_by' => auth()->id(),
+                'grand_total' => $grandTotal,
+                'discount' => $discount,
+                'tax' => $tax,
+                'net_amount' => $netAmount,
+                'paid_amount' => 0,
+                'payment_status' => 'unpaid',
+                'status' => 'Pending',
+            ]);
+
+            if (!empty($orderItems)) {
+                $order->orderItems()->createMany($orderItems);
+            }
+
+            // Payment Handling
+            $initialPaidAmount = isset($validated['paid_amount']) ? (float) $validated['paid_amount'] : $netAmount;
+
+            if ($initialPaidAmount > 0) {
+                Payment::create([
+                    'shop_id' => $currentShopId,
+                    'order_id' => $order->id,
+                    'customer_id' => $customerId,
+                    'amount' => $initialPaidAmount,
+                    'mode' => $validated['payment_mode'] ?? 'cash',
+                    'reference_no' => $validated['payment_reference'] ?? null,
+                ]);
+            }
+
+            // Sync payment_status & paid_amount on order
+            $order->recalculatePaymentStatus();
+
+            // Customer Ledger entries (Wholesale/Credit Tracking)
+            if ($customerId) {
+                // Positive entry: Sale debt incurred
+                CustomerLedger::create([
+                    'shop_id' => $currentShopId,
+                    'customer_id' => $customerId,
+                    'order_id' => $order->id,
+                    'type' => 'sale',
+                    'amount' => $netAmount,
+                    'note' => 'Bill #' . $order->id . ' sale',
+                ]);
+
+                // Negative entry: Payment received
+                if ($initialPaidAmount > 0) {
+                    CustomerLedger::create([
+                        'shop_id' => $currentShopId,
+                        'customer_id' => $customerId,
+                        'order_id' => $order->id,
+                        'type' => 'payment',
+                        'amount' => -1 * $initialPaidAmount,
+                        'note' => 'Bill #' . $order->id . ' initial payment',
+                    ]);
+                }
+            }
+
+            return redirect()->route('orders.index')->with('success', 'Order created successfully.');
+        });
     }
 
     /**
@@ -81,10 +190,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order->load('createdBy');          
-        $order->load('customer');          
-        $order->load('orderItems.product');
-        // dd($order);
+        Gate::authorize('view', $order);
+
+        $order->load(['createdBy', 'customer', 'payments', 'ledgerEntries', 'orderItems.product.universal_product']);
+
         return Inertia::render('Orders/Show', ['order' => $order]);
     }
 
@@ -93,7 +202,9 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        Gate::authorize('update', $order);
+
+        return Inertia::render('Orders/Edit', ['order' => $order]);
     }
 
     /**
@@ -101,7 +212,12 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        Gate::authorize('update', $order);
+
+        $validated = $request->validated();
+        $order->update($validated);
+
+        return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
     }
 
     /**
@@ -109,6 +225,10 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        Gate::authorize('delete', $order);
+
+        $order->delete();
+
+        return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
     }
 }

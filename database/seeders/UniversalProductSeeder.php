@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\ShopCategories;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\UniversalProduct;
+use App\Models\MedicineCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use App\Models\shopCategory;
+
 class UniversalProductSeeder extends Seeder
 {
     /**
@@ -16,145 +15,197 @@ class UniversalProductSeeder extends Seeder
      */
     public function run(): void
     {
-        // Ensure default shop categories exist
-        $categories = [
-            1 => 'Medicines',
-            2 => 'Books',
-            3 => 'Grocery',
-        ];
+        // Truncate universal_products to refresh catalog
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        UniversalProduct::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        foreach ($categories as $id => $name) {
-            ShopCategories::firstOrCreate(
-                ['id' => $id],
-                ['name' => $name, 'is_active' => true]
-            );
-        }
+        // Get category lookup map by name
+        $categoryMap = MedicineCategory::pluck('id', 'name')->toArray();
 
         $products = [
-    // Medicines
-    [
-        'name' => 'Paracetamol',
-        'description' => 'Pain reliever and fever reducer',
-        'shop_category_id' => 1
-    ],
-    [
-        'name' => 'Ibuprofen',
-        'description' => 'Anti-inflammatory and pain relief',
-        'shop_category_id' => 1
-    ],
-    [
-        'name' => 'Amoxicillin',
-        'description' => 'Antibiotic for bacterial infections',
-        'shop_category_id' => 1
-    ],
-    [
-        'name' => 'Vitamin C',
-        'description' => 'Immune system booster supplement',
-        'shop_category_id' => 1
-    ],
-    [
-        'name' => 'Cough Syrup',
-        'description' => 'Relieves cough and cold symptoms',
-        'shop_category_id' => 1
-    ],
-    [
-        'name' => 'Band-Aids (20ct)',
-        'description' => 'Adhesive bandages for minor cuts',
-        'shop_category_id' => 1
-    ],
-    
-    // Books
-    [
-        'name' => 'The Great Gatsby',
-        'description' => 'Classic novel by F. Scott Fitzgerald',
-        'shop_category_id' => 2
-    ],
-    [
-        'name' => '1984',
-        'description' => 'Dystopian novel by George Orwell',
-        'shop_category_id' => 2
-    ],
-    [
-        'name' => 'The Alchemist',
-        'description' => 'Inspirational novel by Paulo Coelho',
-        'shop_category_id' => 2
-    ],
-    [
-        'name' => 'Harry Potter and the Sorcerer\'s Stone',
-        'description' => 'Fantasy novel by J.K. Rowling',
-        'shop_category_id' => 2
-    ],
-    [
-        'name' => 'To Kill a Mockingbird',
-        'description' => 'Pulitzer Prize-winning novel by Harper Lee',
-        'shop_category_id' => 2
-    ],
-    [
-        'name' => 'Dune',
-        'description' => 'Classic science fiction novel by Frank Herbert',
-        'shop_category_id' => 2
-    ],
+            [
+                'name' => 'Paracetamol 500mg',
+                'description' => 'Effective pain reliever and fever reducer.',
+                'salt_composition' => 'Paracetamol IP 500mg',
+                'manufacturer' => 'Cipla Ltd',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Tablet',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Amoxicillin 500mg',
+                'description' => 'Broad-spectrum penicillin antibiotic for bacterial infections.',
+                'salt_composition' => 'Amoxicillin Trihydrate 500mg',
+                'manufacturer' => 'Sun Pharma',
+                'hsn_code' => '30041010',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'H',
+                'category' => 'Capsule',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Azithromycin 500mg',
+                'description' => 'Macrolide antibiotic used for respiratory and soft tissue infections.',
+                'salt_composition' => 'Azithromycin Dihydrate 500mg',
+                'manufacturer' => 'Lupin Ltd',
+                'hsn_code' => '30042099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'H',
+                'category' => 'Tablet',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Benadryl Cough Syrup 100ml',
+                'description' => 'Relieves cough, throat irritation, and congestion symptoms.',
+                'salt_composition' => 'Diphenhydramine HCl 14mg + Ammonium Chloride 138mg',
+                'manufacturer' => 'Johnson & Johnson',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Syrup',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Diclofenac Pain Relief Gel 30g',
+                'description' => 'Topical anti-inflammatory gel for joint and muscle pain.',
+                'salt_composition' => 'Diclofenac Diethylamine 1.16% w/w',
+                'manufacturer' => 'Ranbaxy / Sun Pharma',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Gel',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Pantoprazole 40mg',
+                'description' => 'Proton pump inhibitor for acid reflux and acidity management.',
+                'salt_composition' => 'Pantoprazole Sodium 40mg',
+                'manufacturer' => 'Alkem Laboratories',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'H',
+                'category' => 'Tablet',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Insulin Glargine 100IU/ml',
+                'description' => 'Long-acting basal insulin analog for diabetes mellitus.',
+                'salt_composition' => 'Recombinant Human Insulin Glargine 100IU',
+                'manufacturer' => 'Sanofi India',
+                'hsn_code' => '30043110',
+                'gst_rate' => 5.00,
+                'drug_schedule' => 'H',
+                'category' => 'Injection',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Ciprofloxacin Eye Drops 5ml',
+                'description' => 'Antibacterial ophthalmic solution for eye infections.',
+                'salt_composition' => 'Ciprofloxacin 0.3% w/v',
+                'manufacturer' => 'Cipla Ltd',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'H',
+                'category' => 'Drops',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Cetirizine 10mg',
+                'description' => 'Antihistamine for allergic rhinitis and skin allergies.',
+                'salt_composition' => 'Cetirizine Dihydrochloride 10mg',
+                'manufacturer' => 'Dr. Reddys Laboratories',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Tablet',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Betadine Antiseptic Ointment 20g',
+                'description' => 'First-aid microbicidal ointment for minor cuts and wounds.',
+                'salt_composition' => 'Povidone-Iodine 5% w/w',
+                'manufacturer' => 'Win-Medicare',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Ointment',
+                'verified' => true,
+            ],
+            [
+                'name' => 'ORSL Oral Rehydration Powder 21g',
+                'description' => 'Restores fluids and essential electrolytes lost due to dehydration.',
+                'salt_composition' => 'Sodium Chloride + Potassium Chloride + Dextrose',
+                'manufacturer' => 'Abbott Healthcare',
+                'hsn_code' => '30049099',
+                'gst_rate' => 18.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Powder',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Asthalin Inhaler 100mcg',
+                'description' => 'Bronchodilator for rapid relief of asthma and bronchospasm.',
+                'salt_composition' => 'Salbutamol 100mcg per dose',
+                'manufacturer' => 'Cipla Ltd',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'H',
+                'category' => 'Inhaler',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Calamine Skin Lotion 100ml',
+                'description' => 'Soothing lotion for mild skin itching, sunburns, and insect bites.',
+                'salt_composition' => 'Calamine 15% + Zinc Oxide 5%',
+                'manufacturer' => 'Piramal Pharma',
+                'hsn_code' => '33049990',
+                'gst_rate' => 18.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Lotion',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Combiflam Tablet',
+                'description' => 'Dual action analgesic for head, muscle, and body aches.',
+                'salt_composition' => 'Ibuprofen 400mg + Paracetamol 325mg',
+                'manufacturer' => 'Sanofi India',
+                'hsn_code' => '30049099',
+                'gst_rate' => 12.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Tablet',
+                'verified' => true,
+            ],
+            [
+                'name' => 'Multivitamin & Mineral Capsules',
+                'description' => 'Daily dietary supplement supporting overall health and immunity.',
+                'salt_composition' => 'Essential Vitamins + Minerals + Zinc',
+                'manufacturer' => 'Mankind Pharma',
+                'hsn_code' => '21069099',
+                'gst_rate' => 18.00,
+                'drug_schedule' => 'OTC',
+                'category' => 'Capsule',
+                'verified' => true,
+            ],
+        ];
 
-    // Grocery
-    [
-        'name' => 'Rice (Basmati)',
-        'description' => 'Premium long-grain rice',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Wheat Flour',
-        'description' => 'Essential for making bread and chapati',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Milk (1L)',
-        'description' => 'Dairy product, full cream',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Sugar',
-        'description' => 'Refined white sugar',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Cooking Oil (Sunflower)',
-        'description' => 'Used for frying and cooking',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Salt (Iodized)',
-        'description' => 'Essential seasoning',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Eggs (Dozen)',
-        'description' => 'Farm fresh eggs',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Bread (Whole Wheat)',
-        'description' => 'Healthy whole grain bread loaf',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Tea Leaves',
-        'description' => 'Used for making tea',
-        'shop_category_id' => 3
-    ],
-    [
-        'name' => 'Coffee Powder',
-        'description' => 'Ground coffee for brewing',
-        'shop_category_id' => 3
-    ],
-];
+        foreach ($products as $item) {
+            $catName = $item['category'];
+            $catId = $categoryMap[$catName] ?? null;
 
-        foreach ($products as $product) {
             UniversalProduct::create([
-                'name' => $product['name'],
-                'slug' => Str::slug($product['name']),
-                'description' => $product['description'],
-                'shop_category_id'=> $product['shop_category_id'],
-                'verified' => rand(0, 1)
+                'name' => $item['name'],
+                'slug' => Str::slug($item['name']),
+                'description' => $item['description'],
+                'salt_composition' => $item['salt_composition'],
+                'manufacturer' => $item['manufacturer'],
+                'hsn_code' => $item['hsn_code'],
+                'gst_rate' => $item['gst_rate'],
+                'drug_schedule' => $item['drug_schedule'],
+                'medicine_category_id' => $catId,
+                'verified' => $item['verified'],
             ]);
         }
     }

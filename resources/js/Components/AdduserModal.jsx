@@ -1,4 +1,3 @@
-import DashboardLayout from '@/Layouts/DashboardLayout.jsx';
 import React, { use } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import Modal from '@/Components/Modal';

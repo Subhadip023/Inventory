@@ -1,4 +1,4 @@
-import DashboardLayout from '@/Layouts/DashboardLayout.jsx';
+import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout.jsx';
 import React, { use } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import Modal from '@/Components/Modal';
@@ -104,7 +104,7 @@ const Index = ({ users, allCountry, defult_selected_country_id, allState, allCit
   // console.log( userType);
 
   return (
-    <DashboardLayout head={"Dashboard | Users"}>
+    <StoreDashboardLayout head={"Dashboard | Users"}>
       {/* Delete Modal */}
       <ReactModal dismissible show={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
         <ModalHeader>Delete User {deleteUserForm.data.user_name}</ModalHeader>
@@ -370,7 +370,7 @@ const Index = ({ users, allCountry, defult_selected_country_id, allState, allCit
       </CardContainer>   
       
       
-       </DashboardLayout>
+       </StoreDashboardLayout>
   );
 }
 

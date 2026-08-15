@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ShopCategoriesController;
 use App\Http\Controllers\UserActivityController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -9,7 +8,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\superadminUsers;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UniversalProductController;
-use App\Http\Controllers\UserStatusController;
+use App\Http\Controllers\MedicineCategoryController;
 
 Route::prefix('superadmin')
     ->middleware(['auth', 'role:super-admin'])
@@ -19,7 +18,7 @@ Route::prefix('superadmin')
         Route::resource('universal-products', UniversalProductController::class);
         Route::post('universal-products-search', [UniversalProductController::class, 'search'])->name('universal-products.search');
         Route::post('universal-products-change-status', [UniversalProductController::class, 'changeVarifyStatus'])->name('universal-products.changeVarifyStatus');
-        Route::resource('shop-categories', ShopCategoriesController::class);
+        Route::resource('medicine-categories', MedicineCategoryController::class);
         Route::resource('users',superadminUsers::class);        
 });
 

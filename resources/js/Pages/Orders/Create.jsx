@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import DashboardLayout from "@/Layouts/DashboardLayout";
+import StoreDashboardLayout from "@/Layouts/StoreDashboardLayout";
 import Select from "react-select";
 import { TextInput, Button } from "flowbite-react";
 import { useForm } from "@inertiajs/react";
@@ -90,7 +90,7 @@ const Create = ({ products, customers }) => {
   };
 
   return (
-    <DashboardLayout head={"Dashboard | Create Order"}>
+    <StoreDashboardLayout head={"Dashboard | Create Order"}>
       <div className="flex items-center justify-between ">
         <h2 className="text-2xl font-semibold my-4 mx-10">Create Order</h2>
 
@@ -227,7 +227,7 @@ const Create = ({ products, customers }) => {
       </div>
       </CardContainer>
      
-    </DashboardLayout>
+    </StoreDashboardLayout>
   );
 };
 

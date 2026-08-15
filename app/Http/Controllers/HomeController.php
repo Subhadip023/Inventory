@@ -7,6 +7,10 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Models\UserSetting;
+use App\Models\MedicineCategory;
+use App\Models\UniversalProduct;
+use App\Models\Shop;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -26,6 +30,18 @@ class HomeController extends Controller
 
     public function superadminDashboard(){
         log_user_activity('dashboard', 'User visited dashboard');
-        return Inertia::render('SuperAdmin/Dashboard');
+
+        $medicineCategories = MedicineCategory::orderBy('name')->get();
+        $stats = [
+            'total_medicine_categories' => $medicineCategories->count(),
+            'total_universal_products' => UniversalProduct::count(),
+            'total_shops' => Shop::count(),
+            'total_users' => User::count(),
+        ];
+
+        return Inertia::render('SuperAdmin/Dashboard', [
+            'medicineCategories' => $medicineCategories,
+            'stats' => $stats,
+        ]);
     }
 }

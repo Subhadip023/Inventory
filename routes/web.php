@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ShopCategoriesController;
-use App\Models\ShopCategories;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,6 +45,8 @@ Route::resource('users', UserController::class)->middleware('auth');
 Route::post('users-add-profile', [UserController::class, 'addProfile'])->name('user.profile.add')->middleware('auth');
 Route::post('users-status-change', [UserController::class, 'statusChange'])->name('user.status.change')->middleware('auth');
 
+use App\Http\Controllers\BatchController;
+
 Route::post('/getCity', [CountryStateCityController::class, 'getCity'])->name('getCity');
 
 Route::resource('shops', ShopController::class)->middleware('auth');
@@ -54,7 +54,7 @@ Route::post('setShop', [ShopController::class, 'setShop'])->name('setShop')->mid
 Route::get('store/dashboard', StoreDashboardController::class )->name('shop.dashboard');
 Route::prefix('store')->group(function () {
    Route::resource('products', ProductController::class)->middleware('auth');
-
+   Route::resource('batches', BatchController::class)->middleware('auth');
 })->middleware('auth');
 
 Route::post('/editShopeImage', [ShopController::class, 'editShopeImage'])->name('editShopeImage');

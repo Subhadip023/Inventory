@@ -122,8 +122,8 @@ export default function DashboardLayout({ children, head }) {
                   Role
                 </SidebarItem>
               </SidebarCollapse>
-              <SidebarItem as={Link} href={route('shop-categories.index')} active={route().current('shop-categories.index')} icon={FaStore}>
-                Shop Categories
+              <SidebarItem as={Link} href={route('medicine-categories.index')} active={route().current('medicine-categories.index')} icon={HiShoppingBag}>
+                Medicine Categories
               </SidebarItem>
               <SidebarItem as={Link} href={route('superadmin.tax.index')} active={route().current('superadmin.tax.index')} icon={HiReceiptTax}>
                 Tax

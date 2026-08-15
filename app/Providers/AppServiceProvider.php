@@ -7,16 +7,15 @@ use App\Repositories\Interfaces\UniversalProductRepositoryInterface;
 use App\Repositories\UniversalProductRepository;
 use App\Services\Interfaces\UniversalProductServiceInterface;
 use App\Services\UniversalProductService;
-use Illuminate\Support\Facades\Vite;
-use Illuminate\Support\ServiceProvider;
-use App\Repositories\Interfaces\ShopCategoriesRepositoryInterface;
-use App\Repositories\ShopCategoryRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Repositories\Interfaces\UserActivityLogInterface;
 use App\Repositories\UserActivityLogRepository;
 use App\Repositories\Interfaces\TaxRepositoryInterface;
 use App\Repositories\TaxRepository;
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -24,17 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //repository binding 
+        // repository binding 
         $this->app->bind(
             UniversalProductRepositoryInterface::class,
             UniversalProductRepository::class
         );
-        $this->app->bind(
-            ShopCategoriesRepositoryInterface::class,
-            ShopCategoryRepository::class
-        );
-
-
 
         // service binding 
         $this->app->bind(
@@ -43,8 +36,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-           UserRepositoryInterface::class,
-           UserRepository::class
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
 
         $this->app->bind(
@@ -63,7 +56,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Vite::prefetch( 3);
-        
+        Vite::prefetch(3);
     }
 }
