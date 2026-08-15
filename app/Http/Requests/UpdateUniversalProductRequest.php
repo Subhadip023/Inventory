@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreuniversalProductRequest extends FormRequest
+class UpdateUniversalProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,6 +26,7 @@ class StoreuniversalProductRequest extends FormRequest
             'description' => 'nullable|string',
             'shop_category_id' => 'required|exists:shop_categories,id',
             'verified' => 'boolean',
+            'id' => 'required|exists:universal_products,id',
         ];
     }
 }

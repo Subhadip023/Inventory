@@ -42,16 +42,33 @@ class ProductController extends Controller
     {
         try{
             $validated = $request->validated();
-            $validated['universal_products_id'] = $validated['universal_product']['value'] ?? null;
+            $univData = $validated['universal_product'];
+
+            if (is_array($univData) && isset($univData['value']) && is_numeric($univData['value'])) {
+                $universalProductId = $univData['value'];
+            } else {
+                $productName = is_array($univData) ? ($univData['label'] ?? $univData['value']) : $univData;
+                $productName = trim($productName);
+                $universalProduct = \App\Models\UniversalProduct::firstOrCreate(
+                    ['name' => $productName],
+                    [
+                        'slug' => \Str::slug($productName . '-' . uniqid()),
+                        'description' => $validated['description'] ?? null,
+                        'verified' => false
+                    ]
+                );
+                $universalProductId = $universalProduct->id;
+            }
+
+            $validated['universal_products_id'] = $universalProductId;
             $validated['shop_id'] = $this->currentShop;
-            // $valdatated['slug'] = now();
             unset($validated['universal_product']);
-            // dd($validated);
+
             Product::create($validated);
-            return redirect()->intended(route('products.index', absolute: false));
+            return redirect()->route('products.index')->with('success', 'Product created successfully.');
         }catch(\Exception $e){
-            dd($e->getMessage());
-            return redirect()->back()->with('error', 'Something went wrong.');
+            logger()->error('Product creation failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create product: ' . $e->getMessage());
         }
     }
 

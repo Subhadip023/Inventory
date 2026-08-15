@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\universalProduct;
-use App\Http\Requests\StoreuniversalProductRequest;
-use App\Http\Requests\UpdateuniversalProductRequest;
+use App\Models\UniversalProduct;
+use App\Http\Requests\StoreUniversalProductRequest;
+use App\Http\Requests\UpdateUniversalProductRequest;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Services\Interfaces\UniversalProductServiceInterface;
@@ -55,7 +55,7 @@ class UniversalProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreuniversalProductRequest $request)
+    public function store(StoreUniversalProductRequest $request)
     {
         $data=$request->validated();
         $data['slug']=\Str::slug($data['name'],'-');
@@ -70,7 +70,7 @@ class UniversalProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(universalProduct $universalProduct)
+    public function show(UniversalProduct $universalProduct)
     {
         //
     }
@@ -78,7 +78,7 @@ class UniversalProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(universalProduct $universalProduct)
+    public function edit(UniversalProduct $universalProduct)
     {
         //
     }
@@ -86,7 +86,7 @@ class UniversalProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateuniversalProductRequest $request,$universal_product)
+    public function update(UpdateUniversalProductRequest $request,$universal_product)
     {
         $data=$request->validated();
         $this->service->update($universal_product,$data);

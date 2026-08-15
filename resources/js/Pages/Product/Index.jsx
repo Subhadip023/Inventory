@@ -21,7 +21,7 @@ const Index = ({ products }) => {
         <Button as={Link} href={route('products.create')} color="green">Add Product</Button>
       </div>
       <CardContainer className='min-h-48 flex items-center justify-center'>
-       {products.length > 0 && <Table hoverable>
+        {products.length > 0 && <Table hoverable>
           <TableHead>
             <TableRow >
               <TableHeadCell>Product name</TableHeadCell>
@@ -41,7 +41,7 @@ const Index = ({ products }) => {
                 </TableCell>
 
                 <TableCell className="whitespace-nowrap py-4">
-                  <div className="text-sm text-gray-900">{product.universal_product.description==' '?'No description':product.universal_product.description}</div>
+                  <div className="text-sm text-gray-900">{product.universal_product.description == ' ' ? 'No description' : product.universal_product.description}</div>
                 </TableCell>
                 <TableCell className="whitespace-nowrap py-4">
                   <div className="text-sm text-gray-900">{product.quantity}</div>

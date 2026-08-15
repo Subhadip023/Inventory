@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\ShopCategories;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\universalProduct;
+use App\Models\UniversalProduct;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\shopCategory;
@@ -16,7 +16,21 @@ class UniversalProductSeeder extends Seeder
      */
     public function run(): void
     {
-     $products = [
+        // Ensure default shop categories exist
+        $categories = [
+            1 => 'Medicines',
+            2 => 'Books',
+            3 => 'Grocery',
+        ];
+
+        foreach ($categories as $id => $name) {
+            ShopCategories::firstOrCreate(
+                ['id' => $id],
+                ['name' => $name, 'is_active' => true]
+            );
+        }
+
+        $products = [
     // Medicines
     [
         'name' => 'Paracetamol',
@@ -135,7 +149,7 @@ class UniversalProductSeeder extends Seeder
 ];
 
         foreach ($products as $product) {
-            universalProduct::create([
+            UniversalProduct::create([
                 'name' => $product['name'],
                 'slug' => Str::slug($product['name']),
                 'description' => $product['description'],

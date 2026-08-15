@@ -1,14 +1,14 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\universalProduct;
+use App\Models\UniversalProduct;
 use App\Repositories\Interfaces\UniversalProductRepositoryInterface;
 
 class UniversalProductRepository implements UniversalProductRepositoryInterface
 {
     public function all()
     {
-        $products = universalProduct::with('category')->orderBy('id', 'desc')->get();
+        $products = UniversalProduct::with('category')->orderBy('id', 'desc')->get();
         return [
             'data' => $products,
             'total' => count($products),
@@ -28,7 +28,7 @@ class UniversalProductRepository implements UniversalProductRepositoryInterface
 
     public function search($search)
     {
-        $products = universalProduct::with('category')
+        $products = UniversalProduct::with('category')
             ->where(function ($query) use ($search) {
                 $query->where('name', 'LIKE', '%' . $search . '%')
                     ->orWhere('description', 'LIKE', '%' . $search . '%');

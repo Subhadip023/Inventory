@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Button, Label, TextInput, Textarea, Card } from 'flowbite-react';
 import { useForm } from '@inertiajs/react';
 import SaveButton from '@/Components/SaveButton';
-import AsyncSelect from 'react-select/async';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 import axios from 'axios';
 const Create = () => {
     const {data,setData,post,processing,errors}=useForm({
@@ -11,6 +11,7 @@ const Create = () => {
         sku : '',
         price : '',
         quantity : 1,
+        description : '',
     });
     useEffect(() => {
       if (!data.universal_product?.label || data.sku) return;
@@ -43,7 +44,7 @@ const Create = () => {
         .then((res) => {
           const options = res.data.data.map((product) => ({
             value: product.id,
-            label: product.name + ' - ' + product.description,
+            label: product.name + (product.description ? ' - ' + product.description : ''),
           }));
 
           callback(options);
@@ -62,14 +63,15 @@ const Create = () => {
             {/* Product Name */}
             <div>
               <Label htmlFor="name" value="Product Name" >Product Name </Label>
-              <AsyncSelect
+              <AsyncCreatableSelect
                 loadOptions={loadUniversalProduct}
                 isClearable
                 onChange={(option) =>
                   setData('universal_product', option ?? null)
                 }
                 value={data.universal_product}
-                placeholder="Search for a product..."
+                placeholder="Search for a product or type to create new..."
+                formatCreateLabel={(inputValue) => `Create new product: "${inputValue}"`}
               />
 
               <div className="text-red-600">{errors.universal_product}</div>

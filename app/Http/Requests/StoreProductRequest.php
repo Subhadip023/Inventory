@@ -22,10 +22,11 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'universal_product.value' => 'required | exists:universal_products,id',
+            'universal_product' => 'required',
             'sku' => 'required | unique:products,sku',
             'price' => 'required | numeric',
             'quantity' => 'required | numeric',
+            'description' => 'nullable | string',
         ];
     }
 }
