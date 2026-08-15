@@ -3,31 +3,31 @@ import { Sidebar, SidebarCollapse, SidebarItem, SidebarItemGroup, SidebarItems }
 import {
     HiArrowSmRight,
     HiChartPie,
-    HiInbox,
     HiOutlineMinusSm,
     HiOutlinePlusSm,
     HiShoppingBag,
-    HiTable,
     HiUser,
 } from "react-icons/hi";
-import { FaBoxes } from "react-icons/fa";
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { twMerge } from "tailwind-merge";
 import { IoSettingsSharp } from "react-icons/io5";
 
-const StoreSideBar = ({ classNames, signOut }) => {
-    const { current_shop } = usePage().props;
-    const { user } = usePage().props;
-    const session_shop = sessionStorage.getItem('current_shop');
+const customSidebarTheme = {
+    root: {
+        inner: "h-full overflow-y-auto overflow-x-hidden bg-white py-4 px-3 dark:bg-slate-800"
+    }
+};
 
+const StoreSideBar = ({ classNames = '', signOut }) => {
     return (
-        <section className={`h-screen ${classNames} sticky top-0 `}>
-            <Sidebar aria-label="Sidebar with multi-level dropdown example" className='dark:bg-gray-800'>
+        <section className={`h-full ${classNames}`}>
+            <Sidebar aria-label="Store Sidebar Navigation" theme={customSidebarTheme} className="h-full w-full">
                 <SidebarItems>
                     <SidebarItemGroup>
                         <SidebarItem as={Link} href={route('shop.dashboard')} icon={HiChartPie} active={route().current('shop.dashboard')}>
                             Dashboard
                         </SidebarItem>
+
                         <SidebarCollapse
                             icon={HiShoppingBag}
                             label="Inventory & Sales"
@@ -68,7 +68,7 @@ const StoreSideBar = ({ classNames, signOut }) => {
                             Settings
                         </SidebarItem>
 
-                        <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
+                        <SidebarItem onClick={signOut} icon={HiArrowSmRight} className="cursor-pointer">
                             Sign Out
                         </SidebarItem>
                     </SidebarItemGroup>

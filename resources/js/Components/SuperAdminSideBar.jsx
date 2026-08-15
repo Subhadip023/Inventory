@@ -12,10 +12,16 @@ import {
 import { Link } from '@inertiajs/react';
 import { twMerge } from "tailwind-merge";
 
-const SuperAdminSideBar = ({ classNames, signOut }) => {
+const customSidebarTheme = {
+    root: {
+        inner: "h-full overflow-y-auto overflow-x-hidden bg-white py-4 px-3 dark:bg-slate-800"
+    }
+};
+
+const SuperAdminSideBar = ({ classNames = '', signOut }) => {
     return (
-        <section className={`h-screen ${classNames} sticky top-0`}>
-            <Sidebar aria-label="SuperAdmin Sidebar Navigation" className='dark:bg-gray-800'>
+        <section className={`h-full ${classNames}`}>
+            <Sidebar aria-label="SuperAdmin Sidebar Navigation" theme={customSidebarTheme} className="h-full w-full">
                 <SidebarItems>
                     <SidebarItemGroup>
                         <SidebarItem as={Link} href={route('dashboard')} icon={HiChartPie} active={route().current('dashboard') || route().current('superadmin.dashboard')}>
@@ -62,7 +68,7 @@ const SuperAdminSideBar = ({ classNames, signOut }) => {
                             Tax Management
                         </SidebarItem>
 
-                        <SidebarItem onClick={signOut} icon={HiArrowSmRight}>
+                        <SidebarItem onClick={signOut} icon={HiArrowSmRight} className="cursor-pointer">
                             Sign Out
                         </SidebarItem>
                     </SidebarItemGroup>
