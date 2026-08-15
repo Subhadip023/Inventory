@@ -1,10 +1,10 @@
 import React from 'react';
-import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 const Dashboard = () => {
     return (
-       <SuperAdminDashboardLayout>
+       <DashboardLayout>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit corrupti ad ipsam, laborum suscipit vel recusandae doloremque quaerat itaque eum eaque facilis, id dolor! Nulla cumque beatae aliquid dolor natus.
-       </SuperAdminDashboardLayout>
+       </DashboardLayout>
     );
 }
 

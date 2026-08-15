@@ -1,4 +1,4 @@
-import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { Link } from '@inertiajs/react';
@@ -6,7 +6,7 @@ import { MdArrowBack } from "react-icons/md";
 
 const Show = ({ order }) => {
     return (
-        <StoreDashboardLayout>
+        <DashboardLayout>
             <div className='flex items-center  my-4 mx-10 gap-x-2'>
                  <Link href={route('orders.index')} className=""><MdArrowBack className='text-2xl hover:scale-110' /></Link>
                 <h2 className="text-2xl font-semibold">Show Order</h2>
@@ -69,7 +69,7 @@ const Show = ({ order }) => {
                 </h3>
             </div>
 
-        </StoreDashboardLayout>
+        </DashboardLayout>
     );
 }
 

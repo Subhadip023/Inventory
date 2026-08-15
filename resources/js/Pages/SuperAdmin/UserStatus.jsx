@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import CardContainer from '@/Components/CardContainer';
 import Icons from '@/Components/Icons';
@@ -46,7 +46,7 @@ const UserStatus = ({ allStatus = [] }) => {
 
     console.log(allStatus);
     return (
-        <SuperAdminDashboardLayout head={'User Status'}>
+        <DashboardLayout head={'User Status'}>
             <Modal show={openEditModal} onClose={closeEditModal} maxWidth='md:w-1/3'>
                 <section className='m-5 '>
                     <div className=' flex items-center justify-between'>
@@ -219,7 +219,7 @@ const UserStatus = ({ allStatus = [] }) => {
                     </TableBody>
                 </Table> : "No Data Available"}
             </CardContainer>
-        </SuperAdminDashboardLayout>
+        </DashboardLayout>
     );
 }
 

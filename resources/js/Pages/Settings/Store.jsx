@@ -1,5 +1,5 @@
 import React from 'react';
-import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import CardContainer from '@/Components/CardContainer';
 import FormSelect from '@/Components/FormSelect';
 import { useForm } from '@inertiajs/react';
@@ -42,7 +42,7 @@ const Store = ({setting}) => {
         {id:'system',name:'System'},
         ]
     return (
-       <StoreDashboardLayout head={'Settings'}>
+       <DashboardLayout head={'Settings'}>
 
         <CardContainer>
             <h1 className="text-3xl md:text-4xl font-mono text-mainColor dark:text-white font-bold text-start my-6 md:my-10">
@@ -59,7 +59,7 @@ const Store = ({setting}) => {
             </section>
         </CardContainer>
 
-       </StoreDashboardLayout>
+       </DashboardLayout>
 
     );
 }

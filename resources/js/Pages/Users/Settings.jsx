@@ -1,5 +1,5 @@
 import React from 'react';
-import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import CardContainer from '@/Components/CardContainer';
 import FormSelect from '@/Components/FormSelect';
 import { useForm,Link } from '@inertiajs/react';
@@ -43,7 +43,7 @@ const Store = ({setting}) => {
         {id:'system',name:'System'},
         ]
     return (
-       <StoreDashboardLayout head={'Settings'}>
+       <DashboardLayout head={'Settings'}>
 
         <CardContainer >
             <div  className='flex items-center justify-start gap-x-2'>
@@ -67,7 +67,7 @@ const Store = ({setting}) => {
             </section>
         </CardContainer>
 
-       </StoreDashboardLayout>
+       </DashboardLayout>
 
     );
 }

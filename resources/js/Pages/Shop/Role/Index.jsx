@@ -1,5 +1,5 @@
 import CardContainer from '@/Components/CardContainer';
-import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Head } from '@inertiajs/react';
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button } from "flowbite-react";
@@ -112,7 +112,7 @@ const deleteRole = (role) => {
 
 
     return (
-        <SuperAdminDashboardLayout >
+        <DashboardLayout >
             <ConfirmModal show={confirmDeleteRole} onClose={() => setConfirmDeleteRole(false)} onConfirm={() => { }} title={"Delete Role"} message={"Are you sure you want to delete this role?"}/>
             <Head title="Role" />
             <Modal show={openAddRoleModal} onClose={() => setOpenAddRoleModal(false)} maxWidth='md:w-1/2' >
@@ -299,7 +299,7 @@ const deleteRole = (role) => {
             </CardContainer>
 
 
-        </SuperAdminDashboardLayout>
+        </DashboardLayout>
     );
 }
 

@@ -1,4 +1,4 @@
-import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import React, { use } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import Modal from '@/Components/Modal';
@@ -18,7 +18,7 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
   const { user_status } = usePage().props
   console.log(user_status[0].svg);
   return (
-    <SuperAdminDashboardLayout head={'Users'}>
+    <DashboardLayout head={'Users'}>
       <AdduserModal open={addUserModal} setOpen={setAddUserModal} allCountry={allCountry} defult_selected_country_id={defult_selected_country_id} allState={allState} allCity={allCity} defult_selected_state_id={defult_selected_state_id} allRoles={allRoles} />
       <CardContainer className='w-full h-fit my-auto'>
         <div className='mx-5 my-10 flex items-center justify-between '>
@@ -107,7 +107,7 @@ const Users = ({ allusers, allCountry, defult_selected_country_id, allState, all
         </Table>
       </CardContainer>
 
-    </SuperAdminDashboardLayout>
+    </DashboardLayout>
   );
 }
 

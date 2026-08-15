@@ -1,11 +1,11 @@
 import React from 'react'
-import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import CardContainer from '@/Components/CardContainer';
 import { Link } from '@inertiajs/react';
 export default function UserLog({ allLogs,view=true}) {
   return (
-    <SuperAdminDashboardLayout>
+    <DashboardLayout>
       <CardContainer className='w-full h-fit my-auto'>
         <div className='mx-5 my-10 flex items-center justify-between '>
           <h1 className='text-2xl font-bold '>All Users</h1>
@@ -62,6 +62,6 @@ export default function UserLog({ allLogs,view=true}) {
           </TableBody>
         </Table>
       </CardContainer>
-    </SuperAdminDashboardLayout>
+    </DashboardLayout>
   )
 }

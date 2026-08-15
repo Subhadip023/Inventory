@@ -10,7 +10,7 @@ import SaveButton from '@/Components/SaveButton';
 import CancelButton from '@/Components/CancelButton';
 import {Link} from '@inertiajs/react';
 import create_store from '@/Images/create_store.jpg'
-import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 const Create = ({store, allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
     const createForm = useForm({
         id: store.id,
@@ -69,7 +69,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
     }
 
     return (
-       <StoreDashboardLayout>
+       <DashboardLayout>
          <section className='flex items-center justify-center h-full'>
             <Head title={'Create Shop'} />
 
@@ -133,7 +133,7 @@ const Create = ({store, allCountry, allState, allCity, defult_selected_country_i
                 </form>
             </CardContainer>
         </section>
-       </StoreDashboardLayout>
+       </DashboardLayout>
     );
 }
 

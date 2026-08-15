@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button, TextInput, Pagination, Tooltip, CheckIcon } from "flowbite-react";
 import CardContainer from '@/Components/CardContainer';
 
@@ -62,7 +62,7 @@ function Tax({ taxes }) {
 
     return (
 
-        <SuperAdminDashboardLayout head={'Shop Categories'}>
+        <DashboardLayout head={'Shop Categories'}>
             <ConfirmModal open={confirmModal} title={'Delete'} message={`Are you sure you want to delete ${taxForm.data.name} tax?`} onConfirm={deleteCatSubmit} onCancel={() => setConfirmModal(false)} />
             <Modal show={openCategoryModal} onClose={() => {setOpenCategoryModal(false);taxForm.reset();}} maxWidth='md:w-1/3'>
                 <div className='px-10 py-5'>
@@ -134,7 +134,7 @@ function Tax({ taxes }) {
                     </TableBody>
                 </Table>
             </CardContainer>
-        </SuperAdminDashboardLayout>
+        </DashboardLayout>
     )
 }
 

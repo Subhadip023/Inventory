@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput, Pagination, Tooltip } from "flowbite-react";
 import paginationOptions from '@/utils/paginationOptions';
 import CardContainer from '@/Components/CardContainer';
@@ -177,7 +177,7 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
     };
 
     return (
-        <SuperAdminDashboardLayout>
+        <DashboardLayout>
             <ConfirmModal open={openConfirmProductDeleteModal} onCancel={() => setOpenConfirmProductDeleteModal(false)} title={'Delete Master Product'} message={`Are you sure you want to delete ${universalProductForm.data.name}?`} confirmText='Delete' onConfirm={deleteProductSubmit} />
 
             <Modal show={openProductFormModal} onClose={() => setOpenProductFormModal(false)} maxWidth='md:w-1/2'>
@@ -360,7 +360,7 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
                     )}
                 </div>
             </CardContainer>
-        </SuperAdminDashboardLayout>
+        </DashboardLayout>
     );
 };
 

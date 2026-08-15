@@ -1,4 +1,4 @@
-import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Tooltip } from "flowbite-react";
 import { Button } from "flowbite-react";
@@ -16,7 +16,7 @@ const Index = ({ products }) => {
 
   }
   return (
-    <StoreDashboardLayout head={"Dashboard | Product"}>
+    <DashboardLayout head={"Dashboard | Product"}>
       <div className='m-5 flex items-end justify-end '>
         <Button as={Link} href={route('products.create')} color="green">Add Product</Button>
       </div>
@@ -64,7 +64,7 @@ const Index = ({ products }) => {
         </Table>}
         {products.length == 0 && <div className='text-3xl text-rose-500 text-bold flex items-center justify-center '>No Product Found</div>}
       </CardContainer>
-    </StoreDashboardLayout>
+    </DashboardLayout>
   );
 }
 

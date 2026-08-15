@@ -1,4 +1,4 @@
-import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow ,Button } from "flowbite-react";
 import { Link } from '@inertiajs/react';
@@ -8,7 +8,7 @@ import AddButton from '@/Components/AddButton';
 import Icons from '@/Components/Icons';
 const Index = ({ allOrder }) => {
     return (
-        <StoreDashboardLayout>
+        <DashboardLayout>
           <div>
             <h2 className="text-2xl font-semibold my-4 mx-10">All Order</h2>
           </div>
@@ -77,7 +77,7 @@ const Index = ({ allOrder }) => {
                        </TableBody>
                        </Table>
           </CardContainer>
-        </StoreDashboardLayout>
+        </DashboardLayout>
     );
 }
 

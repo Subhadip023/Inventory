@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import StoreDashboardLayout from '@/Layouts/StoreDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput, Tooltip } from "flowbite-react";
 import CardContainer from '@/Components/CardContainer';
 import AddButton from '@/Components/AddButton';
@@ -106,7 +106,7 @@ function Index({ batches = [], products = [], filters = {} }) {
     });
 
     return (
-        <StoreDashboardLayout head={'Stock / Batches'}>
+        <DashboardLayout head={'Stock / Batches'}>
             <ConfirmModal
                 open={confirmDeleteModal}
                 title={'Delete Stock Batch'}
@@ -293,7 +293,7 @@ function Index({ batches = [], products = [], filters = {} }) {
                     </Table>
                 )}
             </CardContainer>
-        </StoreDashboardLayout>
+        </DashboardLayout>
     );
 }
 

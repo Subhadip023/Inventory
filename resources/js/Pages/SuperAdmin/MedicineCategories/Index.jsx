@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SuperAdminDashboardLayout from '@/Layouts/SuperAdminDashboardLayout';
+import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import CardContainer from '@/Components/CardContainer';
 import AddButton from '@/Components/AddButton';
@@ -55,7 +55,7 @@ function Index({ categories = [] }) {
     };
 
     return (
-        <SuperAdminDashboardLayout head={'Medicine Categories'}>
+        <DashboardLayout head={'Medicine Categories'}>
             <ConfirmModal 
                 open={confirmDeleteCategory} 
                 title={'Delete Medicine Category'} 
@@ -149,7 +149,7 @@ function Index({ categories = [] }) {
                     </TableBody>
                 </Table>
             </CardContainer>
-        </SuperAdminDashboardLayout>
+        </DashboardLayout>
     );
 }
 
