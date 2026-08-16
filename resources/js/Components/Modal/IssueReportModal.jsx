@@ -9,7 +9,8 @@ import CancelButton from '@/Components/Buttons/CancelButton';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { toast } from 'react-toastify';
-import { HiExclamationCircle } from 'react-icons/hi';
+import { HiExclamationCircle, HiPaperClip } from 'react-icons/hi';
+import axios from 'axios';
 
 const quillModules = {
     toolbar: [
@@ -35,13 +36,14 @@ const quillFormats = [
 
 export default function IssueReportModal({ show, onClose }) {
     const [title, setTitle] = useState('');
-    const [category, setCategory] = useState('bug');
-    const [priority, setPriority] = useState('medium');
+    const [type, setType] = useState('2'); // 1=Task, 2=Bug, 3=Feature, 4=Improvement
+    const [priority, setPriority] = useState('2'); // 1=Low, 2=Medium, 3=High, 4=Urgent
     const [description, setDescription] = useState('');
+    const [image, setImage] = useState(null);
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
 
@@ -60,19 +62,41 @@ export default function IssueReportModal({ show, onClose }) {
         setErrors({});
         setSubmitting(true);
 
-        // Simulate frontend submission
-        setTimeout(() => {
+        try {
+            const formData = new FormData();
+            formData.append('title', title.trim());
+            formData.append('description', description);
+            formData.append('type', type);
+            formData.append('priority', priority);
+            if (image) {
+                formData.append('image', image);
+            }
+
+            const res = await axios.post(route('issue.report'), formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            if (res.data?.success) {
+                toast.success(res.data.message || 'Issue report submitted successfully!');
+                handleClose();
+            } else {
+                toast.error(res.data?.message || 'Failed to submit issue report.');
+            }
+        } catch (err) {
+            console.error('Issue submission error:', err);
+            const errMsg = err.response?.data?.message || 'An error occurred while submitting the issue.';
+            toast.error(errMsg);
+        } finally {
             setSubmitting(false);
-            toast.success('Issue report submitted successfully!');
-            handleClose();
-        }, 600);
+        }
     };
 
     const handleClose = () => {
         setTitle('');
-        setCategory('bug');
-        setPriority('medium');
+        setType('2');
+        setPriority('2');
         setDescription('');
+        setImage(null);
         setErrors({});
         onClose();
     };
@@ -85,7 +109,7 @@ export default function IssueReportModal({ show, onClose }) {
             icon={HiExclamationCircle}
             iconBgClass="bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
             title="Report an Issue"
-            description="Submit bugs, feedback, or system issues for prompt assistance."
+            description="Submit bugs, feedback, or feature requests directly to our issue tracking system."
         >
             {/* Issue Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -103,35 +127,35 @@ export default function IssueReportModal({ show, onClose }) {
                     {errors.title && <InputError message={errors.title} className="mt-1" />}
                 </div>
 
-                {/* Category & Priority */}
+                {/* Type & Priority */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <InputLabel htmlFor="issue-category" value="Category" />
+                        <InputLabel htmlFor="issue-type" value="Issue Type *" />
                         <SelectInput
-                            id="issue-category"
+                            id="issue-type"
                             className="mt-1 block w-full text-sm"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
                         >
-                            <option value="bug">Bug / Defect</option>
-                            <option value="feature">Feature Request</option>
-                            <option value="performance">Performance Issue</option>
-                            <option value="general">General Query</option>
+                            <option value="2">Bug / Defect</option>
+                            <option value="1">Task</option>
+                            <option value="3">Feature Request</option>
+                            <option value="4">Improvement</option>
                         </SelectInput>
                     </div>
 
                     <div>
-                        <InputLabel htmlFor="issue-priority" value="Priority" />
+                        <InputLabel htmlFor="issue-priority" value="Priority *" />
                         <SelectInput
                             id="issue-priority"
                             className="mt-1 block w-full text-sm"
                             value={priority}
                             onChange={(e) => setPriority(e.target.value)}
                         >
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                            <option value="critical">Critical</option>
+                            <option value="1">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="3">High</option>
+                            <option value="4">Urgent / Critical</option>
                         </SelectInput>
                     </div>
                 </div>
@@ -152,6 +176,30 @@ export default function IssueReportModal({ show, onClose }) {
                     {errors.description && (
                         <InputError message={errors.description} className="mt-1" />
                     )}
+                </div>
+
+                {/* Optional Image Upload */}
+                <div>
+                    <InputLabel htmlFor="issue-image" value="Screenshot / Image Attachment (Optional)" />
+                    <div className="mt-1 flex items-center gap-3 border border-dashed border-slate-300 dark:border-slate-700 p-3 rounded-lg bg-slate-50/50 dark:bg-slate-900/50">
+                        <HiPaperClip className="w-5 h-5 text-slate-400" />
+                        <input
+                            id="issue-image"
+                            type="file"
+                            accept="image/*"
+                            className="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-mainColor/10 file:text-mainColor hover:file:bg-mainColor/20 cursor-pointer"
+                            onChange={(e) => setImage(e.target.files?.[0] || null)}
+                        />
+                        {image && (
+                            <button
+                                type="button"
+                                className="text-xs text-red-500 font-medium hover:underline shrink-0"
+                                onClick={() => setImage(null)}
+                            >
+                                Remove
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 {/* Actions */}

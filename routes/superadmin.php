@@ -34,4 +34,5 @@ Route::prefix('superadmin')
         Route::get('user-activity',[UserActivityController::class,'allActivity'])->name('all-activity');
         Route::get('user-activity/{id}',[UserActivityController::class,'user_all_activity'])->name('all-activity-user');
         Route::resource('tax',TaxController::class);
+        Route::get('issues', [\App\Http\Controllers\IssueReportController::class, 'index'])->name('issues.index');
 });

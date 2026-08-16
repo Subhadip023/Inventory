@@ -16,6 +16,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ShopRolePermissionController;
 use App\Http\Controllers\UniversalProductController;
+use App\Http\Controllers\IssueReportController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -71,6 +72,7 @@ Route::prefix('shops/{shopId}')->group(function () {
 });
 
 Route::post('search-universal-product', [UniversalProductController::class, 'search'])->name('products.search');
+Route::post('issue-report', [IssueReportController::class, 'store'])->name('issue.report')->middleware('auth');
 
 Route::get('/php-info', function () {
     phpinfo();

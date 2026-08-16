@@ -8,6 +8,7 @@ import {
     HiOutlineMinusSm,
     HiOutlinePlusSm,
     HiReceiptTax,
+    HiExclamationCircle,
 } from "react-icons/hi";
 import { Link } from '@inertiajs/react';
 import { twMerge } from "tailwind-merge";
@@ -66,6 +67,10 @@ const SuperAdminSideBar = ({ classNames = '', signOut }) => {
 
                         <SidebarItem as={Link} href={route('superadmin.tax.index')} active={route().current('superadmin.tax.index')} icon={HiReceiptTax}>
                             Tax Management
+                        </SidebarItem>
+
+                        <SidebarItem as={Link} href={route('superadmin.issues.index')} active={route().current('superadmin.issues.index')} icon={HiExclamationCircle}>
+                            System Issues
                         </SidebarItem>
 
                         <SidebarItem onClick={signOut} icon={HiArrowSmRight} className="cursor-pointer">

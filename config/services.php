@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'workhub' => [
+        'url' => env('WORKHUB_API_URL'),
+        'api_key' => env('WORKHUB_API_KEY'),
+        'secret_key' => env('WORKHUB_SECRET_KEY'),
+    ],
+
 ];
