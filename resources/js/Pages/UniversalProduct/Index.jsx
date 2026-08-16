@@ -29,20 +29,20 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
     const [perPage, setPerPage] = useState(filterData['per_page'] || 5);
     const [categoryId, setCategoryId] = useState(filterData['medicine_category_id'] || null);
     const [filterVarified, setFilterVarified] = useState(filterData['verified'] || 'all');
-    const [searchText, setSearchText] = useState(');
+    const [searchText, setSearchText] = useState('');
 
     const paginationForm = useForm();
     const productActivation = useForm();
     const universalProductForm = useForm({
         id: null,
-        name: ',
-        description: ',
-        salt_composition: ',
-        manufacturer: ',
-        hsn_code: ',
-        gst_rate: ',
+        name: '',
+        description: '',
+        salt_composition: '',
+        manufacturer: '',
+        hsn_code: '',
+        gst_rate: '',
         drug_schedule: 'OTC',
-        medicine_category_id: ',
+        medicine_category_id: '',
         verified: true,
     });
 
@@ -147,14 +147,14 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
         universalProductForm.reset();
         universalProductForm.setData({
             id: null,
-            name: ',
-            description: ',
-            salt_composition: ',
-            manufacturer: ',
-            hsn_code: ',
+            name: '',
+            description: '',
+            salt_composition: '',
+            manufacturer: '',
+            hsn_code: '',
             gst_rate: '12.00',
             drug_schedule: 'OTC',
-            medicine_category_id: allCategory[0]?.id || ',
+            medicine_category_id: allCategory[0]?.id || '',
             verified: true,
         });
         setOpenProductFormModal(true);
@@ -163,14 +163,14 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
     const openEditModal = (prod) => {
         universalProductForm.setData({
             id: prod.id,
-            name: prod.name || ',
-            description: prod.description || ',
-            salt_composition: prod.salt_composition || ',
-            manufacturer: prod.manufacturer || ',
-            hsn_code: prod.hsn_code || ',
-            gst_rate: prod.gst_rate || ',
+            name: prod.name || '',
+            description: prod.description || '',
+            salt_composition: prod.salt_composition || '',
+            manufacturer: prod.manufacturer || '',
+            hsn_code: prod.hsn_code || '',
+            gst_rate: prod.gst_rate || '',
             drug_schedule: prod.drug_schedule || 'OTC',
-            medicine_category_id: prod.medicine_category_id || ',
+            medicine_category_id: prod.medicine_category_id || '',
             verified: Boolean(prod.verified),
         });
         setOpenProductFormModal(true);
@@ -202,7 +202,7 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
                         </div>
 
                         <div>
-                            <FormSelect id='medicine_category_id' label='Category / Form' options={[{ id: ', name: 'Select Form' }, ...allCategory]} value={universalProductForm.data.medicine_category_id} onChange={(e) => universalProductForm.setData('medicine_category_id', e.target.value)} error={universalProductForm.errors.medicine_category_id} />
+                            <FormSelect id='medicine_category_id' label='Category / Form' options={[{ id: '', name: 'Select Form' }, ...allCategory]} value={universalProductForm.data.medicine_category_id} onChange={(e) => universalProductForm.setData('medicine_category_id', e.target.value)} error={universalProductForm.errors.medicine_category_id} />
                         </div>
 
                         <div>

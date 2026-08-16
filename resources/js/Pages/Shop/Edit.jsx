@@ -14,25 +14,25 @@ import DashboardLayout from '@/Layouts/DashboardLayout';
 const Create = ({store, allCountry, allState, allCity, defult_selected_country_id, defult_selected_state_id }) => {
     const createForm = useForm({
         id: store.id,
-        name: store.name || ',
-        shop_email: store.shop_email || ',
-        shop_phone_number: store.shop_phone_number || ',
-        gst_number: store.gst_number || ',
-        pan_number:store.pan_number || ',
-        registration_number:  store.registration_number || ',
-        reg_upi_id:store.reg_upi_id || ',
-        status: store.status || ',
-        pincode: store.pincode || ',
-        city: store.city || ',
+        name: store.name || '',
+        shop_email: store.shop_email || '',
+        shop_phone_number: store.shop_phone_number || '',
+        gst_number: store.gst_number || '',
+        pan_number:store.pan_number || '',
+        registration_number:  store.registration_number || '',
+        reg_upi_id:store.reg_upi_id || '',
+        status: store.status || '',
+        pincode: store.pincode || '',
+        city: store.city || '',
         state:store.state ||  defult_selected_state_id,
         country: store.country || defult_selected_country_id,
-        landmark:store.landmark || ',
-        street_number: store.street_number || ',
-        street_name:store.street_name || ',
+        landmark:store.landmark || '',
+        street_number: store.street_number || '',
+        street_name:store.street_name || '',
     });
 
     const editShoreImageForm=useForm({
-        logo:store.logo || ',
+        logo:store.logo || '',
         shop_id: store.id,
     })
 

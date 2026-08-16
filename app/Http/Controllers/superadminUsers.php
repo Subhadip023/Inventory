@@ -7,23 +7,27 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Repositories\CountryRepository;
-use App\Repositories\CityRepository;
 use App\Repositories\StateRepository;
-use Spatie\Permission\Models\Role;
+
 class superadminUsers extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     protected $userRepository;
-    public function __construct(CountryRepository $countryRepository,StateRepository $stateRepository,CityRepository $cityRepository,UserRepositoryInterface $userRepository)
+    protected $countries;
+    protected $states;
+    protected $cities;
+
+    public function __construct(CountryRepository $countryRepository, StateRepository $stateRepository, CityRepository $cityRepository, UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->countries=$countryRepository;
-        $this->states=$stateRepository;
-        $this->cities=$cityRepository;
+        $this->countries = $countryRepository;
+        $this->states = $stateRepository;
+        $this->cities = $cityRepository;
     }
-        public function getLocationData()
+
+    public function getLocationData()
     {
         $defaultCountryId = $this->countries->default_selected_id();
         $defaultStateId   = $this->states->default_selected_id();
@@ -40,7 +44,7 @@ class superadminUsers extends Controller
     public function index()
     {
         $allusers = $this->userRepository->all();
-        $allRoles = Role::where('name', '!=', 'super-admin')->get();
+        $allRoles = [];
         return Inertia::render('SuperAdmin/Users', ['allusers' => $allusers,'allRoles'=>$allRoles]+$this->getLocationData());
     }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('shop_id')->constrained('shops')->cascadeOnDelete();
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->enum('type', ['sale', 'payment', 'adjustment']);
-            $table->decimal('amount', 12, 2); // positive = customer owes more, negative = they paid
+            $table->decimal('amount', 12, 2);
             $table->foreignId('order_id')->nullable()->constrained('orders')->nullOnDelete();
             $table->text('note')->nullable();
             $table->timestamps();

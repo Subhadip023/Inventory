@@ -9,9 +9,10 @@ use App\Http\Controllers\superadminUsers;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\UniversalProductController;
 use App\Http\Controllers\MedicineCategoryController;
+use App\Http\Controllers\UserStatusController;
 
 Route::prefix('superadmin')
-    ->middleware(['auth', 'role:super-admin'])
+    ->middleware(['auth', 'superadmin'])
     ->group(function () {
         Route::resource('role',  RoleController::class);
         Route::resource('permission', PermissionController::class);
@@ -24,7 +25,7 @@ Route::prefix('superadmin')
 
 
 Route::prefix('superadmin')
-    ->middleware(['auth', 'role:super-admin'])
+    ->middleware(['auth', 'superadmin'])
     ->name('superadmin.')
     ->group(function () {
         Route::get('dashboard', [HomeController::class, 'superadminDashboard'])->name('dashboard');

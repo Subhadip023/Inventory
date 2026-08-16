@@ -6,7 +6,6 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -16,15 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $user = User::create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@shopessy.com',
-            'password' => Hash::make('12345678'),
-        ]);
-        
-        Role::firstOrCreate(['name' => 'super-admin']);
-
-        $user->assignRole('super-admin');
+        $user = User::firstOrCreate(
+            ['email' => 'superadmin@shopessy.com'],
+            [
+                'name' => 'Super Admin',
+                'password' => Hash::make('12345678'),
+            ]
+        );
 
         $this->call(MedicineCategorySeeder::class);
         $this->call(UniversalProductSeeder::class);

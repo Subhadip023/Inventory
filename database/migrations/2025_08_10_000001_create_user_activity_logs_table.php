@@ -17,9 +17,12 @@ return new class extends Migration
             $table->string('activity_type'); 
             $table->text('description')->nullable();
             $table->string('ip_address')->nullable();
+            $table->string('mac_address')->nullable();
+            $table->string('device')->nullable();
+            $table->string('browser')->nullable();
+            $table->string('os')->nullable();
             $table->string('user_agent')->nullable();
             $table->timestamp('activity_time')->default(now())->index();
-
         });
     }
 

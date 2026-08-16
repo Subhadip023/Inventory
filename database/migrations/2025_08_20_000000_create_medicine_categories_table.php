@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('taxes')) {
-            return;
-        }
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('medicine_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('rate', 8, 2);
+            $table->string('slug')->nullable()->unique();
+            $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('medicine_categories');
     }
 };

@@ -12,7 +12,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\StoreDashboardController;
 use App\Http\Controllers\UserSettingController;
-use App\Http\Controllers\ShopProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ShopRolePermissionController;
@@ -22,7 +21,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard',  function () {
     log_user_activity('dashboard', 'User visited dashboard');
-    if(auth()->user()->hasRole('super-admin')){
+    if(auth()->user()->isSuperAdmin()){
         return redirect()->route('superadmin.dashboard');
     }
     if(auth()->user()->shops()->count() == 0){
@@ -73,18 +72,9 @@ Route::prefix('shops/{shopId}')->group(function () {
 
 Route::post('search-universal-product', [UniversalProductController::class, 'search'])->name('products.search');
 
-
-
-
-
-
-
-
 Route::get('/php-info', function () {
     phpinfo();
 });
-
-
 
 require __DIR__.'/auth.php';
 require __DIR__.'/superadmin.php';

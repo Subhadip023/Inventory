@@ -11,27 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('orders')) {
-            return;
-        }
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('shop_id')->nullable()->index();
-            $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('customer_id')->nullable();
+            $table->foreignId('shop_id')->constrained('shops')->cascadeOnDelete();
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->nullOnDelete();
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
 
             $table->decimal('grand_total', 10, 2)->default(0);
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('tax', 10, 2)->default(0);
             $table->decimal('net_amount', 10, 2)->default(0);
+            $table->decimal('paid_amount', 12, 2)->default(0);
+            $table->enum('payment_status', ['unpaid', 'partial', 'paid'])->default('unpaid');
             $table->string('status')->default('pending');
             $table->timestamps();
-
-            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('customer_id')->references('id')->on('users')->onDelete('set null');
         });
-
     }
 
     /**

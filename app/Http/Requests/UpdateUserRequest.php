@@ -33,7 +33,6 @@ class UpdateUserRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($userId),
             ],
             'password' => 'nullable|string|confirmed|min:6',
-            'user_type' => 'nullable|in:1,2,3',
             'country' => 'nullable',
             'state' => 'nullable',
             'city' => 'nullable',

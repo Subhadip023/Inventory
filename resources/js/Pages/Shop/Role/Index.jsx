@@ -22,12 +22,12 @@ const Index = ({ roles, all_permissions, all_users, shopId }) => {
     const [confirmDeleteRole, setConfirmDeleteRole] = React.useState(false);
 
     const addRoleForm = useForm({
-        name: ',
+        name: '',
         permissions: [],
     });
 
     const addPermissionForm = useForm({
-        name: ',
+        name: '',
 
     });
 
@@ -285,7 +285,7 @@ const deleteRole = (role) => {
                             <CancelButton
                                 onClick={() => {
                                     setOpenAddPermissionModal(false);
-                                    addPermission.reset();
+                                    addPermissionForm.reset();
                                 }}
                             >
                                 Cancel

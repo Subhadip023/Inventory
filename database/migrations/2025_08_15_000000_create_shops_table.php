@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('slug')->unique();
-            //shop details
             $table->string('shop_email')->nullable();
             $table->string('shop_phone_number')->nullable();
             $table->string('gst_number')->nullable()->unique();
@@ -26,8 +25,7 @@ return new class extends Migration
             $table->string('reg_upi_id')->nullable();
             $table->string('logo')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-
-            //address
+            $table->unsignedTinyInteger('type')->default(1)->comment('1: Retail, 2: Wholesale');
             $table->string('pincode')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
@@ -35,9 +33,7 @@ return new class extends Migration
             $table->string('landmark')->nullable();
             $table->string('street_number')->nullable();
             $table->string('street_name')->nullable();
-
             $table->timestamps();
-            
         });
     }
 

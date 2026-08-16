@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('shop_id')->after('id')->nullable()->constrained('shops')->onDelete('set null');
+        Schema::create('taxes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->decimal('rate', 5, 2);
+            $table->timestamps();
         });
     }
 
@@ -21,9 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropForeign(['shop_id']);
-            $table->dropColumn('shop_id');
-        });
+        Schema::dropIfExists('taxes');
     }
 };

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->nullable()->constrained('customers')->nullOnDelete();
             $table->decimal('amount', 12, 2);
             $table->enum('mode', ['cash', 'online'])->default('cash');
-            $table->string('reference_no')->nullable(); // UPI/txn ref, optional
+            $table->string('reference_no')->nullable();
             $table->timestamps();
 
             $table->index(['shop_id', 'order_id']);

@@ -15,7 +15,7 @@ const Edit = ({product}) => {
     });
 
     useEffect(() => {
-        if (data.name!=') {
+        if (data.name !== '') {
             setData('sku',data.name.replace(/\s/g, '-').toLowerCase() + '-' + Date.now());
 
         }

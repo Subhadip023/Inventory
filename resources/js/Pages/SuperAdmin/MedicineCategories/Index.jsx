@@ -18,7 +18,7 @@ function Index({ categories = [] }) {
 
     const categoryForm = useForm({
         id: null,
-        name: ',
+        name: '',
     });
 
     const submitCategory = (e) => {

@@ -45,4 +45,17 @@ class Shop extends Model
     {
         return (int) $this->type === self::TYPE_WHOLESALE;
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'shop_user')
+                    ->using(ShopUser::class)
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -18,11 +18,11 @@ const UserStatus = ({ allStatus = [] }) => {
     const [openEditModal, setOpenEditModal] = useState(false);
     const userStatusForm = useForm({
         id: null,
-        name: ',
+        name: '',
         description:null,
         manual: true,
         show: false,
-        svg: '
+        svg: '',
     });
     const closeEditModal = () => {
         setOpenEditModal(false);
@@ -101,7 +101,7 @@ const UserStatus = ({ allStatus = [] }) => {
                                 </div>
 
 
-                                <FormTextArea id='svg' name='svg' label='SVG' value={userStatusForm.data.svg || '} onChange={(e) => userStatusForm.setData('svg', e.target.value)} error={userStatusForm.errors.svg} />
+                                <FormTextArea id='svg' name='svg' label='SVG' value={userStatusForm.data.svg || ''} onChange={(e) => userStatusForm.setData('svg', e.target.value)} error={userStatusForm.errors.svg} />
 
                                 <div className='my-2'>
                                     <span className="font-medium">Show</span>

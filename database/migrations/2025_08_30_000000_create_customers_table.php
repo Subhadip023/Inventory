@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone', 20)->nullable();
             $table->text('address')->nullable();
-            $table->string('gst_number', 20)->nullable();   // wholesale only, nullable for retail
-            $table->string('dl_number', 50)->nullable();     // wholesale only, nullable for retail
+            $table->string('gst_number', 20)->nullable();
+            $table->string('dl_number', 50)->nullable();
             $table->decimal('credit_limit', 12, 2)->default(0.00);
             $table->timestamps();
+
             $table->unique(['shop_id', 'phone']);
         });
     }

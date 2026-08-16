@@ -17,8 +17,8 @@ function Tax({ taxes }) {
     const [confirmModal, setConfirmModal] = useState(false);
     const taxForm = useForm({
         id: null,
-        name: ',
-        rate: ',
+        name: '',
+        rate: '',
         is_active: true,
     });
 

@@ -4,7 +4,7 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import Select from "react-select";
 import { TextInput, Button } from "flowbite-react";
 import { useForm } from "@inertiajs/react";
-import CardContainer from '"@/Components/UI/CardContainer"';
+import CardContainer from '@/Components/UI/CardContainer';
 const Create = ({ products, customers }) => {
   // order items
   // const [items, setItems] = useState([{ product: null, quantity: 1 }]);

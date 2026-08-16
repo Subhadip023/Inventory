@@ -89,10 +89,7 @@ class UserController extends Controller
             }
 
             unset($userData['confirm_password']);
-            $userRole=$userData['user_type'];
-            unset($userData['user_type']);
             $user=User::create($userData);
-            $user->assignRole($userRole);
             return redirect()->route('users.index')->with('success', 'User created successfully.');
         }catch(\Exception $e){
             logger()->error($e->getMessage());
@@ -139,15 +136,15 @@ public function update(UpdateUserRequest $request, User $user)
     public function destroy(User $user)
     {
         
-        if($user->user_type==1){
-            return redirect()->route('users.index')->with('error', ' Admin cannot be deleted.');
+        if($user->isSuperAdmin()){
+            return redirect()->route('users.index')->with('error', 'Super Admin cannot be deleted.');
         }
 
         if ($user->profile_image) {
             Storage::disk('public')->delete($user->profile_image);
         }
        try {
-            if (auth()->user()->user_type == 1) {
+            if (auth()->user()->isSuperAdmin()) {
                 
                 $user->forceDelete();
                 return redirect()->route('users.index')->with('success', 'User force deleted successfully.');

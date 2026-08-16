@@ -10,22 +10,12 @@ use App\Repositories\CountryRepository;
 use App\Repositories\CityRepository;
 use App\Repositories\StateRepository;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Permission\Traits\HasRoles;
 use App\Models\UserStatus;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable,SoftDeletes;
-    use HasRoles;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-
-    protected $guard_name = 'web'; // default
+    use HasFactory, Notifiable, SoftDeletes;
 
 
     protected $dates = ['deleted_at'];
@@ -33,7 +23,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'user_type',
         'phone_number',
         'country',
         'state',
@@ -92,8 +81,17 @@ class User extends Authenticatable
 
     }
 
-    public function shops(){
-        return $this->hasMany(Shop::class);
+    public function ownedShops()
+    {
+        return $this->hasMany(Shop::class, 'user_id');
+    }
+
+    public function shops()
+    {
+        return $this->belongsToMany(Shop::class, 'shop_user')
+                    ->using(ShopUser::class)
+                    ->withPivot('role')
+                    ->withTimestamps();
     }
 
     public function status(){
@@ -105,7 +103,8 @@ class User extends Authenticatable
         return $this->belongsTo(UserStatus::class, 'manual_status_id');
     }
 
-
-
- 
+    public function isSuperAdmin(): bool
+    {
+        return $this->email === 'superadmin@shopessy.com';
+    }
 }
