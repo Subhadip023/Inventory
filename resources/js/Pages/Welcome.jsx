@@ -2,6 +2,7 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import React from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import defultImgCDNs from '@/utils/defultImgCDNs';
+import { HiOutlineShoppingBag, HiArrowRight } from 'react-icons/hi';
 
 const Welcome = ({ stores = [] }) => {
     const appName = import.meta.env.VITE_APP_NAME || 'ShopEssey';
@@ -12,8 +13,8 @@ const Welcome = ({ stores = [] }) => {
     const selectStore = (e, id) => {
         e.preventDefault();
         storeForm.post(route('setShop', { shop_id: id }), {
-            onError: (e) => {
-                console.log('Error', e);
+            onError: (err) => {
+                console.log('Error setting shop:', err);
             }
         });
     };
@@ -53,31 +54,65 @@ const Welcome = ({ stores = [] }) => {
             {/* Logged In View: Store Selector */}
             {user && (
                 <div className="space-y-6">
-                    {stores && stores.length > 0 && (
-                        <div>
-                            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
-                                Select Your Store
+                    <div>
+                        <div className="flex items-center justify-between mb-3">
+                            <h2 className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                Select Your Store to Enter
                             </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[320px] overflow-y-auto pr-1">
-                                {stores.map((store) => (
-                                    <button
-                                        key={store.id}
-                                        onClick={(e) => selectStore(e, store.id)}
-                                        className="p-4 bg-slate-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-800 rounded-xl hover:border-mainColor hover:bg-white dark:hover:bg-slate-900 hover:shadow-sm transition-all flex flex-col items-center gap-2 group cursor-pointer w-full text-center"
-                                    >
-                                        <img
-                                            className="w-12 h-12 object-contain rounded-md"
-                                            src={store.logo ? '/storage/' + store.logo : defultImgCDNs.defaultLogoCDN}
-                                            alt={store.name}
-                                        />
-                                        <span className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-mainColor transition-colors">
-                                            {store.name}
-                                        </span>
-                                    </button>
-                                ))}
-                            </div>
+                            <span className="text-xs font-medium text-mainColor">
+                                {stores.length} {stores.length === 1 ? 'Store' : 'Stores'} Available
+                            </span>
                         </div>
-                    )}
+
+                        {stores && stores.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[340px] overflow-y-auto pr-1">
+                                {stores.map((store) => {
+                                    const typeName = store.type_name || (Number(store.type) === 2 ? 'Wholesale' : 'Retail');
+                                    const isWholesale = Number(store.type) === 2;
+
+                                    return (
+                                        <div
+                                            key={store.id}
+                                            onClick={(e) => selectStore(e, store.id)}
+                                            className="p-4 bg-slate-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-800 rounded-xl hover:border-mainColor hover:bg-white dark:hover:bg-slate-900 hover:shadow-md transition-all flex flex-col justify-between group cursor-pointer w-full relative"
+                                        >
+                                            <div>
+                                                <div className="flex items-center justify-between gap-2 mb-3">
+                                                    <img
+                                                        className="w-12 h-12 object-contain rounded-md bg-white p-1 border border-gray-100 dark:border-slate-800"
+                                                        src={store.logo ? '/storage/' + store.logo : defultImgCDNs.defaultLogoCDN}
+                                                        alt={store.name}
+                                                    />
+                                                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${
+                                                        isWholesale
+                                                            ? 'bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300'
+                                                            : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
+                                                    }`}>
+                                                        {typeName}
+                                                    </span>
+                                                </div>
+
+                                                <h3 className="font-bold text-sm text-gray-900 dark:text-white group-hover:text-mainColor transition-colors line-clamp-1">
+                                                    {store.name}
+                                                </h3>
+                                            </div>
+
+                                            <div className="mt-4 pt-2 border-t border-gray-200/60 dark:border-slate-800 flex items-center justify-between text-xs text-mainColor font-semibold group-hover:translate-x-0.5 transition-transform">
+                                                <span>Enter Store</span>
+                                                <HiArrowRight className="w-3.5 h-3.5" />
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="p-6 text-center bg-slate-50 dark:bg-slate-900/50 border border-dashed border-gray-300 dark:border-slate-800 rounded-xl mb-4">
+                                <HiOutlineShoppingBag className="w-10 h-10 mx-auto text-gray-400 mb-2" />
+                                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">No stores found</p>
+                                <p className="text-xs text-gray-500 mt-1">Create your first shop to get started</p>
+                            </div>
+                        )}
+                    </div>
 
                     <div>
                         <Link

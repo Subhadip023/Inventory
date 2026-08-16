@@ -25,7 +25,29 @@ resources/js/
 
 ---
 
-## 3. Frontend Development Rules
+## 3. Core Software Engineering Principles
+
+### DRY (Don't Repeat Yourself)
+- **Component Reusability**: Extract repeated UI markup (inputs, buttons, modal dialogs, status badges) into modular components located in `@/Components/`. Do not copy-paste component JSX blocks across pages.
+- **Utility Functions**: Extract repeated helper functions (date formatting, currency formatting, URL parameter parsers) into `@/utils/`.
+- **Backend Services & Scopes**: Abstract redundant database queries or multi-step business logic into Eloquent model scopes, traits, or dedicated Service classes instead of repeating raw queries across controllers.
+
+### SOLID Principles
+- **Single Responsibility Principle (SRP)**:
+  - **Backend**: Controllers should solely handle request orchestration and Inertia responses. Move validation into Form Request classes (`StoreUserRequest`), and business logic into models or services.
+  - **Frontend**: React components should serve a single clear purpose (e.g., `PasswordInput` manages visibility toggle, `GuestLayout` manages split-screen wrapping).
+- **Open/Closed Principle (OCP)**:
+  - Design components and layout wrappers to be extendable via props and `children` slots without modifying core internal structure.
+- **Liskov Substitution Principle (LSP)**:
+  - Maintain consistent prop signatures across related components (e.g. button variants, input fields) so they can be substituted predictably.
+- **Interface Segregation Principle (ISP)**:
+  - Pass only the specific props required by a component rather than dumping large unparsed objects.
+- **Dependency Inversion Principle (DIP)**:
+  - Rely on abstractions and Laravel's Dependency Injection container rather than hardcoding concrete dependencies inside controllers.
+
+---
+
+## 4. Frontend Development Rules
 
 ### Inertia.js & React Conventions
 - **Form Handling**:
@@ -41,7 +63,7 @@ resources/js/
 
 ---
 
-## 4. Backend Development Rules
+## 5. Backend Development Rules
 
 ### Laravel Standards
 - **Controllers & Inertia Response**:
@@ -54,7 +76,7 @@ resources/js/
 
 ---
 
-## 5. Build & Quality Assurance Workflow
+## 6. Build & Quality Assurance Workflow
 
 - **Production Asset Compilation**:
   - Always run `npm run build` after making modifications to React components or CSS files to ensure build integrity and verify zero bundling errors.

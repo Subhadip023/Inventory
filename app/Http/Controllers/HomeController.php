@@ -15,7 +15,7 @@ use App\Models\User;
 class HomeController extends Controller
 {
     public function index(){
-       
+
         if (auth()->check()) {
             $stores = auth()->user()->shops()->get();
             $setting=UserSetting::where('user_id', auth()->user()->id)->select('theme')->first();

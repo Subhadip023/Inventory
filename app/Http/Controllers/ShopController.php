@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shop;
+use App\Models\ShopUser;
 use App\Http\Requests\StoreShopRequest;
 use App\Http\Requests\UpdateShopRequest;
 use Inertia\Inertia;
@@ -13,6 +14,7 @@ use App\Repositories\StateRepository;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
@@ -74,7 +76,12 @@ class ShopController extends Controller
             if ($request->hasFile('logo')) {
                 $validated['logo'] = $request->file('logo')->store('shop', 'public');
             }
-            Shop::create($validated);
+            DB::transaction(function () use ($validated) {
+                $shop = Shop::create($validated);
+                $shop->users()->attach(auth()->id(), [
+                    'role' => ShopUser::Shop_ROLES['owner']
+                ]);
+            });
             return redirect()->route('home')->with('success', 'Shop created successfully.');
         } catch (\Throwable $th) {
             logger()->error($th->getMessage());

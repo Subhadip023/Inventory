@@ -31,6 +31,7 @@ class UpdateShopRequest extends FormRequest
             'shop_phone_number' => ['nullable', 'string', 'max:20'],
             'gst_number' => ['nullable', 'string', 'max:50'],
             'pan_number' => ['nullable', 'string', 'max:50'],
+            'type' => ['nullable', 'integer', 'in:1,2'],
             'registration_number' => ['nullable', 'string', 'max:100'],
             'registration_certificate' => ['nullable', 'file', 'mimes:pdf,jpg,png,jpeg', 'max:2048'],
             'reg_upi_id' => ['nullable', 'string', 'max:100'],
