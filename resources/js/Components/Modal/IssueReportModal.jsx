@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import DialogModal from '@/Components/Modal/DialogModal';
 import InputLabel from '@/Components/Form/InputLabel';
 import TextInput from '@/Components/Form/TextInput';
@@ -32,6 +32,7 @@ const quillFormats = [
     'bullet',
     'link',
     'code-block',
+    'image',
 ];
 
 export default function IssueReportModal({ show, onClose }) {
@@ -42,6 +43,56 @@ export default function IssueReportModal({ show, onClose }) {
     const [image, setImage] = useState(null);
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
+
+    // Create object URL for attached image preview
+    const imagePreviewUrl = useMemo(() => {
+        if (!image) return null;
+        if (typeof image === 'string') return image;
+        return URL.createObjectURL(image);
+    }, [image]);
+
+    useEffect(() => {
+        return () => {
+            if (imagePreviewUrl && imagePreviewUrl.startsWith('blob:')) {
+                URL.revokeObjectURL(imagePreviewUrl);
+            }
+        };
+    }, [imagePreviewUrl]);
+
+    // Handle clipboard paste (Ctrl+V) for images anywhere in description or modal
+    const handlePaste = (e) => {
+        const items = e.clipboardData?.items || e.clipboardData?.files;
+        if (!items) return;
+
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            const file = item.getAsFile ? item.getAsFile() : item;
+            if (file && file.type && file.type.startsWith('image/')) {
+                const ext = file.type.split('/')[1] || 'png';
+                const fileName = file.name && file.name !== 'image.png'
+                    ? file.name
+                    : `clipboard-image-${Date.now()}.${ext}`;
+
+                const pastedFile = new File([file], fileName, { type: file.type });
+                setImage(pastedFile);
+                toast.info('Image attached from clipboard!');
+                break;
+            }
+        }
+    };
+
+    // Handle drag & drop image
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const files = e.dataTransfer?.files;
+        if (files && files.length > 0) {
+            const droppedFile = files[0];
+            if (droppedFile.type.startsWith('image/')) {
+                setImage(droppedFile);
+                toast.info('Image attached from drop!');
+            }
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -163,7 +214,12 @@ export default function IssueReportModal({ show, onClose }) {
                 {/* Description (Quill Editor) */}
                 <div>
                     <InputLabel htmlFor="issue-description" value="Detailed Description *" />
-                    <div className="mt-1 border border-slate-300 dark:border-slate-700 rounded-md overflow-hidden dark:bg-slate-900 [&_.ql-toolbar]:border-none [&_.ql-toolbar]:border-b [&_.ql-toolbar]:border-slate-200 [&_.ql-toolbar]:dark:border-slate-700 [&_.ql-container]:border-none [&_.ql-editor]:min-h-[140px] [&_.ql-editor]:text-slate-800 [&_.ql-editor]:dark:text-slate-100">
+                    <div
+                        onPaste={handlePaste}
+                        onDrop={handleDrop}
+                        onDragOver={(e) => e.preventDefault()}
+                        className="mt-1 border border-slate-300 dark:border-slate-700 rounded-md overflow-hidden dark:bg-slate-900 [&_.ql-toolbar]:border-none [&_.ql-toolbar]:border-b [&_.ql-toolbar]:border-slate-200 [&_.ql-toolbar]:dark:border-slate-700 [&_.ql-container]:border-none [&_.ql-editor]:min-h-[140px] [&_.ql-editor]:text-slate-800 [&_.ql-editor]:dark:text-slate-100"
+                    >
                         <ReactQuill
                             theme="snow"
                             value={description}
@@ -173,31 +229,67 @@ export default function IssueReportModal({ show, onClose }) {
                             placeholder="Describe the issue, steps to reproduce, or expected behavior..."
                         />
                     </div>
+                    <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                        <span>💡</span> Tip: You can paste screenshots directly from your clipboard (<kbd className="px-1 py-0.5 bg-slate-200 dark:bg-slate-800 rounded text-[10px] font-mono text-slate-700 dark:text-slate-300">Ctrl+V</kbd>) into the description box!
+                    </p>
                     {errors.description && (
                         <InputError message={errors.description} className="mt-1" />
                     )}
                 </div>
 
-                {/* Optional Image Upload */}
+                {/* Optional Image Upload & Clipboard Attachment */}
                 <div>
-                    <InputLabel htmlFor="issue-image" value="Screenshot / Image Attachment (Optional)" />
-                    <div className="mt-1 flex items-center gap-3 border border-dashed border-slate-300 dark:border-slate-700 p-3 rounded-lg bg-slate-50/50 dark:bg-slate-900/50">
-                        <HiPaperClip className="w-5 h-5 text-slate-400" />
-                        <input
-                            id="issue-image"
-                            type="file"
-                            accept="image/*"
-                            className="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-mainColor/10 file:text-mainColor hover:file:bg-mainColor/20 cursor-pointer"
-                            onChange={(e) => setImage(e.target.files?.[0] || null)}
-                        />
-                        {image && (
-                            <button
-                                type="button"
-                                className="text-xs text-red-500 font-medium hover:underline shrink-0"
-                                onClick={() => setImage(null)}
-                            >
-                                Remove
-                            </button>
+                    <div className="flex items-center justify-between mb-1">
+                        <InputLabel htmlFor="issue-image" value="Screenshot / Image Attachment (Optional)" />
+                        <span className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">
+                            Paste clipboard image (Ctrl+V) or Drag & Drop supported
+                        </span>
+                    </div>
+
+                    <div
+                        onPaste={handlePaste}
+                        onDrop={handleDrop}
+                        onDragOver={(e) => e.preventDefault()}
+                        className={`mt-1 border border-dashed rounded-lg p-3 transition-colors ${
+                            image
+                                ? 'border-indigo-400/60 dark:border-indigo-500/60 bg-indigo-50/50 dark:bg-indigo-950/30'
+                                : 'border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 hover:border-indigo-400/40'
+                        }`}
+                    >
+                        {imagePreviewUrl ? (
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src={imagePreviewUrl}
+                                    alt="Attachment preview"
+                                    className="w-14 h-14 object-cover rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm shrink-0 bg-white dark:bg-slate-800"
+                                />
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">
+                                        {image.name || 'Attached Screenshot'}
+                                    </p>
+                                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                        {image.size ? `${(image.size / 1024).toFixed(1)} KB` : 'Image Attachment'}
+                                    </p>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400 font-medium px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950/40 transition shrink-0 cursor-pointer"
+                                    onClick={() => setImage(null)}
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-3">
+                                <HiPaperClip className="w-5 h-5 text-slate-400 shrink-0" />
+                                <input
+                                    id="issue-image"
+                                    type="file"
+                                    accept="image/*"
+                                    className="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-mainColor/10 file:text-mainColor hover:file:bg-mainColor/20 cursor-pointer"
+                                    onChange={(e) => setImage(e.target.files?.[0] || null)}
+                                />
+                            </div>
                         )}
                     </div>
                 </div>
@@ -215,3 +307,4 @@ export default function IssueReportModal({ show, onClose }) {
         </DialogModal>
     );
 }
+
