@@ -1,112 +1,96 @@
-import { Head, Link } from '@inertiajs/react';
-import React, { useEffect } from 'react';
-import storeImage from '@/Images/store.png'
-import { Button, Card } from 'flowbite-react';
-import { usePage } from '@inertiajs/react';
-import { ToastContainer, toast } from 'react-toastify';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import React from 'react';
+import GuestLayout from '@/Layouts/GuestLayout';
 import defultImgCDNs from '@/utils/defultImgCDNs';
-// import Image from "next/image";
 
-import AddButton from '@/Components/Buttons/AddButton';
-import { useForm } from '@inertiajs/react'
-const Welcome = ({ stores }) => {
-    const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-    const { user } = usePage().props.auth;
-    const { flash } = usePage().props;
-    const deleteFrom = useForm();
+const Welcome = ({ stores = [] }) => {
+    const appName = import.meta.env.VITE_APP_NAME || 'ShopEssey';
+    const { auth } = usePage().props;
+    const user = auth?.user;
     const storeForm = useForm();
-    useEffect(() => {
-        if (flash.success) toast.success(flash.success);
-        if (flash.error) toast.error(flash.error);
-        if (flash.warning) toast.warning(flash.warning);
-        if (flash.info) toast.info(flash.info);
-    }, [flash]);
-
-
-    const logout = () => {
-        deleteFrom.post(route('logout'));
-    };
-
-    useEffect(() => {
-        const root = window.document.documentElement;
-        root.classList.add('light');
-
-    }, [])
 
     const selectStore = (e, id) => {
         e.preventDefault();
         storeForm.post(route('setShop', { shop_id: id }), {
-            onSuccess: () => {
-
-            }
-            , onError: (e) => {
+            onError: (e) => {
                 console.log('Error', e);
             }
-        })
-    }
-
-
+        });
+    };
 
     return (
-        <div className="flex flex-col-reverse md:flex-row">
-            <ToastContainer />
-            <Head title={'Welcome'} />
+        <GuestLayout title="Welcome">
+            <Head title="Welcome" />
 
-            {/* Left Section (Image) */}
-            <section className="h-[50vh] hidden md:h-screen md:flex justify-center items-center w-full md:w-1/3 bg-mainColor">
-                <img src={storeImage} className="w-[80%] md:w-[700px]" />
-            </section>
-            {user && <Button color={'dark'} className='absolute top-5 right-5 hover:cursor-pointer z-20' onClick={logout}>logout</Button>
-            }
-            {/* Right Section (Content) */}
-            <section className="h-auto md:h-screen w-full md:w-2/3 flex flex-col items-center justify-center relative p-5">
-                <h1 className="text-3xl md:text-4xl font-mono text-mainColor font-bold text-center my-6 md:my-10">
-                    Welcome to {appName}!
+            {/* Welcome Header */}
+            <div className="mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    Welcome to <span className="text-mainColor">{appName}</span>
                 </h1>
-
-                <div className="text-justify text-xl px-4 md:px-20">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
                     Everything you need in one place. Easy tools, clean design, and smart features to make your daily workflow smoother and faster.
+                </p>
+            </div>
+
+            {/* Guest View: Login / Register Actions */}
+            {!user && (
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                    <Link
+                        href={route('login')}
+                        className="w-full sm:w-1/2 py-3 px-4 bg-mainColor hover:opacity-95 active:scale-[0.99] text-white text-center font-semibold text-sm rounded-lg shadow-sm transition-all cursor-pointer"
+                    >
+                        Sign In
+                    </Link>
+                    <Link
+                        href={route('register')}
+                        className="w-full sm:w-1/2 py-3 px-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-center font-semibold text-sm rounded-lg transition-all cursor-pointer"
+                    >
+                        Create Account
+                    </Link>
                 </div>
+            )}
 
-                {user ? null : <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-5 my-8 md:my-10">
-                    <Button color="dark" outline as={Link} href={route('login')}>Login</Button>
-                    <Button color="dark" as={Link} href={route('register')} className='hover:bg-gray-600'>Register</Button>
-                </div>}
-                {
-                    stores.length > 0 ?
-                        <div className='my-10 flex flex-wrap gap-5 ' >
-                            {stores.map((store) => (
-                                <Card
-                                    className="max-w-sm dark:text-black bg-white dark:bg-white border border-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-100 shadow-s"
-                                    renderImage={() => (
+            {/* Logged In View: Store Selector */}
+            {user && (
+                <div className="space-y-6">
+                    {stores && stores.length > 0 && (
+                        <div>
+                            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+                                Select Your Store
+                            </h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[320px] overflow-y-auto pr-1">
+                                {stores.map((store) => (
+                                    <button
+                                        key={store.id}
+                                        onClick={(e) => selectStore(e, store.id)}
+                                        className="p-4 bg-slate-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-800 rounded-xl hover:border-mainColor hover:bg-white dark:hover:bg-slate-900 hover:shadow-sm transition-all flex flex-col items-center gap-2 group cursor-pointer w-full text-center"
+                                    >
                                         <img
-                                            className="rounded-md w-32 mx-auto mt-2"
-                                            src={store.logo && '/storage/' + store.logo || defultImgCDNs.defaultLogoCDN}
-                                            alt="store logo"
+                                            className="w-12 h-12 object-contain rounded-md"
+                                            src={store.logo ? '/storage/' + store.logo : defultImgCDNs.defaultLogoCDN}
+                                            alt={store.name}
                                         />
-                                    )}
-                                    key={store.id}
-                                    as={Link}
+                                        <span className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-mainColor transition-colors">
+                                            {store.name}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
-                                    onClick={(e) => selectStore(e, store.id)}
-                                >
-                                    <h5 className="text-2xl font-bold tracking-tight">
-                                        {store.name}
-                                    </h5>
-                                </Card>
-
-                            ))}
-                        </div> : null
-                }
-
-                {user &&
-                    <div className='my-10'>
-                        <AddButton as={Link} href={route('shops.create')} color="dark" className='hover:bg-gray-600'>Create a Store  </AddButton>
+                    <div>
+                        <Link
+                            href={route('shops.create')}
+                            className="w-full py-3 px-4 bg-mainColor hover:opacity-95 active:scale-[0.99] text-white font-semibold text-sm rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+                        >
+                            <span>+ Create a Store</span>
+                        </Link>
                     </div>
-                }
-            </section>
-        </div>
+                </div>
+            )}
+        </GuestLayout>
     );
-}
+};
 
 export default Welcome;

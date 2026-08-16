@@ -20,6 +20,7 @@ export default {
       },
       colors:{
         mainColor: '#119ABF',
+        primary: '#119ABF',
 
       }
     },
