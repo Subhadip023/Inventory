@@ -1,7 +1,7 @@
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import React, { use } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
-import Modal from '@/Components/Modal';
+import Modal from '@/Components/Modal/Modal';
 import { RxCross2 } from "react-icons/rx";
 import {
     Button,
@@ -28,8 +28,8 @@ import userData from '@/utils/defultUserData';
 import { ToastContainer, toast } from "react-toastify";
 import { GrUploadOption } from "react-icons/gr";
 
-import SaveButton from '@/Components/SaveButton';
-import CancelButton from '@/Components/CancelButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
+import CancelButton from '@/Components/Buttons/CancelButton';
 
 
 

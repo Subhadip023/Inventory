@@ -4,8 +4,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Toolti
 import { Button } from "flowbite-react";
 import { Link, useForm } from '@inertiajs/react';
 
-import CardContainer from '@/Components/CardContainer';
-import Icons from '@/Components/Icons';
+import CardContainer from '@/Components/UI/CardContainer';
+import Icons from '@/Components/UI/Icons';
 const Index = ({ products }) => {
   console.log(products);
 

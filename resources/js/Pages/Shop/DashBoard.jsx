@@ -1,6 +1,6 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/DashboardLayout';
-import CardContainer from '@/Components/CardContainer';
+import CardContainer from '@/Components/UI/CardContainer';
 const DashBoard = ({ curent_shop }) => {
     console.log(curent_shop);
     return (

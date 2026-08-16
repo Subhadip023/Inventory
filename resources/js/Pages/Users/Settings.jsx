@@ -1,9 +1,9 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/DashboardLayout';
-import CardContainer from '@/Components/CardContainer';
-import FormSelect from '@/Components/FormSelect';
+import CardContainer from '@/Components/UI/CardContainer';
+import FormSelect from '@/Components/Form/FormSelect';
 import { useForm,Link } from '@inertiajs/react';
-import SaveButton from '@/Components/SaveButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
 import {MdArrowBack} from 'react-icons/md'
 const Store = ({setting}) => {
 

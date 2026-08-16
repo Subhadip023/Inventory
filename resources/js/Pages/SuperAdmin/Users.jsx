@@ -1,7 +1,7 @@
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import React, { use } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
-import Modal from '@/Components/Modal';
+import Modal from '@/Components/Modal/Modal';
 import { RxCross2 } from "react-icons/rx";
 import {
   Button,
@@ -9,10 +9,10 @@ import {
   Avatar
 } from "flowbite-react";
 
-import CardContainer from '@/Components/CardContainer';
+import CardContainer from '@/Components/UI/CardContainer';
 import { formatToIST } from "@/utils/formatToIST";
 import { Link, usePage } from '@inertiajs/react';
-import AdduserModal from '@/Components/AdduserModal';
+import AdduserModal from '@/Components/Modal/AdduserModal';
 const Users = ({ allusers, allCountry, defult_selected_country_id, allState, allCity, defult_selected_state_id, allRoles }) => {
   const [addUserModal, setAddUserModal] = React.useState(false);
   const { user_status } = usePage().props

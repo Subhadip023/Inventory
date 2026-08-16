@@ -1,9 +1,9 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/DashboardLayout';
-import CardContainer from '@/Components/CardContainer';
-import FormSelect from '@/Components/FormSelect';
+import CardContainer from '@/Components/UI/CardContainer';
+import FormSelect from '@/Components/Form/FormSelect';
 import { useForm } from '@inertiajs/react';
-import SaveButton from '@/Components/SaveButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
 const Store = ({setting}) => {
 
     console.log(setting);

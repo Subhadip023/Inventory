@@ -1,6 +1,6 @@
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Head } from '@inertiajs/react';
-import CardContainer from '@/Components/CardContainer';
+import CardContainer from '@/Components/UI/CardContainer';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';

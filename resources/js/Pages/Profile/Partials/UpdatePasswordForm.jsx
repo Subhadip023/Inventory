@@ -1,12 +1,12 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import InputError from '@/Components/Form/InputError';
+import InputLabel from '@/Components/Form/InputLabel';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton';
+import TextInput from '@/Components/Form/TextInput';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
 
-export default function UpdatePasswordForm({ className = '' }) {
+export default function UpdatePasswordForm({ className = ' }) {
     const passwordInput = useRef();
     const currentPasswordInput = useRef();
 
@@ -19,9 +19,9 @@ export default function UpdatePasswordForm({ className = '' }) {
         processing,
         recentlySuccessful,
     } = useForm({
-        current_password: '',
-        password: '',
-        password_confirmation: '',
+        current_password: ',
+        password: ',
+        password_confirmation: ',
     });
 
     const updatePassword = (e) => {

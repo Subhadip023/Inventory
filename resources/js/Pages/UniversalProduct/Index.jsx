@@ -2,21 +2,21 @@ import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput, Pagination, Tooltip } from "flowbite-react";
 import paginationOptions from '@/utils/paginationOptions';
-import CardContainer from '@/Components/CardContainer';
-import AddButton from '@/Components/AddButton';
+import CardContainer from '@/Components/UI/CardContainer';
+import AddButton from '@/Components/Buttons/AddButton';
 import { FaSearch } from "react-icons/fa";
 import axios from 'axios';
-import FormSelect from '@/Components/FormSelect';
+import FormSelect from '@/Components/Form/FormSelect';
 import { Link, useForm } from '@inertiajs/react';
-import Icons from '@/Components/Icons';
-import ConfirmModal from '@/Components/ConfirmModal';
-import FormInput from '@/Components/FormInput';
-import CancelButton from '@/Components/CancelButton';
-import SaveButton from '@/Components/SaveButton';
-import Modal from '@/Components/Modal';
-import FormTextArea from '@/Components/FormTextArea';
-import HighlightText from '@/Components/HighLightText';
-import Checkbox from '@/Components/Checkbox';
+import Icons from '@/Components/UI/Icons';
+import ConfirmModal from '@/Components/Modal/ConfirmModal';
+import FormInput from '@/Components/Form/FormInput';
+import CancelButton from '@/Components/Buttons/CancelButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
+import Modal from '@/Components/Modal/Modal';
+import FormTextArea from '@/Components/Form/FormTextArea';
+import HighlightText from '@/Components/UI/HighLightText';
+import Checkbox from '@/Components/Form/Checkbox';
 
 const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} }) => {
     const [products, setProducts] = useState(universalProducts.data || []);
@@ -29,20 +29,20 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
     const [perPage, setPerPage] = useState(filterData['per_page'] || 5);
     const [categoryId, setCategoryId] = useState(filterData['medicine_category_id'] || null);
     const [filterVarified, setFilterVarified] = useState(filterData['verified'] || 'all');
-    const [searchText, setSearchText] = useState('');
+    const [searchText, setSearchText] = useState(');
 
     const paginationForm = useForm();
     const productActivation = useForm();
     const universalProductForm = useForm({
         id: null,
-        name: '',
-        description: '',
-        salt_composition: '',
-        manufacturer: '',
-        hsn_code: '',
-        gst_rate: '',
+        name: ',
+        description: ',
+        salt_composition: ',
+        manufacturer: ',
+        hsn_code: ',
+        gst_rate: ',
         drug_schedule: 'OTC',
-        medicine_category_id: '',
+        medicine_category_id: ',
         verified: true,
     });
 
@@ -147,14 +147,14 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
         universalProductForm.reset();
         universalProductForm.setData({
             id: null,
-            name: '',
-            description: '',
-            salt_composition: '',
-            manufacturer: '',
-            hsn_code: '',
+            name: ',
+            description: ',
+            salt_composition: ',
+            manufacturer: ',
+            hsn_code: ',
             gst_rate: '12.00',
             drug_schedule: 'OTC',
-            medicine_category_id: allCategory[0]?.id || '',
+            medicine_category_id: allCategory[0]?.id || ',
             verified: true,
         });
         setOpenProductFormModal(true);
@@ -163,14 +163,14 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
     const openEditModal = (prod) => {
         universalProductForm.setData({
             id: prod.id,
-            name: prod.name || '',
-            description: prod.description || '',
-            salt_composition: prod.salt_composition || '',
-            manufacturer: prod.manufacturer || '',
-            hsn_code: prod.hsn_code || '',
-            gst_rate: prod.gst_rate || '',
+            name: prod.name || ',
+            description: prod.description || ',
+            salt_composition: prod.salt_composition || ',
+            manufacturer: prod.manufacturer || ',
+            hsn_code: prod.hsn_code || ',
+            gst_rate: prod.gst_rate || ',
             drug_schedule: prod.drug_schedule || 'OTC',
-            medicine_category_id: prod.medicine_category_id || '',
+            medicine_category_id: prod.medicine_category_id || ',
             verified: Boolean(prod.verified),
         });
         setOpenProductFormModal(true);
@@ -202,7 +202,7 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
                         </div>
 
                         <div>
-                            <FormSelect id='medicine_category_id' label='Category / Form' options={[{ id: '', name: 'Select Form' }, ...allCategory]} value={universalProductForm.data.medicine_category_id} onChange={(e) => universalProductForm.setData('medicine_category_id', e.target.value)} error={universalProductForm.errors.medicine_category_id} />
+                            <FormSelect id='medicine_category_id' label='Category / Form' options={[{ id: ', name: 'Select Form' }, ...allCategory]} value={universalProductForm.data.medicine_category_id} onChange={(e) => universalProductForm.setData('medicine_category_id', e.target.value)} error={universalProductForm.errors.medicine_category_id} />
                         </div>
 
                         <div>

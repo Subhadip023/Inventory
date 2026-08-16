@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
-import CardContainer from '@/Components/CardContainer';
-import Icons from '@/Components/Icons';
-import Modal from '@/Components/Modal';
+import CardContainer from '@/Components/UI/CardContainer';
+import Icons from '@/Components/UI/Icons';
+import Modal from '@/Components/Modal/Modal';
 
 import { RxCross2 } from "react-icons/rx";
 import { Link, useForm } from '@inertiajs/react';
-import SaveButton from '@/Components/SaveButton';
-import CancelButton from '@/Components/CancelButton';
-import FormInput from '@/Components/FormInput';
-import FormSelect from '@/Components/FormSelect';
-import FormTextArea from '@/Components/FormTextArea';
-import Checkbox from '@/Components/Checkbox';
+import SaveButton from '@/Components/Buttons/SaveButton';
+import CancelButton from '@/Components/Buttons/CancelButton';
+import FormInput from '@/Components/Form/FormInput';
+import FormSelect from '@/Components/Form/FormSelect';
+import FormTextArea from '@/Components/Form/FormTextArea';
+import Checkbox from '@/Components/Form/Checkbox';
 // import 
 const UserStatus = ({ allStatus = [] }) => {
     const [openEditModal, setOpenEditModal] = useState(false);
     const userStatusForm = useForm({
         id: null,
-        name: '',
+        name: ',
         description:null,
         manual: true,
         show: false,
-        svg: ''
+        svg: '
     });
     const closeEditModal = () => {
         setOpenEditModal(false);
@@ -101,7 +101,7 @@ const UserStatus = ({ allStatus = [] }) => {
                                 </div>
 
 
-                                <FormTextArea id='svg' name='svg' label='SVG' value={userStatusForm.data.svg || ''} onChange={(e) => userStatusForm.setData('svg', e.target.value)} error={userStatusForm.errors.svg} />
+                                <FormTextArea id='svg' name='svg' label='SVG' value={userStatusForm.data.svg || '} onChange={(e) => userStatusForm.setData('svg', e.target.value)} error={userStatusForm.errors.svg} />
 
                                 <div className='my-2'>
                                     <span className="font-medium">Show</span>

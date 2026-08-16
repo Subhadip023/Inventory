@@ -2,7 +2,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout';
 import React, { useEffect } from 'react';
 import { Button, Label, TextInput, Textarea, Card } from 'flowbite-react';
 import { useForm } from '@inertiajs/react';
-import SaveButton from '@/Components/SaveButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import axios from 'axios';
 const Create = () => {

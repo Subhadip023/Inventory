@@ -2,7 +2,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout';
 import React, { useEffect } from 'react';
 import { Button, Label, TextInput, Textarea, Card } from 'flowbite-react';
 import { useForm } from '@inertiajs/react';
-import SaveButton from '@/Components/SaveButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
 
 const Edit = ({product}) => {
     const {data,setData,put,processing,errors}=useForm({
@@ -15,7 +15,7 @@ const Edit = ({product}) => {
     });
 
     useEffect(() => {
-        if (data.name!='') {
+        if (data.name!=') {
             setData('sku',data.name.replace(/\s/g, '-').toLowerCase() + '-' + Date.now());
 
         }

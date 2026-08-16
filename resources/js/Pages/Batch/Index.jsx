@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput, Tooltip } from "flowbite-react";
-import CardContainer from '@/Components/CardContainer';
-import AddButton from '@/Components/AddButton';
+import CardContainer from '@/Components/UI/CardContainer';
+import AddButton from '@/Components/Buttons/AddButton';
 import { FaSearch } from "react-icons/fa";
-import FormSelect from '@/Components/FormSelect';
+import FormSelect from '@/Components/Form/FormSelect';
 import { useForm } from '@inertiajs/react';
-import Icons from '@/Components/Icons';
-import ConfirmModal from '@/Components/ConfirmModal';
-import FormInput from '@/Components/FormInput';
-import CancelButton from '@/Components/CancelButton';
-import SaveButton from '@/Components/SaveButton';
-import Modal from '@/Components/Modal';
+import Icons from '@/Components/UI/Icons';
+import ConfirmModal from '@/Components/Modal/ConfirmModal';
+import FormInput from '@/Components/Form/FormInput';
+import CancelButton from '@/Components/Buttons/CancelButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
+import Modal from '@/Components/Modal/Modal';
 
 function Index({ batches = [], products = [], filters = {} }) {
     const [openBatchModal, setOpenBatchModal] = useState(false);

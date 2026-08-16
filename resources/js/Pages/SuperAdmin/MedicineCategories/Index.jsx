@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
-import CardContainer from '@/Components/CardContainer';
-import AddButton from '@/Components/AddButton';
-import Icons from '@/Components/Icons';
-import Modal from '@/Components/Modal';
-import FormInput from '@/Components/FormInput';
-import CancelButton from '@/Components/CancelButton';
-import SaveButton from '@/Components/SaveButton';
-import ConfirmModal from '@/Components/ConfirmModal';
+import CardContainer from '@/Components/UI/CardContainer';
+import AddButton from '@/Components/Buttons/AddButton';
+import Icons from '@/Components/UI/Icons';
+import Modal from '@/Components/Modal/Modal';
+import FormInput from '@/Components/Form/FormInput';
+import CancelButton from '@/Components/Buttons/CancelButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
+import ConfirmModal from '@/Components/Modal/ConfirmModal';
 import { useForm } from '@inertiajs/react';
 
 function Index({ categories = [] }) {
@@ -18,7 +18,7 @@ function Index({ categories = [] }) {
 
     const categoryForm = useForm({
         id: null,
-        name: '',
+        name: ',
     });
 
     const submitCategory = (e) => {

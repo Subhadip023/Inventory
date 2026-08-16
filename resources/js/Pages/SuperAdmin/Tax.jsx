@@ -1,24 +1,24 @@
 import React, { useState } from 'react'
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button, TextInput, Pagination, Tooltip, CheckIcon } from "flowbite-react";
-import CardContainer from '@/Components/CardContainer';
+import CardContainer from '@/Components/UI/CardContainer';
 
-import AddButton from '@/Components/AddButton';
-import Icons from '@/Components/Icons';
-import Modal from '@/Components/Modal';
-import FormInput from '@/Components/FormInput';
-import CancelButton from '@/Components/CancelButton';
-import SaveButton from '@/Components/SaveButton';
+import AddButton from '@/Components/Buttons/AddButton';
+import Icons from '@/Components/UI/Icons';
+import Modal from '@/Components/Modal/Modal';
+import FormInput from '@/Components/Form/FormInput';
+import CancelButton from '@/Components/Buttons/CancelButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
 import { useForm } from '@inertiajs/react';
-import Checkbox from '@/Components/Checkbox';
-import ConfirmModal from '@/Components/ConfirmModal';
+import Checkbox from '@/Components/Form/Checkbox';
+import ConfirmModal from '@/Components/Modal/ConfirmModal';
 function Tax({ taxes }) {
     const [openCategoryModal, setOpenCategoryModal] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false);
     const taxForm = useForm({
         id: null,
-        name: '',
-        rate: '',
+        name: ',
+        rate: ',
         is_active: true,
     });
 

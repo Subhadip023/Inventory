@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import defultImgCDNs from '@/utils/defultImgCDNs';
 // import Image from "next/image";
 
-import AddButton from '@/Components/AddButton';
+import AddButton from '@/Components/Buttons/AddButton';
 import { useForm } from '@inertiajs/react'
 const Welcome = ({ stores }) => {
     const appName = import.meta.env.VITE_APP_NAME || 'Laravel';

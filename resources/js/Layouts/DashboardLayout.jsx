@@ -5,10 +5,10 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { HiExclamationCircle } from "react-icons/hi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import StoreSideBar from '@/Components/StoreSideBar';
-import SuperAdminSideBar from '@/Components/SuperAdminSideBar';
-import UserActivity from '@/Components/UserActivity';
-import IssueReportModal from '@/Components/IssueReportModal';
+import StoreSideBar from '@/Components/UI/StoreSideBar';
+import SuperAdminSideBar from '@/Components/UI/SuperAdminSideBar';
+import UserActivity from '@/Components/UI/UserActivity';
+import IssueReportModal from '@/Components/Modal/IssueReportModal';
 
 export default function DashboardLayout({ children, head, type }) {
     const { flash, theme_mode, user_status } = usePage().props;

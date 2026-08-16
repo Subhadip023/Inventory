@@ -1,17 +1,17 @@
-import CardContainer from '@/Components/CardContainer';
+import CardContainer from '@/Components/UI/CardContainer';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Head } from '@inertiajs/react';
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Button } from "flowbite-react";
-import Modal from '@/Components/Modal';
-import AddButton from '@/Components/AddButton';
-import CancelButton from '@/Components/CancelButton';
-import SaveButton from '@/Components/SaveButton';
-import FormInput from '@/Components/FormInput';
+import Modal from '@/Components/Modal/Modal';
+import AddButton from '@/Components/Buttons/AddButton';
+import CancelButton from '@/Components/Buttons/CancelButton';
+import SaveButton from '@/Components/Buttons/SaveButton';
+import FormInput from '@/Components/Form/FormInput';
 import { useForm } from '@inertiajs/react';
-import Icons from '@/Components/Icons';
+import Icons from '@/Components/UI/Icons';
 import { RxCrossCircled } from "react-icons/rx";
-import ConfirmModal from '@/Components/ConfirmModal';
+import ConfirmModal from '@/Components/Modal/ConfirmModal';
 
 const Index = ({ roles, all_permissions, all_users, shopId }) => {
     const [openAddRoleModal, setOpenAddRoleModal] = React.useState(false);
@@ -22,12 +22,12 @@ const Index = ({ roles, all_permissions, all_users, shopId }) => {
     const [confirmDeleteRole, setConfirmDeleteRole] = React.useState(false);
 
     const addRoleForm = useForm({
-        name: '',
+        name: ',
         permissions: [],
     });
 
     const addPermissionForm = useForm({
-        name: '',
+        name: ',
 
     });
 

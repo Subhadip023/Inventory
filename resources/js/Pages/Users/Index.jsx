@@ -1,7 +1,7 @@
 import DashboardLayout from '@/Layouts/DashboardLayout.jsx';
 import React, { use } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
-import Modal from '@/Components/Modal';
+import Modal from '@/Components/Modal/Modal';
 import { RxCross2 } from "react-icons/rx";
 import {
   Button,
@@ -28,10 +28,10 @@ import { Link, useForm } from '@inertiajs/react';
 import userData from '@/utils/defultUserData';
 import { Modal as ReactModal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import userType from '@/utils/userType';
-import SaveButton from '@/Components/SaveButton';
-import CancelButton from '@/Components/CancelButton';
-import CardContainer from '@/Components/CardContainer';
-import Icons from '@/Components/Icons';
+import SaveButton from '@/Components/Buttons/SaveButton';
+import CancelButton from '@/Components/Buttons/CancelButton';
+import CardContainer from '@/Components/UI/CardContainer';
+import Icons from '@/Components/UI/Icons';
 
 
 const Index = ({ users, allCountry, defult_selected_country_id, allState, allCity, defult_selected_state_id }) => {

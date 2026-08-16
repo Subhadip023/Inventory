@@ -3,9 +3,9 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow ,Button } from "flowbite-react";
 import { Link } from '@inertiajs/react';
 import timeAgo from '@/utils/timeAgo';
-import CardContainer from '@/Components/CardContainer';
-import AddButton from '@/Components/AddButton';
-import Icons from '@/Components/Icons';
+import CardContainer from '@/Components/UI/CardContainer';
+import AddButton from '@/Components/Buttons/AddButton';
+import Icons from '@/Components/UI/Icons';
 const Index = ({ allOrder }) => {
     return (
         <DashboardLayout>
@@ -13,7 +13,7 @@ const Index = ({ allOrder }) => {
             <h2 className="text-2xl font-semibold my-4 mx-10">All Order</h2>
           </div>
           <div className='my-5 mx-10 flex items-end justify-end '>
-            {/* <Button as={Link} href={route('orders.create')} className='' color="green">Add </Button> */}
+            {/* <Button as={Link} href={route('orders.create')} className=' color="green">Add </Button> */}
             <AddButton href={route('orders.create')}>Add</AddButton>
           </div>
           <CardContainer>

@@ -1,7 +1,7 @@
 import React from 'react'
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
-import CardContainer from '@/Components/CardContainer';
+import CardContainer from '@/Components/UI/CardContainer';
 import { Link } from '@inertiajs/react';
 export default function UserLog({ allLogs,view=true}) {
   return (
