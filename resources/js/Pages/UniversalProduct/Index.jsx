@@ -5,6 +5,7 @@ import paginationOptions from '@/utils/paginationOptions';
 import CardContainer from '@/Components/UI/CardContainer';
 import AddButton from '@/Components/Buttons/AddButton';
 import { FaSearch } from "react-icons/fa";
+import { HiPlusCircle, HiPencilAlt } from 'react-icons/hi';
 import axios from 'axios';
 import FormSelect from '@/Components/Form/FormSelect';
 import { Link, useForm } from '@inertiajs/react';
@@ -13,7 +14,7 @@ import ConfirmModal from '@/Components/Modal/ConfirmModal';
 import FormInput from '@/Components/Form/FormInput';
 import CancelButton from '@/Components/Buttons/CancelButton';
 import SaveButton from '@/Components/Buttons/SaveButton';
-import Modal from '@/Components/Modal/Modal';
+import DialogModal from '@/Components/Modal/DialogModal';
 import FormTextArea from '@/Components/Form/FormTextArea';
 import HighlightText from '@/Components/UI/HighLightText';
 import Checkbox from '@/Components/Form/Checkbox';
@@ -180,14 +181,16 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
         <DashboardLayout>
             <ConfirmModal open={openConfirmProductDeleteModal} onCancel={() => setOpenConfirmProductDeleteModal(false)} title={'Delete Master Product'} message={`Are you sure you want to delete ${universalProductForm.data.name}?`} confirmText='Delete' onConfirm={deleteProductSubmit} />
 
-            <Modal show={openProductFormModal} onClose={() => setOpenProductFormModal(false)} maxWidth='md:w-1/2'>
-                <div className='mx-8 my-5 space-y-4'>
-                    <div>
-                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white my-4">
-                            {universalProductForm.data.id ? "Edit" : "Add"} Master Universal Product
-                        </h2>
-                    </div>
-
+            <DialogModal
+                show={openProductFormModal}
+                onClose={() => { setOpenProductFormModal(false); universalProductForm.reset(); }}
+                maxWidth="6xl"
+                icon={universalProductForm.data.id ? HiPencilAlt : HiPlusCircle}
+                iconBgClass="bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400"
+                title={`${universalProductForm.data.id ? "Edit" : "Add"} Master Universal Product`}
+                description="Manage universal product details, schedule, HSN, and GST rates for the master catalog."
+            >
+                <form onSubmit={handleProductFormSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="col-span-2">
                             <FormInput id='name' label='Brand / Medicine Name' type='text' placeholder='e.g. Paracetamol 500mg' value={universalProductForm.data.name} onChange={(e) => universalProductForm.setData('name', e.target.value)} error={universalProductForm.errors.name} required />
@@ -221,18 +224,18 @@ const Index = ({ universalProducts, per_page, allCategory = [], filterData = {} 
                             <FormTextArea id={'description'} label="Description / Indications" type='textarea' value={universalProductForm.data.description} onChange={(e) => universalProductForm.setData('description', e.target.value)} placeholder='Indications, uses, precautions...' error={universalProductForm.errors.description} />
                         </div>
 
-                        <div className='col-span-2 my-2 flex items-center gap-x-2'>
+                        <div className='col-span-2 my-1 flex items-center gap-x-2'>
                             <Checkbox checked={universalProductForm.data.verified} onChange={(e) => universalProductForm.setData('verified', e.target.checked)} />
                             <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">Verified Master Catalog Product</span>
                         </div>
                     </div>
 
                     <div className='flex justify-end items-center gap-x-2 pt-4 border-t border-slate-200 dark:border-slate-700'>
-                        <CancelButton onClick={() => { setOpenProductFormModal(false); universalProductForm.reset(); }}>Cancel</CancelButton>
-                        <SaveButton disable={universalProductForm.processing} onClick={handleProductFormSubmit}>Save Product</SaveButton>
+                        <CancelButton type="button" onClick={() => { setOpenProductFormModal(false); universalProductForm.reset(); }}>Cancel</CancelButton>
+                        <SaveButton disable={universalProductForm.processing} type="submit">Save Product</SaveButton>
                     </div>
-                </div>
-            </Modal>
+                </form>
+            </DialogModal>
 
             {/* Verification Confirmation Modals */}
             <ConfirmModal open={openActiveConfirmationModal} onCancel={() => setOpenActiveConfirmationModal(false)} title={'Verify Product'} message='Mark this product as verified in master catalog?' confirmText='Verify' onConfirm={handleProductVerification} />
